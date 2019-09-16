@@ -1,0 +1,26 @@
+{
+  "id": "e4268cd8-4452-4e1b-af3f-9d499ff711e4",
+  "name": "testProject",
+  "publisher": "Default publisher",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "14.0.0.0",
+  "application": "14.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50249
+    }
+  ],
+  "contextSensitiveHelpUrl": "https://testProject.com/help/",
+  "showMyCode": true,
+  "runtime": "3.2"
+}
