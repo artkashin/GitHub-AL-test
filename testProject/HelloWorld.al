@@ -11,5 +11,6 @@ pageextension 50200 CustomerListExt extends "Customer List"
         // my test text
         // second test MBS
         // last update
+        //hello world
     end;
 }
