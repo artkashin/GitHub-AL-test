@@ -6,15 +6,7 @@ dotnet
         Culture='neutral';
         PublicKeyToken='b77a5c561934e089';
 
-        type("System.DateTime";"DateTime")
-        {
-        }
-
-        type("System.IO.MemoryStream";"MemoryStream")
-        {
-        }
-
-        type("System.IO.StreamReader";"StreamReader")
+        type("System.Convert";"Convert")
         {
         }
 
@@ -22,11 +14,23 @@ dotnet
         {
         }
 
+        type("System.Text.UTF8Encoding";"UTF8Encoding")
+        {
+        }
+
+        type("System.IO.MemoryStream";"MemoryStream")
+        {
+        }
+
         type("System.IO.StreamWriter";"StreamWriter")
         {
         }
 
-        type("System.Convert";"Convert")
+        type("System.DateTime";"DateTime")
+        {
+        }
+
+        type("System.IO.StreamReader";"StreamReader")
         {
         }
 
@@ -35,10 +39,6 @@ dotnet
         }
 
         type("System.Environment";"Environment")
-        {
-        }
-
-        type("System.Text.UTF8Encoding";"UTF8Encoding")
         {
         }
 
@@ -53,15 +53,15 @@ dotnet
         Culture='neutral';
         PublicKeyToken='b77a5c561934e089';
 
+        type("System.Uri";"Uri")
+        {
+        }
+
         type("System.Net.HttpWebRequest";"HttpWebRequest")
         {
         }
 
         type("System.Net.WebHeaderCollection";"WebHeaderCollection")
-        {
-        }
-
-        type("System.Uri";"Uri")
         {
         }
 
@@ -78,6 +78,64 @@ dotnet
         }
     }
 
+    assembly("Newtonsoft.Json")
+    {
+        Version='6.0.0.0';
+        Culture='neutral';
+        PublicKeyToken='30ad4fe6b2a6aeed';
+
+        type("Newtonsoft.Json.Linq.JObject";"JObject")
+        {
+        }
+
+        type("Newtonsoft.Json.Linq.JToken";"JToken")
+        {
+        }
+
+        type("Newtonsoft.Json.Linq.JArray";"JArray")
+        {
+        }
+
+        type("Newtonsoft.Json.JsonConvert";"JsonConvert")
+        {
+        }
+    }
+
+    assembly("PdfSharp")
+    {
+        Version='1.32.2608.0';
+        Culture='neutral';
+        PublicKeyToken='f94615aa0424f9eb';
+
+        type("PdfSharp.Pdf.PdfDocument";"PdfDocument")
+        {
+        }
+
+        type("PdfSharp.Pdf.PdfPage";"PdfPage")
+        {
+        }
+
+        type("PdfSharp.Pdf.IO.PdfReader";"PdfReader")
+        {
+        }
+
+        type("PdfSharp.Pdf.IO.PdfDocumentOpenMode";"PdfDocumentOpenMode")
+        {
+        }
+
+        type("PdfSharp.Drawing.XGraphics";"XGraphics")
+        {
+        }
+
+        type("PdfSharp.Drawing.XPdfForm";"XPdfForm")
+        {
+        }
+
+        type("PdfSharp.Drawing.XRect";"XRect")
+        {
+        }
+    }
+
     assembly("System.Xml")
     {
         Version='2.0.0.0';
@@ -89,29 +147,6 @@ dotnet
         }
 
         type("System.Xml.XmlNode";"XmlNode")
-        {
-        }
-    }
-
-    assembly("Newtonsoft.Json")
-    {
-        Version='6.0.0.0';
-        Culture='neutral';
-        PublicKeyToken='30ad4fe6b2a6aeed';
-
-        type("Newtonsoft.Json.Linq.JArray";"JArray")
-        {
-        }
-
-        type("Newtonsoft.Json.JsonConvert";"JsonConvert")
-        {
-        }
-
-        type("Newtonsoft.Json.Linq.JToken";"JToken")
-        {
-        }
-
-        type("Newtonsoft.Json.Linq.JObject";"JObject")
         {
         }
     }

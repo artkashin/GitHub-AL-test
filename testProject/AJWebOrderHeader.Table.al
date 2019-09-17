@@ -25,10 +25,6 @@ table 37074833 "AJ Web Order Header"
                 end;
             end;
         }
-        field(4;"Web Service Store ID";Code[10])
-        {
-            TableRelation = Table37074836.Field2 WHERE (Field1=FIELD("Web Service Code"));
-        }
         field(5;"Shipping Web Service Order No.";Text[30])
         {
         }
@@ -278,13 +274,6 @@ table 37074833 "AJ Web Order Header"
 
                 if "Ship-From Warehouse ID" <> xRec."Ship-From Warehouse ID" then
                   TestLabelCreated;
-
-                if "Incoming Shipping Code" <> '' then begin
-                  if not AJWebService.Get("Web Service Code") then
-                    AJWebService.Init;
-                  if AJWebService."Shipping Service" = AJWebService."Shipping Service"::Merchant then
-                    exit;
-                end;
 
                 if AJWebServiceWarehouse.Get("Shipping Web Service Code","Ship-From Warehouse ID") then begin
                   "Shipping Carrier Code" := AJWebServiceWarehouse."Def. Shipping Carrier Code";
@@ -536,10 +525,6 @@ table 37074833 "AJ Web Order Header"
         {
             OptionMembers = " ",Require,Sent;
         }
-        field(950;"Sum WHSE Pick No.";Code[20])
-        {
-            TableRelation = Table37074517.Field1;
-        }
         field(960;"COD Amount";Decimal)
         {
         }
@@ -713,9 +698,6 @@ table 37074833 "AJ Web Order Header"
         field(5003;"Shipment Id";Text[50])
         {
         }
-        field(5004;"Amazon Prime";Boolean)
-        {
-        }
         field(5005;"Cancel Reason";Option)
         {
             OptionMembers = " ",NoInventory,ShippingAddressUndeliverable,CustomerExchange,BuyerCanceled,GeneralAdjustment,CarrierCreditDecision,RiskAssessmentInformationNotValid,CarrierCoverageFailure,CustomerReturn,MerchandiseNotReceived;
@@ -725,9 +707,6 @@ table 37074833 "AJ Web Order Header"
                 WebOrdLine: Record "AJ Web Order Line";
             begin
             end;
-        }
-        field(5006;"Fulfillment by Amazon";Boolean)
-        {
         }
         field(5007;"Latest Ship Date";DateTime)
         {
@@ -880,8 +859,6 @@ table 37074833 "AJ Web Order Header"
         Customer: Record Customer;
         AJWebPackage: Record "AJ Web Package";
     begin
-        if "Incoming Shipping Code" = '' then
-          exit;
         if not AJWebService.Get("Web Service Code") then
           exit;
         if AJWebService."Shipping Service" = AJWebService."Shipping Service"::Merchant then
@@ -907,8 +884,6 @@ table 37074833 "AJ Web Order Header"
         AJWebOrderHeader."Order DateTime" := CurrentDateTime;
         AJWebOrderHeader.Insert(true);
 
-        AJWebOrderHeader."Incoming Shipping Code" := ShipmentMethodCode;
-
         if not ShipmentMethod.Get(ShipmentMethodCode) then
           ShipmentMethod.Init;
         AJWebCarrierService.SetFilter("Shipment Method Code",ShipmentMethod.Code);
@@ -917,17 +892,6 @@ table 37074833 "AJ Web Order Header"
 
           AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
           AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
-
-        //>> select warehouse for store
-          if StoreNo <> '' then begin
-            AJWebServiceWarehouse.Reset;
-            AJWebServiceWarehouse.SetRange("Web Service Code",AJWebService.Code);
-            AJWebServiceWarehouse.SetRange("AJ Store No.",StoreNo);
-            if AJWebServiceWarehouse.FindFirst then
-              AJWebOrderHeader.Validate("Ship-From Warehouse ID",AJWebServiceWarehouse."Warehouse ID");
-          end;
-        //<< select warehouse for store
-
           AJWebOrderHeader.Validate("Shipping Carrier Code",AJWebCarrierService."Web Carrier Code");
           AJWebOrderHeader.Validate("Shipping Carrier Service",AJWebCarrierService."Service  Code");
           AJWebOrderHeader.Validate("Shipping Package Type",AJWebCarrierService."Default Package Code");

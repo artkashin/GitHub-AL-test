@@ -140,11 +140,6 @@ table 37074950 "AJ Web Service Warehouse"
         {
             DataClassification = ToBeClassified;
         }
-        field(100;"AJ Store No.";Code[10])
-        {
-            DataClassification = ToBeClassified;
-            TableRelation = Table37076004;
-        }
         field(2000;"Location Code Filter";Code[200])
         {
             TableRelation = Location;

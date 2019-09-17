@@ -56,10 +56,6 @@ table 37074946 "AJ Web Carrier"
         field(28;"Def. Insure Shipment";Boolean)
         {
         }
-        field(403;"Label Printer Code";Code[10])
-        {
-            TableRelation = Table14104759;
-        }
         field(405;"Bill-to Type";Option)
         {
             OptionCaption = 'My Account,Recipient,Third Party,My Other Account';
@@ -89,6 +85,10 @@ table 37074946 "AJ Web Carrier"
         {
             TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code"=FIELD("Web Service Code"),
                                                                              Type=CONST(Option));
+        }
+        field(37075200;"Shipping Label to A5 format";Boolean)
+        {
+            DataClassification = ToBeClassified;
         }
         field(37075202;"Allow COD";Boolean)
         {

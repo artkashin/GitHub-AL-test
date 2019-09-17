@@ -3,6 +3,90 @@
   <file datatype="xml" source-language="en-US" target-language="en-US" original="Please update this value">
     <body>
       <group id="body">
+        <trans-unit id="Table 2280728374 - Field 3572756595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nav Created DateTime</source>
+          <target>Nav Created DateTime</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field Created DateTime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 3865857512 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source> ,Customer,Store,XStore</source>
+          <target> ,Customer,Store,XStore</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field Ship-to Type - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 3803558279 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>My Account,Recipient,Third Party,My Other Account</source>
+          <target>My Account,Recipient,Third Party,My Other Account</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field Bill-to Type - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 878829620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Agree To Return Charge</source>
+          <target>Agree To Return Charge</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field agree_to_return_charge - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 1780671732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Refund Without Return</source>
+          <target>Refund Without Return</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field refund_without_return - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 3406160499 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Charge Feedback</source>
+          <target>Return Charge Feedback</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field return_charge_feedback - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2280728374 - Field 1074526726 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Merchant Return Charge&gt;</source>
+          <target>Merchant Return Charge&gt;</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Order Header - Field merchant_return_charge - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 911704466 - Field 2616369557 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Partner ID (CommerceHUB)</source>
+          <target>Partner ID (CommerceHUB)</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Service - Field Partner ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 911704466 - Field 3529549019 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Partner Name (CommerceHUB)</source>
+          <target>Partner Name (CommerceHUB)</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Service - Field Partner Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 911704466 - Field 3803558279 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>My Account,Recipient,Third Party</source>
+          <target>My Account,Recipient,Third Party</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Service - Field Bill-to Type - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 3652334873 - Field 3803558279 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>My Account,Recipient,Third Party,My Other Account</source>
+          <target>My Account,Recipient,Third Party,My Other Account</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Carrier - Field Bill-to Type - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 537712526 - Field 2504631940 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>CommerceHUB Code</source>
+          <target>CommerceHUB Code</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Carrier Service - Field Cross Reference Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 537712526 - Field 706738742 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>JetCom Code</source>
+          <target>JetCom Code</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Carrier Service - Field Cross Reference Code 2 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1790358659 - Field 3803558279 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>My Account,Recipient,Third Party,My Other Account</source>
+          <target>My Account,Recipient,Third Party,My Other Account</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AJ Web Package - Field Bill-to Type - Property OptionCaption</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2526012789 - NamedType 2653039028" size-unit="char" translate="yes" xml:space="preserve">
           <source>yyyy-MM-ddTHH:mm:ss.fffffff-HH:MM</source>
           <target>yyyy-MM-ddTHH:mm:ss.fffffff-HH:MM</target>
@@ -230,6 +314,306 @@
           <target>Assembly Order# %1.</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text034</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - Control 1861195112 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Orders</source>
+          <target>Posted Orders</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - Control Posted Orders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - Control 3741678818 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Web Shipping Order No.</source>
+          <target>Web Shipping Order No.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - Control Shipping Web Service Order No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - Control 716522094 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Label Imported</source>
+          <target>Label Imported</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - Control "Shipping Agent Label".HASVALUE - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - Action 1776610602 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Web Services</source>
+          <target>Web Services</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - Action "Web Services" - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - Action 2736037328 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Label</source>
+          <target>Shipping Label</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - Action "Shipping Label" - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to post %1 orders?</source>
+          <target>Are you sure you want to post %1 orders?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Operation cancelled by user.</source>
+          <target>Operation cancelled by user.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - NamedType Text002</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NAV orders not found.</source>
+          <target>NAV orders not found.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - NamedType Text003</note>
+        </trans-unit>
+        <trans-unit id="Page 2647408281 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Access Denied.</source>
+          <target>Access Denied.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order List - NamedType Text004</note>
+        </trans-unit>
+        <trans-unit id="Page 2251328169 - Control 954836225 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&lt;Item Option 2 Value&gt;</source>
+          <target>&lt;Item Option 2 Value&gt;</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order Subform - Control Item Option 2 Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 2491152265 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Web Service Code</source>
+          <target>Shipping Web Service Code</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_ShpWebServiceCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 3804196920 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ship-From Warehouse ID</source>
+          <target>Ship-From Warehouse ID</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_SipFromWhseID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 2080317194 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Carrier Code</source>
+          <target>Shipping Carrier Code</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_ShpCarrierCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 17237090 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Carrier Service</source>
+          <target>Shipping Carrier Service</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_ShpCarrierService - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 1394977999 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Package Type</source>
+          <target>Shipping Package Type</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_ShpPackageType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 1550342697 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Delivery Confirmation</source>
+          <target>Shipping Delivery Confirmation</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_ShpDeliveryConf - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 1560052858 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Weight</source>
+          <target>Product Weight</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdWgt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 2823420942 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Weight Unit</source>
+          <target>Product Weight Unit</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdDim - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 198873416 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Dimension Unit</source>
+          <target>Product Dimension Unit</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdDimUnit - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 2183257335 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Width</source>
+          <target>Product Width</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdW - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 1676530266 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Lenght</source>
+          <target>Product Lenght</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 4227316734 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Height</source>
+          <target>Product Height</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_PrdH - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 3430663339 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Insure Shipment</source>
+          <target>Insure Shipment</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_InsureShp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 151297327 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Insured Value</source>
+          <target>Insured Value</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_InsuredValue - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 874372534 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Additional Insurance Value</source>
+          <target>Additional Insurance Value</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_AddInsValue - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 1026520523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Carrier Shipping Charge</source>
+          <target>Carrier Shipping Charge</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_CarrierShpCharge - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 4206090136 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Carrier Tracking#</source>
+          <target>Carrier Tracking#</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_CarrierTrackingNumber - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Control 3488693387 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Carrier Insurance Cost</source>
+          <target>Carrier Insurance Cost</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Control AJWOH_CarrierInsuranceCost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1550076303 - Action 2736037328 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Label</source>
+          <target>Shipping Label</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Order - Action "Shipping Label" - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3662793014 - Action 1756323072 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Copy-to Company</source>
+          <target>Copy-to Company</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Service Card - Action Copy-to Company - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3662793014 - Action 3304607464 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete Record</source>
+          <target>Delete Record</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Service Card - Action Delete Record - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4176763937 - Control 1805451521 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shipping Service</source>
+          <target>Shipping Service</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Service Warehouse Card - Control Shipping Service - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 994795067 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Web Return No.</source>
+          <target>Web Return No.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Web Order No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 4020998378 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Web Service Return ID</source>
+          <target>Web Service Return ID</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Web Service Order ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 2288935057 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return DateTime</source>
+          <target>Return DateTime</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Order DateTime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 878829620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Agree To Return Charge</source>
+          <target>Agree To Return Charge</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control agree_to_return_charge - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 1074526726 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Merchant Return Charge</source>
+          <target>Merchant Return Charge</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control merchant_return_charge - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 3406160499 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Charge Feedback</source>
+          <target>Return Charge Feedback</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control return_charge_feedback - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 1780671732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Refund Without Return</source>
+          <target>Refund Without Return</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control refund_without_return - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 4215709640 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Location</source>
+          <target>Return Location</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 339584065 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Address 1</source>
+          <target>Address 1</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer Address 1 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 3996854744 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Address 2</source>
+          <target>Address 2</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer Address 2 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 3730379781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Zip</source>
+          <target>Zip</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer Zip - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 1938082388 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Country</source>
+          <target>Country</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer Country - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 2261367753 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>State</source>
+          <target>State</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer State - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 461191673 - Control 2287725257 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>City</source>
+          <target>City</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order - Control Ship-To Customer City - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 961860975 - Control 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Quantity</source>
+          <target>Return Quantity</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order Subform - Control Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 961860975 - Control 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reason</source>
+          <target>Reason</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order Subform - Control Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 961860975 - Control 1775729913 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Notes</source>
+          <target>Notes</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Return Order Subform - Control Custom Text 1 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4244807530 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>AJ Packages</source>
+          <target>AJ Packages</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AJ Web Package Part - Property Caption</note>
         </trans-unit>
       </group>
     </body>

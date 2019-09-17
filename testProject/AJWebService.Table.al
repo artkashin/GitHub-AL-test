@@ -84,14 +84,6 @@ table 37074835 "AJ Web Service"
             Editable = false;
             FieldClass = FlowField;
         }
-        field(33;"# Open WHSE Orders";Integer)
-        {
-            CalcFormula = Count("AJ Web Order Header" WHERE ("Web Service Code"=FIELD(Code),
-                                                             "NAV Order Status"=FILTER(Created),
-                                                             "Sum WHSE Pick No."=FILTER(<>'')));
-            Editable = false;
-            FieldClass = FlowField;
-        }
         field(34;"# Ship Labels Created";Integer)
         {
             CalcFormula = Count("AJ Web Order Header" WHERE ("Web Service Code"=FIELD(Code),
@@ -204,6 +196,18 @@ table 37074835 "AJ Web Service"
         }
         field(63;"API Sellier ID";Text[30])
         {
+        }
+        field(402;"Rate Limit";Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(403;"Limit Remaining";Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(404;"Limit Reset";Decimal)
+        {
+            DataClassification = ToBeClassified;
         }
         field(405;"Bill-to Type";Option)
         {
