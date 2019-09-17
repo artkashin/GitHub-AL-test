@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="Please update this value">
+    <body>
+      <group id="body">
+        <trans-unit id="Codeunit 2526012789 - NamedType 2653039028" size-unit="char" translate="yes" xml:space="preserve">
+          <source>yyyy-MM-ddTHH:mm:ss.fffffff-HH:MM</source>
+          <target>yyyy-MM-ddTHH:mm:ss.fffffff-HH:MM</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType JetComDateTimeFormat</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 407236991" size-unit="char" translate="yes" xml:space="preserve">
+          <source>yyyy-MM-ddTHH:mm:ss.fffzzz</source>
+          <target>yyyy-MM-ddTHH:mm:ss.fffzzz</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType OasisDateTimeFormat</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2688181993" size-unit="char" translate="yes" xml:space="preserve">
+          <source>yyyy-MM-ddTHH:mm:ss</source>
+          <target>yyyy-MM-ddTHH:mm:ss</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType LogicBrokerDateTimeFormat</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2882983553" size-unit="char" translate="yes" xml:space="preserve">
+          <source>M</source>
+          <target>M</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType JetComWebSKUPrefix</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Field %1 have to be the same for all orders in Pick Document.\You have two different values: %2 and %3. \Web OrderNumbers: %4 and%5.</source>
+          <target>Field %1 have to be the same for all orders in Pick Document.\You have two different values: %2 and %3. \Web OrderNumbers: %4 and%5.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Integration code %1 for Web Carrier Service %2 have to be set up.</source>
+          <target>Integration code %1 for Web Carrier Service %2 have to be set up.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text002</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Current Insured Value %1 more than Carrier Service "Max Insurance Limit" %2.\Are you sure you want to continue?</source>
+          <target>Current Insured Value %1 more than Carrier Service "Max Insurance Limit" %2.\Are you sure you want to continue?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text003</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Operation cancelled by user.</source>
+          <target>Operation cancelled by user.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text004</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1370456556" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Action is too dangerous.</source>
+          <target>Action is too dangerous.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text005</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2008153173" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity of Web Items created: %1.\Quantity of Web Items modified: %2.</source>
+          <target>Quantity of Web Items created: %1.\Quantity of Web Items modified: %2.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text006</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2645849790" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unknown integration code: %1.</source>
+          <target>Unknown integration code: %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text007</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3283546407" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Wrong web service subtype for sending invoice: %1.</source>
+          <target>Wrong web service subtype for sending invoice: %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text008</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3921243024" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There is no Label data for Web Order No.: %1</source>
+          <target>There is no Label data for Web Order No.: %1</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text009</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1664139952" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There is no Packlist data for Web Order No.: %1</source>
+          <target>There is no Packlist data for Web Order No.: %1</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text010</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1026443335" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Complete</source>
+          <target>Complete</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text011</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2939533186" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You have no integration set up/code for Web Service: %1, Carrier: %2, Carrier Service: %3.</source>
+          <target>You have no integration set up/code for Web Service: %1, Carrier: %2, Carrier Service: %3.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text012</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2301836569" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing... \@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</source>
+          <target>Processing... \@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text013</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 4214926420" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.</source>
+          <target>Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text014</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3577229803" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to update ticket list?</source>
+          <target>Are you sure you want to update ticket list?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text015</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1195352358" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity of tickets imported: %1.\Skipped: %2.</source>
+          <target>Quantity of tickets imported: %1.\Skipped: %2.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text016</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 557655741" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Loading...\Ticket No.: #1###########\@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</source>
+          <target>Loading...\Ticket No.: #1###########\@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text017</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 857534312" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to update tickets timing?</source>
+          <target>Are you sure you want to update tickets timing?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text018</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 219837695" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity of time records imported:\ %1.</source>
+          <target>Quantity of time records imported:\ %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text019</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1940672225" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to invoice selected(%1) lines?</source>
+          <target>Are you sure you want to invoice selected(%1) lines?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text020</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2578368842" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing...\Ticket No.: #1###########\@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</source>
+          <target>Processing...\Ticket No.: #1###########\@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text021</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 665278991" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tickets processed: %1.</source>
+          <target>Tickets processed: %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text022</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1302975608" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you created label for order %1 manually?</source>
+          <target>Are you sure you created label for order %1 manually?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text023</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 196491397" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tracking number must be 18 symbols.</source>
+          <target>Tracking number must be 18 symbols.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text024</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 834188014" size-unit="char" translate="yes" xml:space="preserve">
+          <source>All items are set up.</source>
+          <target>All items are set up.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text025</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3216065459" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Not for you, mortal.</source>
+          <target>Not for you, mortal.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text026</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3853762076" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Uploading pictures...\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</source>
+          <target>Uploading pictures...\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text027</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 2747277865" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Updated pictures: %1.</source>
+          <target>Updated pictures: %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text028</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3384974482" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to update parent items?</source>
+          <target>Are you sure you want to update parent items?</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text029</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 1148659762" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing...\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</source>
+          <target>Processing...\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text030</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 510963145" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Items with parent found:\ %1.</source>
+          <target>Items with parent found:\ %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text031</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 4168233824" size-unit="char" translate="yes" xml:space="preserve">
+          <source>File with type = %1 was not created.</source>
+          <target>File with type = %1 was not created.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text032</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3530537207" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ticket already has been created.</source>
+          <target>Ticket already has been created.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text033</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2526012789 - NamedType 3699446230" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assembly Order# %1.</source>
+          <target>Assembly Order# %1.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AJ Web Order Service Mgmt - NamedType Text034</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
