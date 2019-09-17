@@ -6,7 +6,7 @@ page 37075202 "AJ Web Order List"
     PageType = List;
     SourceTable = "AJ Web Order Header";
     SourceTableView = ORDER(Descending)
-                      WHERE("Document Type"=CONST(Order));
+                      WHERE ("Document Type" = CONST (Order));
 
     layout
     {
@@ -14,46 +14,46 @@ page 37075202 "AJ Web Order List"
         {
             repeater(Group)
             {
-                field("Document Type";"Document Type")
+                field("Document Type"; "Document Type")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Web Service Code";"Web Service Code")
+                field("Web Service Code"; "Web Service Code")
                 {
                     Visible = false;
                 }
-                field("Acknowlegement Sent";"Acknowlegement Sent")
+                field("Acknowlegement Sent"; "Acknowlegement Sent")
                 {
                     Editable = false;
                 }
-                field("Total Amount";"Total Amount")
+                field("Total Amount"; "Total Amount")
                 {
-                    DecimalPlaces = 0:2;
+                    DecimalPlaces = 0 : 2;
                 }
-                field("Total Quantity";"Total Quantity")
-                {
-                }
-                field(Lines;Lines)
+                field("Total Quantity"; "Total Quantity")
                 {
                 }
-                field("Latest Delivery Date";"Latest Delivery Date")
+                field(Lines; Lines)
+                {
+                }
+                field("Latest Delivery Date"; "Latest Delivery Date")
                 {
                     Editable = false;
                 }
-                field("Web Order No.";"Web Order No.")
+                field("Web Order No."; "Web Order No.")
                 {
                 }
-                field("Web Service Order ID";"Web Service Order ID")
+                field("Web Service Order ID"; "Web Service Order ID")
                 {
                 }
-                field("Web Service PO Number";"Web Service PO Number")
+                field("Web Service PO Number"; "Web Service PO Number")
                 {
                 }
-                field("NAV Order Status";"NAV Order Status")
+                field("NAV Order Status"; "NAV Order Status")
                 {
                 }
-                field("NAV Order Count";"NAV Order Count")
+                field("NAV Order Count"; "NAV Order Count")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -63,24 +63,23 @@ page 37075202 "AJ Web Order List"
                         lr_SH.SetRange("Web Order No.", "Web Order No.");
                         lr_SH.SetRange("Document Type", lr_SH."Document Type"::Order);
                         if lr_SH.FindFirst
-                          then PAGE.RunModal(42, lr_SH);
+                          then
+                            PAGE.RunModal(42, lr_SH);
                     end;
                 }
-                field("Posted Orders";SalesInvoiceHeader.Count)
+                field("Posted Orders"; SalesInvoiceHeader.Count)
                 {
                     Caption = 'Posted Orders';
                     Editable = false;
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        //vadimb 07122018 >
                         SalesInvoiceHeader.SetRange(SalesInvoiceHeader."Web Order No.", "Web Order No.");
                         if SalesInvoiceHeader.FindFirst then
-                          PAGE.RunModal(132, SalesInvoiceHeader);
-                        //vadimb 07122018 <
+                            PAGE.RunModal(132, SalesInvoiceHeader);
                     end;
                 }
-                field("NAV Error Text";"NAV Error Text")
+                field("NAV Error Text"; "NAV Error Text")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -88,132 +87,132 @@ page 37075202 "AJ Web Order List"
                         // gcd_WebOrderMgt.WOS_GetWebOrderNotDefinedItemList(Rec); // MBS commented
                     end;
                 }
-                field("Warehouse Wate ID";"Warehouse Wate ID")
+                field("Warehouse Wate ID"; "Warehouse Wate ID")
                 {
                 }
-                field("Shipping Web Service Code";"Shipping Web Service Code")
+                field("Shipping Web Service Code"; "Shipping Web Service Code")
                 {
                     Editable = false;
                 }
-                field("Shipping Web Service Order No.";"Shipping Web Service Order No.")
+                field("Shipping Web Service Order No."; "Shipping Web Service Order No.")
                 {
                     Caption = 'Web Shipping Order No.';
                     Editable = false;
                 }
-                field("Ship-From Warehouse ID";"Ship-From Warehouse ID")
+                field("Ship-From Warehouse ID"; "Ship-From Warehouse ID")
                 {
                 }
-                field("Carier Tracking Number";"Carier Tracking Number")
+                field("Carier Tracking Number"; "Carier Tracking Number")
                 {
                 }
-                field("Carier Shipping Charge";"Carier Shipping Charge")
-                {
-                    Visible = false;
-                }
-                field("Carier Insurance Cost";"Carier Insurance Cost")
+                field("Carier Shipping Charge"; "Carier Shipping Charge")
                 {
                     Visible = false;
                 }
-                field("Labels Created";"Labels Created")
-                {
-                }
-                field("Labels Printed";"Labels Printed")
-                {
-                }
-                field("Packing List Created";"Packing List Created")
-                {
-                }
-                field("Packing List Printed";"Packing List Printed")
-                {
-                }
-                field("Shipping Advice";"Shipping Advice")
-                {
-                }
-                field("Invoice Advice";"Invoice Advice")
-                {
-                }
-                field("Shipment Id";"Shipment Id")
-                {
-                }
-                field("Paid Amount";"Paid Amount")
-                {
-                }
-                field("Tax Amount";"Tax Amount")
-                {
-                }
-                field("Shipping Amount";"Shipping Amount")
-                {
-                }
-                field("Send Ship Confirmation";"Send Ship Confirmation")
+                field("Carier Insurance Cost"; "Carier Insurance Cost")
                 {
                     Visible = false;
                 }
-                field("Latest Ship Date";"Latest Ship Date")
+                field("Labels Created"; "Labels Created")
                 {
                 }
-                field("Ship Date";"Ship Date")
+                field("Labels Printed"; "Labels Printed")
                 {
                 }
-                field("Hold Until Date";"Hold Until Date")
+                field("Packing List Created"; "Packing List Created")
                 {
                 }
-                field("Order DateTime";"Order DateTime")
+                field("Packing List Printed"; "Packing List Printed")
                 {
                 }
-                field("Created DateTime";"Created DateTime")
+                field("Shipping Advice"; "Shipping Advice")
                 {
                 }
-                field("Modify DateTime";"Modify DateTime")
+                field("Invoice Advice"; "Invoice Advice")
                 {
                 }
-                field("Payment DateTime";"Payment DateTime")
+                field("Shipment Id"; "Shipment Id")
                 {
                 }
-                field("Ship-To Address Verified";"Ship-To Address Verified")
+                field("Paid Amount"; "Paid Amount")
                 {
                 }
-                field("Ship-To Customer Name";"Ship-To Customer Name")
+                field("Tax Amount"; "Tax Amount")
                 {
                 }
-                field("Ship-To Company";"Ship-To Company")
+                field("Shipping Amount"; "Shipping Amount")
                 {
                 }
-                field("Ship-To Customer Zip";"Ship-To Customer Zip")
+                field("Send Ship Confirmation"; "Send Ship Confirmation")
+                {
+                    Visible = false;
+                }
+                field("Latest Ship Date"; "Latest Ship Date")
                 {
                 }
-                field("Ship-To Customer Country";"Ship-To Customer Country")
+                field("Ship Date"; "Ship Date")
                 {
                 }
-                field("Ship-To Customer State";"Ship-To Customer State")
+                field("Hold Until Date"; "Hold Until Date")
                 {
                 }
-                field("Ship-To Customer City";"Ship-To Customer City")
+                field("Order DateTime"; "Order DateTime")
                 {
                 }
-                field("Ship-To Customer Address 1";"Ship-To Customer Address 1")
+                field("Created DateTime"; "Created DateTime")
                 {
                 }
-                field("Ship-To Customer Address 2";"Ship-To Customer Address 2")
+                field("Modify DateTime"; "Modify DateTime")
                 {
                 }
-                field("Ship-To Customer Phone";"Ship-To Customer Phone")
+                field("Payment DateTime"; "Payment DateTime")
                 {
                 }
-                field("""Shipping Agent Label"".HASVALUE";"Shipping Agent Label".HasValue)
+                field("Ship-To Address Verified"; "Ship-To Address Verified")
+                {
+                }
+                field("Ship-To Customer Name"; "Ship-To Customer Name")
+                {
+                }
+                field("Ship-To Company"; "Ship-To Company")
+                {
+                }
+                field("Ship-To Customer Zip"; "Ship-To Customer Zip")
+                {
+                }
+                field("Ship-To Customer Country"; "Ship-To Customer Country")
+                {
+                }
+                field("Ship-To Customer State"; "Ship-To Customer State")
+                {
+                }
+                field("Ship-To Customer City"; "Ship-To Customer City")
+                {
+                }
+                field("Ship-To Customer Address 1"; "Ship-To Customer Address 1")
+                {
+                }
+                field("Ship-To Customer Address 2"; "Ship-To Customer Address 2")
+                {
+                }
+                field("Ship-To Customer Phone"; "Ship-To Customer Phone")
+                {
+                }
+                field("""Shipping Agent Label"".HASVALUE"; "Shipping Agent Label".HasValue)
                 {
                     Caption = 'Label Imported';
                     Editable = false;
                 }
-                field("Web Service Customer ID";"Web Service Customer ID")
+                field("Web Service Customer ID"; "Web Service Customer ID")
                 {
                 }
-                field("Web Service Customer ID2";"Web Service Customer ID2")
+                field("Web Service Customer ID2"; "Web Service Customer ID2")
                 {
                 }
-                field("First SKU";gc_FirstSKU)
+                field("First SKU"; gc_FirstSKU)
                 {
                 }
-                field("Shipping Service Criterion";"Shipping Service Criterion")
+                field("Shipping Service Criterion"; "Shipping Service Criterion")
                 {
 
                     trigger OnDrillDown()
@@ -237,31 +236,31 @@ page 37075202 "AJ Web Order List"
                         //vadimb 03/06/2018 <
                     end;
                 }
-                field("Shipping Carrier Code";"Shipping Carrier Code")
+                field("Shipping Carrier Code"; "Shipping Carrier Code")
                 {
                 }
-                field("Shipping Carrier Service";"Shipping Carrier Service")
+                field("Shipping Carrier Service"; "Shipping Carrier Service")
                 {
                 }
-                field("Cancel Reason";"Cancel Reason")
+                field("Cancel Reason"; "Cancel Reason")
                 {
                 }
-                field("Authorized Amount";"Authorized Amount")
+                field("Authorized Amount"; "Authorized Amount")
                 {
                 }
-                field("Captured Amount";"Captured Amount")
+                field("Captured Amount"; "Captured Amount")
                 {
                 }
-                field("Payment Id";"Payment Id")
+                field("Payment Id"; "Payment Id")
                 {
                 }
-                field("Payment Gateway";"Payment Gateway")
+                field("Payment Gateway"; "Payment Gateway")
                 {
                 }
-                field("Card Type";"Card Type")
+                field("Card Type"; "Card Type")
                 {
                 }
-                field("Payment Method";"Payment Method")
+                field("Payment Method"; "Payment Method")
                 {
                 }
             }
@@ -307,28 +306,19 @@ page 37075202 "AJ Web Order List"
         //kvb 1035097 1/11/17 ->
         lr_WOL.SetRange("Web Order No.", "Web Order No.");
         if lr_WOL.FindFirst
-          then gc_FirstSKU := lr_WOL.SKU
-          else gc_FirstSKU := '';
+          then
+            gc_FirstSKU := lr_WOL.SKU
+        else
+            gc_FirstSKU := '';
         //kvb 1035097 1/11/17 <-
 
 
-        SalesInvoiceHeader.SetRange("Web Order No.","Web Order No.");
+        SalesInvoiceHeader.SetRange("Web Order No.", "Web Order No.");
     end;
 
     trigger OnDeleteRecord(): Boolean
     begin
         exit(false);
-    end;
-
-    trigger OnOpenPage()
-    var
-        AJWebService: Record "AJ Web Service";
-    begin
-
-        if GetFilter("Web Service Code") <> '' then begin
-          AJWebService.Get( GetRangeMax("Web Service Code") );
-          vAmazonPrime := AJWebService."Web Service Type" = AJWebService."Web Service Type"::"7";
-        end;
     end;
 
     var
@@ -342,7 +332,7 @@ page 37075202 "AJ Web Order List"
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesFilter: Text;
 
-    local procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header";GetLabelLocal: Boolean)
+    local procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
     var
         AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;
@@ -358,23 +348,23 @@ page 37075202 "AJ Web Order List"
         NotAmazonShipping: Boolean;
     begin
         SalesHeader.Reset;
-        SalesHeader.SetRange("Document Type",SalesHeader."Document Type"::Order);
-        SalesHeader.SetRange("Web Order No.",AJWebOrderHeader."Web Order No.");
+        SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
+        SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
         if not SalesHeader.FindFirst then
-          Clear(SalesHeader);
+            Clear(SalesHeader);
 
         WebService.Get(AJWebOrderHeader."Web Service Code");
 
         if SalesHeader."No." <> '' then begin
-          SalesHeader.TestField(Status,SalesHeader.Status::Open);
-          Customer.Get(SalesHeader."Sell-to Customer No.");
-          Customer.TestField(Blocked,Customer.Blocked::" ");
+            SalesHeader.TestField(Status, SalesHeader.Status::Open);
+            Customer.Get(SalesHeader."Sell-to Customer No.");
+            Customer.TestField(Blocked, Customer.Blocked::" ");
         end;
 
         if SalesHeader."No." = '' then begin
-          SalesInvoiceHeader.SetRange("Web Order No.",AJWebOrderHeader."Web Order No.");
-          if not SalesInvoiceHeader.FindFirst then
-            Clear(SalesInvoiceHeader);
+            SalesInvoiceHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
+            if not SalesInvoiceHeader.FindFirst then
+                Clear(SalesInvoiceHeader);
         end;
 
         AJWebOrderHeader.TestField("Shipping Web Service Code");
@@ -385,163 +375,82 @@ page 37075202 "AJ Web Order List"
 
         // update web order
         if (SalesHeader."No." <> '') and (AJWebOrderHeader."Created From Sales Order") then
-          AJWebOrderServiceMgmt.WOS_CreateWebOrderFromSalesOrder(SalesHeader,AJWebOrderHeader);
+            AJWebOrderServiceMgmt.WOS_CreateWebOrderFromSalesOrder(SalesHeader, AJWebOrderHeader);
 
         AJWebOrderHeader.CalcFields(Packages);
         if AJWebOrderHeader.Packages then begin
-          if Confirm('There are Packages for Web Order %1. Do you want to create labels for packages?',true,AJWebOrderHeader."Web Order No.") then begin
+            if Confirm('There are Packages for Web Order %1. Do you want to create labels for packages?', true, AJWebOrderHeader."Web Order No.") then begin
 
-            Cnt := 0;
-            Wnd.Open('Requesting shipping label #1##...');
+                Cnt := 0;
+                Wnd.Open('Requesting shipping label #1##...');
 
-            AJWebPackage.Reset;
-            AJWebPackage.SetCurrentKey("Source Type","Source No.");
-            AJWebPackage.SetRange("Source Type",DATABASE::"AJ Web Order Header");
-            AJWebPackage.SetRange("Source No.",AJWebOrderHeader."Web Order No.");
-            if AJWebPackage.FindFirst then repeat
-              Cnt += 1;
-              Wnd.Update(1,Cnt);
-
-              if GetLabelLocal then begin
-                if AJWebPackage."Label Created" then begin
-                  if Confirm('Label for package %1 already created! Cancel it and create new one?',true,AJWebPackage."No.") then begin
-                    AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
-                    Commit;
-                  end;
-                end;
-
-                if not AJWebPackage."Label Created" then begin
-                  AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
-                  Commit;
-                end;
-              end;
-
-            until AJWebPackage.Next = 0;
-
-            Wnd.Close;
-
-            if SalesHeader."No." <> '' then begin
-              SalesHeader.Find;
-              if SalesHeader."Shipping & Handling Amount" <> 0 then begin
-                if WebService."Web Service Type" = WebService."Web Service Type"::"7" then begin
-                  ShippingAmount := 0;
-                  WebOrdLine.SetRange(WebOrdLine."Web Order No.", "Web Order No.");
-                  if WebOrdLine.FindFirst then
+                AJWebPackage.Reset;
+                AJWebPackage.SetCurrentKey("Source Type", "Source No.");
+                AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
+                AJWebPackage.SetRange("Source No.", AJWebOrderHeader."Web Order No.");
+                if AJWebPackage.FindFirst then
                     repeat
-                      ShippingAmount += WebOrdLine."Shipping Amount";
-                    until WebOrdLine.Next=0;
-                    SalesHeader."Shipping & Handling Amount" := ShippingAmount;
-                    SalesHeader.Modify;
-                end;
-              end;
-             // AJSalesMgt.On_SalesReleased(SalesHeader); // Insert G/L lines
-            end else if SalesInvoiceHeader."No." <> '' then begin
-              SalesInvoiceLine.Reset;
-              SalesInvoiceLine.SetRange("Document No.",SalesInvoiceHeader."No.");
-              SalesInvoiceLine.SetRange(Type,SalesInvoiceLine.Type::"G/L Account");
-              //SalesInvoiceLine.SETRANGE("Web Line Type",SalesInvoiceLine."Web Line Type"::"1"); //MBS commented
-              if SalesInvoiceLine.FindFirst then begin
-                if WebService."Web Service Type" = WebService."Web Service Type"::"7" then begin
-                  ShippingAmount := 0;
-                  WebOrdLine.SetRange(WebOrdLine."Web Order No.", "Web Order No.");
-                  if WebOrdLine.FindFirst then
-                    repeat
-                      ShippingAmount += WebOrdLine."Shipping Amount";
-                    until WebOrdLine.Next=0;
-                    //mbs commented >>
-        //          IF SalesInvoiceLine."Unit Price" <> ShippingAmount THEN BEGIN
-        //            SalesInvoiceLine.VALIDATE("New Unit Price",ShippingAmount);
-        //            IF ShippingAmount = 0 THEN
-        //              SalesInvoiceLine."Cancel Charge" := TRUE;
-        //            SalesInvoiceLine.MODIFY;
-        //            MESSAGE('Please post correction! Posted invoice %1',SalesInvoiceHeader."No.");
-        //          END;
-                    //mbs commented <<
-                end
-                else begin
-                  AJWebOrderHeader.CalcFields("Packages Ship. & Hand. Amount");
-                  //mbs commented >>
-        //          IF SalesInvoiceLine."Unit Price" <> AJWebOrderHeader."Packages Ship. & Hand. Amount" THEN BEGIN
-        //            SalesInvoiceLine.VALIDATE("New Unit Price",AJWebOrderHeader."Packages Ship. & Hand. Amount");
-        //            SalesInvoiceLine.MODIFY;
-        //            MESSAGE('Please post correction! Posted invoice %1',SalesInvoiceHeader."No.");
-        //          END;
-                  //mbs commented <<
-                end;
-              end;
-            end;
+                        Cnt += 1;
+                        Wnd.Update(1, Cnt);
 
-            exit;
-          end else
-            Error('Cancelled.');
+                        if GetLabelLocal then begin
+                            if AJWebPackage."Label Created" then begin
+                                if Confirm('Label for package %1 already created! Cancel it and create new one?', true, AJWebPackage."No.") then begin
+                                    AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
+                                    Commit;
+                                end;
+                            end;
+
+                            if not AJWebPackage."Label Created" then begin
+                                AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
+                                Commit;
+                            end;
+                        end;
+
+                    until AJWebPackage.Next = 0;
+
+                Wnd.Close;
+
+                exit;
+            end else
+                Error('Cancelled.');
         end;
 
         if GetLabelLocal then begin
-          if AJWebOrderHeader."Labels Created" then
-            if Confirm('Label already exists! Do you want to cancel it and create new one?') then begin
-              Wnd.Open('Cancelling shipping label...');
-              // AJWebOrderServiceMgmt.WOS_CancelOrderLabel(AJWebOrderHeader); // MBS commented
+            if AJWebOrderHeader."Labels Created" then
+                if Confirm('Label already exists! Do you want to cancel it and create new one?') then begin
+                    Wnd.Open('Cancelling shipping label...');
+                    // AJWebOrderServiceMgmt.WOS_CancelOrderLabel(AJWebOrderHeader); // MBS commented
 
-              if (SalesHeader."No." <> '') then begin // 8/17/2017
-                SalesHeader."Shipping & Handling Amount" := 0; // MBS commented
-                SalesHeader."Package Tracking No." := '';
-                SalesHeader.Modify;
-                Commit;
-              end;
-              Wnd.Close;
-            end else
-              Error('Operation was cancelled');
+                    if (SalesHeader."No." <> '') then begin // 8/17/2017
+                        SalesHeader."Shipping & Handling Amount" := 0; // MBS commented
+                        SalesHeader."Package Tracking No." := '';
+                        SalesHeader.Modify;
+                        Commit;
+                    end;
+                    Wnd.Close;
+                end else
+                    Error('Operation was cancelled');
 
-          Wnd.Open('Requesting shipping label...');
-          AJWebOrderServiceMgmt.WOS_GetOrderLabel(AJWebOrderHeader);
-          Wnd.Close;
+            Wnd.Open('Requesting shipping label...');
+            AJWebOrderServiceMgmt.WOS_GetOrderLabel(AJWebOrderHeader);
+            Wnd.Close;
         end;
 
         if SalesHeader."No." <> '' then begin
-          SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
-          SalesHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
-          SalesHeader.Validate("Posting Date",WorkDate);
-          SalesHeader.Modify(true);
-          //AJSalesMgt.On_SalesReleased(SalesHeader); // Insert G/L lines
-          Commit;
+            SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
+            SalesHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
+            SalesHeader.Validate("Posting Date", WorkDate);
+            SalesHeader.Modify(true);
+            //AJSalesMgt.On_SalesReleased(SalesHeader); // Insert G/L lines
+            Commit;
         end;
-          SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
+        SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
 
         if SalesInvoiceHeader."No." <> '' then begin
-          //SalesInvoiceHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount"; // MBS commented
-          SalesInvoiceHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
-          SalesInvoiceHeader.Modify;
-
-          SalesInvoiceLine.Reset;
-          SalesInvoiceLine.SetRange("Document No.",SalesInvoiceHeader."No.");
-          SalesInvoiceLine.SetRange(Type,SalesInvoiceLine.Type::"G/L Account");
-          //SalesInvoiceLine.SETRANGE("Web Line Type",SalesInvoiceLine."Web Line Type"::"1"); // mbs commented
-          if SalesInvoiceLine.FindFirst then begin
-            if WebService."Web Service Type" = WebService."Web Service Type"::"7" then begin
-              ShippingAmount := 0;
-              WebOrdLine.SetRange(WebOrdLine."Web Order No.", "Web Order No.");
-              if WebOrdLine.FindFirst then
-                repeat
-                  ShippingAmount += WebOrdLine."Shipping Amount";
-                until WebOrdLine.Next=0;
-                // MBS Commented >>
-        //      IF SalesInvoiceLine."Unit Price" <> ShippingAmount THEN BEGIN
-        //        SalesInvoiceLine.VALIDATE("New Unit Price",ShippingAmount);
-        //        IF ShippingAmount = 0 THEN
-        //          SalesInvoiceLine."Cancel Charge" := TRUE;
-        //        SalesInvoiceLine.MODIFY;
-        //        MESSAGE('Please post correction! Posted invoice %1',SalesInvoiceHeader."No.");
-        //      END;
-                // MBS Commented <<
-            end
-            else begin
-        //      IF SalesInvoiceLine."Unit Price" <> AJWebOrderHeader."Shipping & Handling Amount" THEN BEGIN
-        //        SalesInvoiceLine.VALIDATE("New Unit Price",AJWebOrderHeader."Shipping & Handling Amount");
-        //        SalesInvoiceLine.MODIFY;
-        //        MESSAGE('Please post correction! Posted invoice %1',SalesInvoiceHeader."No.");
-        //      END;
-            end;
-          end;
+            //SalesInvoiceHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount"; // MBS commented
+            SalesInvoiceHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
+            SalesInvoiceHeader.Modify;
         end;
     end;
 
@@ -556,17 +465,19 @@ page 37075202 "AJ Web Order List"
     begin
         Wnd.Open('Checking Acknowledgement status');
 
-        if AJWebOrderHeader.FindFirst then repeat
-          AJWebOrderHeader.TestField("Acknowlegement Sent",true);
-        until AJWebOrderHeader.Next = 0;
+        if AJWebOrderHeader.FindFirst then
+            repeat
+                AJWebOrderHeader.TestField("Acknowlegement Sent", true);
+            until AJWebOrderHeader.Next = 0;
 
         Wnd.Close;
         Wnd.Open('Requesting Shipping Labels');
 
-        if AJWebOrderHeader.FindFirst then repeat
-          GetShipLabels(AJWebOrderHeader, true);
-          Commit;
-        until AJWebOrderHeader.Next = 0;
+        if AJWebOrderHeader.FindFirst then
+            repeat
+                GetShipLabels(AJWebOrderHeader, true);
+                Commit;
+            until AJWebOrderHeader.Next = 0;
 
         Wnd.Close;
     end;
