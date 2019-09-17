@@ -103,6 +103,7 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
           AJWebOrderService."Web Service Type"::ShipStation: ShipStation_GetWarehouses(AJWebOrderService);
           else
             Error('Web Service Type %1 does not support Warehouses.')
+            // Test from new comp
         end;
     end;
 
