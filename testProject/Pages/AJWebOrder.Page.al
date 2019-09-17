@@ -713,8 +713,7 @@ page 37075204 "AJ Web Order"
     begin
         if not AJWebService.Get("Web Service Code") then
           AJWebService.Init;
-        vAmazonPrime := AJWebService."Web Service Type" = AJWebService."Web Service Type"::"7";
-
+        
         PageUnlockTracking(false);
     end;
 
