@@ -10,5 +10,6 @@ pageextension 50200 CustomerListExt extends "Customer List"
         Message('Boris TEST');
         // my test text
         // second test MBS
+        //hello world
     end;
 }
