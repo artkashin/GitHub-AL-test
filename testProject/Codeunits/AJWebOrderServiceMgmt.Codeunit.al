@@ -307,15 +307,15 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         XMLDoc: DotNet XmlDocument;
         StreamReader: DotNet StreamReader;
         Encoding: DotNet Encoding;
-        Txt: Text;
+        Txt: Text; 
         XmlNode: DotNet XmlNode;
-        ErrorText: Text;
+        ErrorText: Text ; 
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject:  JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         StreamWriter: DotNet StreamWriter;
     begin
         AJWebOrderService.TestField("API Endpoint Domain");
@@ -461,10 +461,10 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
     begin
         AJWebOrderService.TestField("API Endpoint Domain");
         AJWebOrderService.TestField("API Encoded String");
@@ -526,11 +526,11 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
-        JObject2: DotNet JObject;
+        ValueJToken: JsonToken;
+        JObject2: JsonObject;
     begin
         AJWebOrderService.TestField("API Endpoint Domain");
         AJWebOrderService.TestField("API Encoded String");
@@ -647,12 +647,12 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         AJWebOrderService: Record "AJ Web Service";
-        AddJObject: DotNet JObject;
+        AddJObject: JsonObject;
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
@@ -929,12 +929,12 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         AJWebOrderService: Record "AJ Web Service";
-        AddJObject: DotNet JObject;
+        AddJObject: JsonObject;
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
@@ -1201,8 +1201,8 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         StreamWriter: DotNet StreamWriter;
         Uri: DotNet Uri;
         Txt: Text;
-        JObject: DotNet JObject;
-        ValueJToken: DotNet JToken;
+        JObject: JsonObject;
+        ValueJToken: JsonToken;
     begin
 
         if not AJWebPackage."Label Created" then
@@ -1367,12 +1367,12 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         AJWebOrderService: Record "AJ Web Service";
-        AddJObject: DotNet JObject;
+        AddJObject: JsonObject;
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
@@ -1543,12 +1543,12 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         ErrorText: Text;
         JArray: DotNet JArray;
         JConvert: DotNet JsonConvert;
-        JToken: DotNet JToken;
-        JObject: DotNet JObject;
+        JToken: JsonToken;
+        JObject: JsonObject;
         i: Integer;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         AJWebOrderService: Record "AJ Web Service";
-        AddJObject: DotNet JObject;
+        AddJObject: JsonObject;
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
@@ -1928,9 +1928,9 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
     end;
 
     [Scope('Internal')]
-    procedure JSONAddTxt(var JObject: DotNet JObject;PropertyName: Text;PropertyValue: Text)
+    procedure JSONAddTxt(var JObject: JsonObject;PropertyName: Text;PropertyValue: Text)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
         SystemWebHttpUtility: DotNet HttpUtility;
     begin
 
@@ -1944,42 +1944,42 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
     end;
 
     [Scope('Internal')]
-    procedure JSONAddDec(var JObject: DotNet JObject;PropertyName: Text;PropertyValue: Decimal)
+    procedure JSONAddDec(var JObject: JsonObject;PropertyName: Text;PropertyValue: Decimal)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
 
         JObject.Add(PropertyName,JToken.Parse(Format(PropertyValue,20,'<Sign><Integer><Decimals>')));
     end;
 
     [Scope('Internal')]
-    procedure JSONAddBigInt(var JObject: DotNet JObject;PropertyName: Text;PropertyValue: BigInteger)
+    procedure JSONAddBigInt(var JObject: JsonObject;PropertyName: Text;PropertyValue: BigInteger)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         JObject.Add(PropertyName,JToken.Parse(Format(PropertyValue)));
     end;
 
     [Scope('Internal')]
-    procedure JSONAddObject(var JObject: DotNet JObject;PropertyName: Text;AddJObject: DotNet JObject)
+    procedure JSONAddObject(var JObject: JsonObject;PropertyName: Text;AddJObject: JsonObject)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         JObject.Add(PropertyName,JToken.Parse(AddJObject.ToString()));
     end;
 
     [Scope('Internal')]
-    procedure JSONAddNULL(var JObject: DotNet JObject;PropertyName: Text)
+    procedure JSONAddNULL(var JObject: JsonObject;PropertyName: Text)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         JObject.Add(PropertyName,JToken.Parse('null'));
     end;
 
     [Scope('Internal')]
-    procedure JSONAddBool(var JObject: DotNet JObject;PropertyName: Text;PropertyValue: Boolean)
+    procedure JSONAddBool(var JObject: JsonObject;PropertyName: Text;PropertyValue: Boolean)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         if PropertyValue then
           JObject.Add(PropertyName,JToken.Parse('true'))
@@ -1988,9 +1988,9 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
     end;
 
     [Scope('Internal')]
-    procedure JSONAddTxtasDec(var JObject: DotNet JObject;PropertyName: Text;PropertyValue: Text)
+    procedure JSONAddTxtasDec(var JObject: JsonObject;PropertyName: Text;PropertyValue: Text)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         if PropertyValue = '' then
           JObject.Add(PropertyName,JToken.Parse('null'))
@@ -1999,9 +1999,9 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
     end;
 
     [Scope('Internal')]
-    procedure JSONGetTxt(var JObject: DotNet JObject;PropertyName: Text;MaxLen: Integer): Text
+    procedure JSONGetTxt(var JObject: JsonObject;PropertyName: Text;MaxLen: Integer): Text
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         if JObject.TryGetValue(PropertyName,JToken) then
           if MaxLen = 0 then
@@ -2011,35 +2011,35 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
     end;
 
     [Scope('Internal')]
-    procedure JSONGetDec(var JObject: DotNet JObject;PropertyName: Text) RetValue: Decimal
+    procedure JSONGetDec(var JObject: JsonObject;PropertyName: Text) RetValue: Decimal
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         if JObject.TryGetValue(PropertyName,JToken) then
           if Evaluate(RetValue,JToken.ToString) then;
     end;
 
     [Scope('Internal')]
-    procedure JSONGetBool(var JObject: DotNet JObject;PropertyName: Text) RetValue: Boolean
+    procedure JSONGetBool(var JObject: JsonObject;PropertyName: Text) RetValue: Boolean
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         if JObject.TryGetValue(PropertyName,JToken) then
           if Evaluate(RetValue,JToken.ToString) then;
     end;
 
     [Scope('Internal')]
-    procedure JSONAddToArray(var JArray: DotNet JArray;AddJObject: DotNet JObject)
+    procedure JSONAddToArray(var JArray: DotNet JArray;AddJObject: JsonObject)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         JArray.Add(JToken.Parse(AddJObject.ToString()));
     end;
 
     [Scope('Internal')]
-    procedure JSONAddArray(var JObject: DotNet JObject;PropertyName: Text;var JArray: DotNet JArray)
+    procedure JSONAddArray(var JObject: JsonObject;PropertyName: Text;var JArray: DotNet JArray)
     var
-        JToken: DotNet JToken;
+        JToken: JsonToken;
     begin
         JObject.Add(PropertyName,JToken.Parse(JArray.ToString()));
     end;

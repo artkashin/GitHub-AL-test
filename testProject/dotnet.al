@@ -53,14 +53,6 @@ dotnet
         Culture = 'neutral';
         PublicKeyToken = 'b77a5c561934e089';
 
-        type("System.Uri"; "Uri")
-        {
-        }
-
-        type("System.Net.HttpWebRequest"; "HttpWebRequest")
-        {
-        }
-
         type("System.Net.WebHeaderCollection"; "WebHeaderCollection")
         {
         }
