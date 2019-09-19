@@ -7,14 +7,14 @@ codeunit 37075095 "AJ Web Order Service Mgmt"
         AJWebOrderService: Record "AJ Web Service";
         Uri: DotNet Uri;
         HttpWebRequest: DotNet HttpWebRequest;
-        AddJObject: DotNet JObject;
+        AddJObject: JsonObject;
         HttpWebHeaders: DotNet WebHeaderCollection;
-        JObject: DotNet JObject;
+        JObject: JsonObject;
         SystemTextUTF8Encoding: DotNet UTF8Encoding;
         Encoding: DotNet Encoding;
         MemoryStream: DotNet MemoryStream;
         StreamWriter: DotNet StreamWriter;
-        ValueJToken: DotNet JToken;
+        ValueJToken: JsonToken;
         Txt: Text;
     begin
     end;
