@@ -303,17 +303,12 @@ page 37075202 "AJ Web Order List"
     var
         lr_WOL: Record "AJ Web Order Line";
     begin
-        //kvb 1035097 1/11/17 ->
         lr_WOL.SetRange("Web Order No.", "Web Order No.");
         if lr_WOL.FindFirst
           then
             gc_FirstSKU := lr_WOL.SKU
         else
             gc_FirstSKU := '';
-        //kvb 1035097 1/11/17 <-
-
-
-        SalesInvoiceHeader.SetRange("Web Order No.", "Web Order No.");
     end;
 
     trigger OnDeleteRecord(): Boolean
@@ -326,7 +321,7 @@ page 37075202 "AJ Web Order List"
         Text002: Label 'Operation cancelled by user.';
         Text003: Label 'NAV orders not found.';
         Text004: Label 'Access Denied.';
-        gcd_WebOrderMgt: Codeunit "AJ Web Order Service Mgmt";
+        //gcd_WebOrderMgt: Codeunit "AJ Web Order Service Mgmt";
         gc_FirstSKU: Code[30];
         vAmazonPrime: Boolean;
         SalesInvoiceHeader: Record "Sales Invoice Header";
@@ -334,7 +329,7 @@ page 37075202 "AJ Web Order List"
 
     local procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
     var
-        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;
         Customer: Record Customer;
         AJWebPackage: Record "AJ Web Package";
@@ -374,8 +369,8 @@ page 37075202 "AJ Web Order List"
         AJWebOrderHeader.TestField("Shipping Package Type");
 
         // update web order
-        if (SalesHeader."No." <> '') and (AJWebOrderHeader."Created From Sales Order") then
-            AJWebOrderServiceMgmt.WOS_CreateWebOrderFromSalesOrder(SalesHeader, AJWebOrderHeader);
+        //if (SalesHeader."No." <> '') and (AJWebOrderHeader."Created From Sales Order") then
+        //AJWebOrderServiceMgmt.WOS_CreateWebOrderFromSalesOrder(SalesHeader, AJWebOrderHeader);
 
         AJWebOrderHeader.CalcFields(Packages);
         if AJWebOrderHeader.Packages then begin
@@ -396,13 +391,13 @@ page 37075202 "AJ Web Order List"
                         if GetLabelLocal then begin
                             if AJWebPackage."Label Created" then begin
                                 if Confirm('Label for package %1 already created! Cancel it and create new one?', true, AJWebPackage."No.") then begin
-                                    AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
+                                    // AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
                                     Commit;
                                 end;
                             end;
 
                             if not AJWebPackage."Label Created" then begin
-                                AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
+                                // AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
                                 Commit;
                             end;
                         end;
@@ -420,10 +415,7 @@ page 37075202 "AJ Web Order List"
             if AJWebOrderHeader."Labels Created" then
                 if Confirm('Label already exists! Do you want to cancel it and create new one?') then begin
                     Wnd.Open('Cancelling shipping label...');
-                    // AJWebOrderServiceMgmt.WOS_CancelOrderLabel(AJWebOrderHeader); // MBS commented
-
-                    if (SalesHeader."No." <> '') then begin // 8/17/2017
-                        SalesHeader."Shipping & Handling Amount" := 0; // MBS commented
+                    if (SalesHeader."No." <> '') then begin
                         SalesHeader."Package Tracking No." := '';
                         SalesHeader.Modify;
                         Commit;
@@ -433,19 +425,17 @@ page 37075202 "AJ Web Order List"
                     Error('Operation was cancelled');
 
             Wnd.Open('Requesting shipping label...');
-            AJWebOrderServiceMgmt.WOS_GetOrderLabel(AJWebOrderHeader);
+            //AJWebOrderServiceMgmt.WOS_GetOrderLabel(AJWebOrderHeader);
             Wnd.Close;
         end;
 
         if SalesHeader."No." <> '' then begin
-            SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
             SalesHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
             SalesHeader.Validate("Posting Date", WorkDate);
             SalesHeader.Modify(true);
             //AJSalesMgt.On_SalesReleased(SalesHeader); // Insert G/L lines
             Commit;
         end;
-        SalesHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount";
 
         if SalesInvoiceHeader."No." <> '' then begin
             //SalesInvoiceHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount"; // MBS commented
@@ -457,7 +447,7 @@ page 37075202 "AJ Web Order List"
     [Scope('Internal')]
     procedure GetShippingLabel(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;
         AJWebOrderService: Record "AJ Web Service";
         ActionType: Option "Order Header","Order Line","Eligible Shipping service","Create Shipment","Cancel Shipment",Status,"Label Again","Order Acknowelege Feed","Feed Submission Result","Feed Submission List","Order fulfillment feed","Order Adjustments feed";
