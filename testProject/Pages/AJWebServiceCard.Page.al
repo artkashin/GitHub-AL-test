@@ -110,9 +110,9 @@ page 37075208 "AJ Web Service Card"
 
                     trigger OnAction()
                     var
-                        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                    //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                     begin
-                        AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
+                        //AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
                     end;
                 }
                 action("Load Carriers")
@@ -123,9 +123,9 @@ page 37075208 "AJ Web Service Card"
 
                     trigger OnAction()
                     var
-                        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                    // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                     begin
-                        AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
+                        //AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
                     end;
                 }
             }
@@ -240,7 +240,7 @@ page 37075208 "AJ Web Service Card"
     }
 
     var
-        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         AJWebService: Record "AJ Web Service";
 }
 

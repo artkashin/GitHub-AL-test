@@ -10,22 +10,22 @@ page 37075199 "AJ Web Marketplaces"
         {
             repeater(Group)
             {
-                field("Web Service Code";"Web Service Code")
+                field("Web Service Code"; "Web Service Code")
                 {
                 }
-                field("Code";Code)
+                field("Code"; Code)
                 {
                 }
-                field(Description;Description)
+                field(Description; Description)
                 {
                 }
-                field("Marketplace Option";"Marketplace Option")
+                field("Marketplace Option"; "Marketplace Option")
                 {
                 }
-                field("Item ID Type";"Item ID Type")
+                field("Item ID Type"; "Item ID Type")
                 {
                 }
-                field("Table ID";"Table ID")
+                field("Table ID"; "Table ID")
                 {
                 }
             }
@@ -64,8 +64,8 @@ page 37075199 "AJ Web Marketplaces"
                     MarketplaceL: Record "AJ Web Marketplace (Mailbox)";
                 begin
                     if Confirm('Do you wont delete line?') then begin
-                      MarketplaceL := Rec;
-                      MarketplaceL.Delete;
+                        MarketplaceL := Rec;
+                        MarketplaceL.Delete;
                     end;
                 end;
             }
@@ -73,6 +73,6 @@ page 37075199 "AJ Web Marketplaces"
     }
 
     var
-        AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+    //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
 }
 

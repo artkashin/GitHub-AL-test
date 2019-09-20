@@ -80,7 +80,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                             //AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
                         end;
@@ -93,7 +93,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                             //AJWebOrderServiceMgmt.WOS_GetWarehouses(Rec);
                         end;
@@ -106,7 +106,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                             //AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
                         end;
@@ -174,7 +174,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                             //AJWebOrderServiceMgmt.WOS_CheckConnection(Rec);
                         end;
@@ -189,7 +189,7 @@ page 37075197 "AJ Web Services"
                         trigger OnAction()
                         var
                             AJWebService: Record "AJ Web Service";
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                             // IF NOT CONFIRM('Get Web Orders?') THEN
                             //  ERROR('Cancelled');
@@ -212,7 +212,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                         begin
                         end;
                     }
@@ -233,7 +233,7 @@ page 37075197 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                             AJWebOrderHeader: Record "AJ Web Order Header";
                         begin
                             // AJWebOrderHeader.SETRANGE("Web Service Code",Code);
