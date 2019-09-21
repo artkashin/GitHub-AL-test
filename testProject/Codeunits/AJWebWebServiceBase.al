@@ -30,7 +30,7 @@ codeunit 50101 "AJ Web Service Base"
             if Parameters.ContentType <> '' then begin
                 Content.GetHeaders(ContentHeaders);
                 ContentHeaders.Remove('Content-Type');
-                ContentHeaders.Add('Content-Type', 'application/json');
+                ContentHeaders.Add('Content-Type', Parameters.ContentType);
             end;
             RequestMessage.Content := Content;
         end;
