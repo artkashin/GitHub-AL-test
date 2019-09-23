@@ -6,6 +6,24 @@ codeunit 50105 "AJ Web Json Helper"
             Error('Could not find a token with key %1', TokenKey);
     end;
 
+    procedure GetJsonValueAsDec(var JObject: JsonObject; Property: Text) Value: Decimal
+    var
+        JValue: JsonValue;
+    begin
+        if not GetJsonValue(JObject, Property, JValue) then
+            exit;
+        Value := JValue.AsDecimal();
+    end;
+
+    procedure GetJsonValueAsBool(var JObject: JsonObject; Property: Text) Value: Boolean
+    var
+        JValue: JsonValue;
+    begin
+        if not GetJsonValue(JObject, Property, JValue) then
+            exit;
+        Value := JValue.AsBoolean();
+    end;
+
     procedure GetJsonValueAsText(var JObject: JsonObject; Property: Text) Value: text
     var
         JValue: JsonValue;
@@ -23,6 +41,11 @@ codeunit 50105 "AJ Web Json Helper"
             exit;
         JValue := JToken.AsValue();
         exit(true);
+    end;
+
+    procedure JSONAddArray(var JObject: JsonObject; PropertyName: Text; var JArray: JsonArray)
+    begin
+        JObject.Add(PropertyName, JArray.AsToken());
     end;
 
     procedure JSONAddDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Decimal)
