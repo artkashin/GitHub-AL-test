@@ -1,4 +1,4 @@
-page 37076044 "AJ Web Return Order Subform"
+page 37072320 "AJ Web Return Order Subform"
 {
     PageType = ListPart;
     SourceTable = "AJ Web Order Line";
@@ -9,22 +9,22 @@ page 37076044 "AJ Web Return Order Subform"
         {
             repeater(Group)
             {
-                field("Web Service SKU ID";"Web Service SKU ID")
+                field("Web Service SKU ID"; "Web Service SKU ID")
                 {
                 }
-                field(Name;Name)
+                field(Name; Name)
                 {
                 }
-                field(Quantity;Quantity)
+                field(Quantity; Quantity)
                 {
                     Caption = 'Return Quantity';
                     Editable = false;
                 }
-                field(Status;Status)
+                field(Status; Status)
                 {
                     Caption = 'Reason';
                 }
-                field("Custom Text 1";"Custom Text 1")
+                field("Custom Text 1"; "Custom Text 1")
                 {
                     Caption = 'Notes';
                 }

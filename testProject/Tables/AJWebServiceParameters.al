@@ -1,4 +1,4 @@
-table 50100 "AJ Web Service Parameters"
+table 37072312 "AJ Web Service Parameters"
 {
 
     fields
@@ -31,6 +31,15 @@ table 50100 "AJ Web Service Parameters"
     procedure SetRequestContent(var value: HttpContent)
     begin
         RequestContent := value;
+        RequestContentSet := true;
+    end;
+
+    procedure SetRequestContentasTxt(var txtvalue: Text)
+    var
+        HttpContent: HttpContent;
+    begin
+        HttpContent.WriteFrom(txtvalue);
+        RequestContent := HttpContent;
         RequestContentSet := true;
     end;
 

@@ -1,4 +1,4 @@
-codeunit 50105 "AJ Web Json Helper"
+codeunit 37072300 "AJ Web Json Helper"
 {
     procedure GetJsonToken(JObject: JsonObject; TokenKey: text) JToken: JsonToken;
     begin
@@ -46,6 +46,20 @@ codeunit 50105 "AJ Web Json Helper"
     procedure JSONAddArray(var JObject: JsonObject; PropertyName: Text; var JArray: JsonArray)
     begin
         JObject.Add(PropertyName, JArray.AsToken());
+    end;
+
+    procedure GetJsonObjFromArray(var JArray: JsonArray; i: Integer) JObject: JsonObject
+    var
+        JToken: JsonToken;
+    begin
+        JArray.Get(i - 1, JToken);
+        JObject := JToken.AsObject();
+    end;
+
+    procedure JsonReadArrayFrom(var JArray: JsonArray; Txt: Text)
+    begin
+        if not JArray.ReadFrom(Txt) then
+            Error('Bad response');
     end;
 
     procedure JSONAddDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Decimal)

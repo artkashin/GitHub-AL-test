@@ -1,4 +1,4 @@
-page 37075208 "AJ Web Service Card"
+page 37072303 "AJ Web Service Card"
 {
     DeleteAllowed = false;
     PageType = Card;

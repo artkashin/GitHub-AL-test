@@ -1,4 +1,4 @@
-codeunit 50101 "AJ Web Service Base"
+codeunit 37072301 "AJ Web Service Base"
 {
     procedure CallWebService(var Parameters: Record "AJ Web Service Parameters" temporary): Boolean
     var

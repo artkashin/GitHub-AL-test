@@ -1,4 +1,4 @@
-page 37075209 "AJ Web Services Setup"
+page 37072300 "AJ Web Services Setup"
 {
     PageType = Card;
     SourceTable = "AJ Web Setup";
@@ -10,19 +10,19 @@ page 37075209 "AJ Web Services Setup"
         {
             group(General)
             {
-                field("Web Order No. Series";"Web Order No. Series")
+                field("Web Order No. Series"; "Web Order No. Series")
                 {
                 }
-                field("Web Package No. Series";"Web Package No. Series")
+                field("Web Package No. Series"; "Web Package No. Series")
                 {
                 }
-                field("Tax G/L Account No.";"Tax G/L Account No.")
+                field("Tax G/L Account No."; "Tax G/L Account No.")
                 {
                 }
-                field(Version;Version)
+                field(Version; Version)
                 {
                 }
-                field("On Vacation Until";"On Vacation Until")
+                field("On Vacation Until"; "On Vacation Until")
                 {
                 }
             }

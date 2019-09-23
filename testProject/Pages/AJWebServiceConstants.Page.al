@@ -1,4 +1,4 @@
-page 37075212 "AJ Web Service Constants"
+page 37072301 "AJ Web Service Constants"
 {
     PageType = List;
     SourceTable = "AJ Web Service Constants";
@@ -9,19 +9,19 @@ page 37075212 "AJ Web Service Constants"
         {
             repeater(Group)
             {
-                field(Type;Type)
+                field(Type; Type)
                 {
                 }
-                field("Option Value";"Option Value")
+                field("Option Value"; "Option Value")
                 {
                 }
-                field("Second Value";"Second Value")
+                field("Second Value"; "Second Value")
                 {
                 }
-                field(Description;Description)
+                field(Description; Description)
                 {
                 }
-                field(Blocked;Blocked)
+                field(Blocked; Blocked)
                 {
                 }
             }

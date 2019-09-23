@@ -1,4 +1,4 @@
-page 37076137 "AJ Web Package Sub"
+page 37072314 "AJ Web Package Sub"
 {
     PageType = ListPart;
     SourceTable = "AJ Web Package Line";
@@ -9,13 +9,13 @@ page 37076137 "AJ Web Package Sub"
         {
             repeater(Group)
             {
-                field("Package No.";"Package No.")
+                field("Package No."; "Package No.")
                 {
                 }
-                field("Line No.";"Line No.")
+                field("Line No."; "Line No.")
                 {
                 }
-                field(Quantity;Quantity)
+                field(Quantity; Quantity)
                 {
                 }
             }

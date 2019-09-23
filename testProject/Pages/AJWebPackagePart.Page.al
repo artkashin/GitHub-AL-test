@@ -1,4 +1,4 @@
-page 37076138 "AJ Web Package Part"
+page 37072313 "AJ Web Package Part"
 {
     Caption = 'AJ Packages';
     CardPageID = "AJ Web Package";
