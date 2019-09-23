@@ -15,7 +15,6 @@ table 50100 "AJ Web Service Parameters"
         field(7; Password; text[50]) { }
         field(100; Blob; Blob) { }
     }
-
     keys
     {
         key(PK; PrimaryKey)
