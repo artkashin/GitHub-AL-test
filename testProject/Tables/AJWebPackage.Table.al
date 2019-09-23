@@ -1,4 +1,4 @@
-table 37076041 "AJ Web Package"
+table 37072309 "AJ Web Package"
 {
     DrillDownPageID = "AJ Web Packages";
     LookupPageID = "AJ Web Packages";

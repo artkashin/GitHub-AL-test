@@ -1,4 +1,4 @@
-page 37075206 "AJ Web Carier Package Types"
+page 37072306 "AJ Web Carier Package Types"
 {
     PageType = List;
     SourceTable = "AJ Web Carrier Package Type";
@@ -9,58 +9,58 @@ page 37075206 "AJ Web Carier Package Types"
         {
             repeater(Group)
             {
-                field("Web Service Code";"Web Service Code")
+                field("Web Service Code"; "Web Service Code")
                 {
                 }
-                field("Web Carrier Code";"Web Carrier Code")
+                field("Web Carrier Code"; "Web Carrier Code")
                 {
                 }
-                field("Package Code";"Package Code")
+                field("Package Code"; "Package Code")
                 {
                 }
-                field("Package Name";"Package Name")
+                field("Package Name"; "Package Name")
                 {
                 }
-                field(Domestic;Domestic)
+                field(Domestic; Domestic)
                 {
                 }
-                field(International;International)
+                field(International; International)
                 {
                 }
-                field("Shipping Service Code";"Shipping Service Code")
+                field("Shipping Service Code"; "Shipping Service Code")
                 {
                 }
-                field("Def. Weight Unit";"Def. Weight Unit")
+                field("Def. Weight Unit"; "Def. Weight Unit")
                 {
                 }
-                field("Def. Weight";"Def. Weight")
+                field("Def. Weight"; "Def. Weight")
                 {
                 }
-                field("Def. Dimension Unit";"Def. Dimension Unit")
+                field("Def. Dimension Unit"; "Def. Dimension Unit")
                 {
                 }
-                field("Def. Width";"Def. Width")
+                field("Def. Width"; "Def. Width")
                 {
                 }
-                field("Def. Length";"Def. Length")
+                field("Def. Length"; "Def. Length")
                 {
                 }
-                field("Def. Height";"Def. Height")
+                field("Def. Height"; "Def. Height")
                 {
                 }
-                field("Shipping Delivery Confirm";"Shipping Delivery Confirm")
+                field("Shipping Delivery Confirm"; "Shipping Delivery Confirm")
                 {
                 }
-                field("Def. Insure Shipment";"Def. Insure Shipment")
+                field("Def. Insure Shipment"; "Def. Insure Shipment")
                 {
                 }
-                field("Def. Insured Value";"Def. Insured Value")
+                field("Def. Insured Value"; "Def. Insured Value")
                 {
                 }
-                field("Def.Additional Insurance Value";"Def.Additional Insurance Value")
+                field("Def.Additional Insurance Value"; "Def.Additional Insurance Value")
                 {
                 }
-                field(Blocked;Blocked)
+                field(Blocked; Blocked)
                 {
                 }
             }
@@ -78,8 +78,8 @@ page 37075206 "AJ Web Carier Package Types"
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
                 RunObject = Page "AJ Web Carier Package Types";
-                RunPageLink = "Web Service Code"=FIELD("Web Service Code"),
-                              "Web Carrier Code"=FIELD("Web Carrier Code");
+                RunPageLink = "Web Service Code" = FIELD ("Web Service Code"),
+                              "Web Carrier Code" = FIELD ("Web Carrier Code");
             }
             action(Services)
             {
@@ -88,8 +88,8 @@ page 37075206 "AJ Web Carier Package Types"
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
                 RunObject = Page "AJ Web Carrier Services";
-                RunPageLink = "Web Service Code"=FIELD("Web Service Code"),
-                              "Web Carrier Code"=FIELD("Web Carrier Code");
+                RunPageLink = "Web Service Code" = FIELD ("Web Service Code"),
+                              "Web Carrier Code" = FIELD ("Web Carrier Code");
             }
         }
     }

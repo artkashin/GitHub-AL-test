@@ -1,4 +1,4 @@
-page 37075202 "AJ Web Order List"
+page 37072308 "AJ Web Order List"
 {
     CardPageID = "AJ Web Order";
     DeleteAllowed = false;
