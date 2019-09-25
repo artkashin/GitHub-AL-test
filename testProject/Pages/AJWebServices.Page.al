@@ -248,12 +248,14 @@ page 37072302 "AJ Web Services"
         dt: Date;
         tm: Time;
         ShipMgt: Codeunit "AJ Web Shipstation Mgmt.";
+        TestMgt: codeunit "AJ Web Order Service Mgmt New";
     begin
         dt := Today;
         dt30 := CalcDate('-30D', dt);
         dt60 := CalcDate('-60D', dt);
         tm := 000000T;
         dtm60 := CreateDateTime(dt60, tm);
+        //TestMgt.Run();
         ShipMgt.Run();
     end;
 

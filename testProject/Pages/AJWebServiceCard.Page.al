@@ -233,7 +233,6 @@ page 37072303 "AJ Web Service Card"
     }
 
     var
-        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         AJWebService: Record "AJ Web Service";
 }
 

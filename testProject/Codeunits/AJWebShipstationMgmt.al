@@ -8,15 +8,16 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         Txt: Text;
         Uri: Text;
     begin
-        AJWebService.Init();
-        AJWebService.Code := 'TEST MBS';
-        AJWebService.Description := 'Shipstation';
-        AJWebService."API Endpoint Domain" := 'https://ssapi.shipstation.com/';
-        AJWebService.Validate("API User ID (Key)", 'ccb2a0af002b4cb7affc046461a4334d');
-        AJWebService.Validate("API Password (Secret)", 'c434f11bc78340ca9944f57a19ea30d5');
-        AJWebService.Insert();
-
-        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-19","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
+        if not AJWebService.FindFirst() then begin
+            AJWebService.Init();
+            AJWebService.Code := 'TEST MBS';
+            AJWebService.Description := 'Shipstation';
+            AJWebService."API Endpoint Domain" := 'https://ssapi.shipstation.com/';
+            AJWebService.Validate("API User ID (Key)", 'ccb2a0af002b4cb7affc046461a4334d');
+            AJWebService.Validate("API Password (Secret)", 'c434f11bc78340ca9944f57a19ea30d5');
+            AJWebService.Insert();
+        end;
+        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-25","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
         Uri := AJWebService."API Endpoint Domain" + 'orders/createlabelfororder';
         Message(AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt));
     end;

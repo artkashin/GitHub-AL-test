@@ -23,7 +23,6 @@ codeunit 50100 "AJ Web Order Service Mgmt New"
         HttpWebHeaders.Remove('authorization');
         HttpWebHeaders.Add('authorization', 'Basic ' + 'Y2NiMmEwYWYwMDJiNGNiN2FmZmMwNDY0NjFhNDMzNGQ6YzQzNGYxMWJjNzgzNDBjYTk5NDRmNTdhMTllYTMwZDU=');
 
-
         HttpWebContent.WriteFrom(Txt);
 
         HttpWebContentHeaders.Remove('Content-Type');

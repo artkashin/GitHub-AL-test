@@ -18,21 +18,22 @@ codeunit 37072301 "AJ Web Service Base"
         ResponseMessage: HttpResponseMessage;
         Content: HttpContent;
     begin
-        RequestMessage.Method(Method);
         RequestMessage.SetRequestUri(URI);
+        RequestMessage.Method(Method);
         RequestMessage.GetHeaders(Headers);
 
-        Headers.Add('Authorization', StrSubstNo('Basic %1', AJWebService."API Encoded String"));
+        Headers.Remove('authorization');
+        Headers.Add('Authorization', 'Basic ' + AJWebService."API Encoded String");
 
         if Body <> '' then begin
+            Content.GetHeaders(ContentHeaders);
             Content.WriteFrom(Body);
 
             if ContentType <> '' then begin
-                Content.GetHeaders(ContentHeaders);
                 ContentHeaders.Remove('Content-Type');
                 ContentHeaders.Add('Content-Type', ContentType);
             end;
-            RequestMessage.Content := Content;
+            RequestMessage.Content(Content);
         end;
 
         Client.Send(RequestMessage, ResponseMessage);
