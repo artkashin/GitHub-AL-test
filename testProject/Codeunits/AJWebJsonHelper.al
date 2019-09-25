@@ -21,7 +21,8 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        Value := JValue.AsBoolean();
+        if not JValue.IsNull then
+            Value := JValue.AsBoolean();
     end;
 
     procedure GetJsonValueAsText(var JObject: JsonObject; Property: Text) Value: text
@@ -30,7 +31,8 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        Value := JValue.AsText;
+        if not JValue.IsNull then
+            Value := JValue.AsText();
     end;
 
     procedure GetJsonValue(var JObject: JsonObject; Property: Text; var JValue: JsonValue): Boolean

@@ -267,7 +267,7 @@ page 37072302 "AJ Web Services"
         tm := 000000T;
         dtm60 := CreateDateTime(dt60, tm);
         //TestMgt.Run();
-        ShipMgt.Run();
+        //ShipMgt.Run();
     end;
 
     var

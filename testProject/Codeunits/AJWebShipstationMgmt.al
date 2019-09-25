@@ -78,20 +78,22 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             JArray.Get(i - 1, JToken);
             JObject := JToken.AsObject();
 
-            if JObject.Get('code', ValueJToken) then begin
+            if JObject.Contains('code') then begin
                 AJWebCarrier."Web Service Code" := AJWebService.Code;
-                AJWebCarrier.Code := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrier.Code));
-                if AJWebCarrier.Find then;
-                if JObject.Get('name', ValueJToken) then
-                    AJWebCarrier.Name := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrier.Name));
-                if JObject.Get('accountNumber', ValueJToken) then
-                    AJWebCarrier."Account No." := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrier."Account No."));
-                if JObject.Get('requiresFundedAccount', ValueJToken) then
-                    AJWebCarrier."Requires Funded Account" := ValueJToken.AsValue.AsBoolean;
-                if JObject.Get('balance', ValueJToken) then
-                    AJWebCarrier.Balance := ValueJToken.AsValue.AsDecimal;
-                if not AJWebCarrier.Insert then
-                    AJWebCarrier.Modify;
+                with AjWebJsonHelper do begin
+                    AJWebCarrier.Code := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrier.Code));
+                    if AJWebCarrier.Find then;
+                    if JObject.Contains('name') then
+                        AJWebCarrier.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrier.Name));
+                    if JObject.Contains('accountNumber') then
+                        AJWebCarrier."Account No." := CopyStr(GetJsonValueAsText(JObject, 'accountNumber'), 1, MaxStrLen(AJWebCarrier."Account No."));
+                    if JObject.Contains('requiresFundedAccount') then
+                        AJWebCarrier."Requires Funded Account" := GetJsonValueAsBool(JObject, 'requiresFundedAccount');
+                    if JObject.Contains('balance') then
+                        AJWebCarrier.Balance := GetJsonValueAsDec(JObject, 'balance');
+                    if not AJWebCarrier.Insert then
+                        AJWebCarrier.Modify;
+                end;
             end;
         end;
 
@@ -99,25 +101,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if AJWebCarrier.FindFirst then
             repeat
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listpackages?carrierCode=' + AJWebCarrier.Code;
-
-                HttpWebRequest.SetRequestUri(Uri);
-                HttpWebRequest.Method := 'GET';
-                HttpWebRequest.GetHeaders(HttpWebHeaders);
-
-                HttpWebHeaders.Remove('authorization');
-                HttpWebHeaders.Add('authorization', 'Basic ' + AJWebService."API Encoded String");
-
-                IF not Http_TryGetResponse(HttpWebRequest, HttpWebResponse) then
-                    Error('Error with request');
-
-                if not HttpWebResponse.IsSuccessStatusCode then
-                    error('The web service returned an error message:\\' +
-                        'Status code: %1\' +
-                        'Description: %2',
-                        HttpWebResponse.HttpStatusCode,
-                        HttpWebResponse.ReasonPhrase);
-
-                HttpWebResponse.Content.ReadAs(Txt);
+                Txt := AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', '');
 
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
@@ -126,42 +110,27 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                     JArray.Get(i - 1, JToken);
                     JObject := JToken.AsObject();
 
-                    if JObject.Get('code', ValueJToken) then begin
+                    if JObject.Contains('code') then begin
                         AJWebCarrierPackageType."Web Service Code" := AJWebService.Code;
-                        AJWebCarrierPackageType."Package Code" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierPackageType."Package Code"));
-                        if JObject.Get('carrierCode', ValueJToken) then
-                            AJWebCarrierPackageType."Web Carrier Code" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierPackageType."Web Carrier Code"));
-
-                        if AJWebCarrierPackageType.Find then;
-                        if JObject.Get('name', ValueJToken) then
-                            AJWebCarrierPackageType."Package Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierPackageType."Package Name"));
-                        if JObject.Get('domestic', ValueJToken) then
-                            AJWebCarrierPackageType.Domestic := ValueJToken.AsValue.AsBoolean;
-                        if JObject.Get('international', ValueJToken) then
-                            AJWebCarrierPackageType.International := ValueJToken.AsValue.AsBoolean;
-                        if not AJWebCarrierPackageType.Insert then
-                            AJWebCarrierPackageType.Modify;
+                        with AjWebJsonHelper do begin
+                            AJWebCarrierPackageType."Package Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierPackageType."Package Code"));
+                            if JObject.Contains('carrierCode') then
+                                AJWebCarrierPackageType."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierPackageType."Web Carrier Code"));
+                            if AJWebCarrierPackageType.Find then;
+                            if JObject.Contains('name') then
+                                AJWebCarrierPackageType."Package Name" := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierPackageType."Package Name"));
+                            if JObject.Contains('domestic') then
+                                AJWebCarrierPackageType.Domestic := GetJsonValueAsBool(JObject, 'domestic');
+                            if JObject.Contains('international') then
+                                AJWebCarrierPackageType.International := GetJsonValueAsBool(JObject, 'international');
+                            if not AJWebCarrierPackageType.Insert then
+                                AJWebCarrierPackageType.Modify;
+                        end;
                     end;
                 end;
 
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listservices?carrierCode=' + AJWebCarrier.Code;
-                HttpWebRequest.SetRequestUri(Uri);
-                HttpWebRequest.Method := 'GET';
-                HttpWebRequest.GetHeaders(HttpWebHeaders);
-                HttpWebHeaders.Remove('authorization');
-                HttpWebHeaders.Add('authorization', 'Basic ' + AJWebService."API Encoded String");
-
-                IF not Http_TryGetResponse(HttpWebRequest, HttpWebResponse) then
-                    Error('Error with request');
-
-                if not HttpWebResponse.IsSuccessStatusCode then
-                    error('The web service returned an error message:\\' +
-                        'Status code: %1\' +
-                        'Description: %2',
-                        HttpWebResponse.HttpStatusCode,
-                        HttpWebResponse.ReasonPhrase);
-
-                HttpWebResponse.Content.ReadAs(Txt);
+                Txt := AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', '');
 
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
@@ -170,21 +139,22 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                     JArray.Get(i - 1, JToken);
                     JObject := JToken.AsObject();
 
-                    if JObject.Get('code', ValueJToken) then begin
+                    if JObject.Contains('code') then begin
                         AJWebCarrierService."Web Service Code" := AJWebService.Code;
-                        AJWebCarrierService."Service  Code" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
-                        if JObject.Get('carrierCode', ValueJToken) then
-                            AJWebCarrierService."Web Carrier Code" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
-
-                        if AJWebCarrierService.Find then;
-                        if JObject.Get('name', ValueJToken) then
-                            AJWebCarrierService.Name := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebCarrierService.Name));
-                        if JObject.Get('domestic', ValueJToken) then
-                            AJWebCarrierService.Domestic := ValueJToken.AsValue.AsBoolean();
-                        if JObject.Get('international', ValueJToken) then
-                            AJWebCarrierService.International := ValueJToken.AsValue.AsBoolean();
-                        if not AJWebCarrierService.Insert then
-                            AJWebCarrierService.Modify;
+                        with AjWebJsonHelper do begin
+                            AJWebCarrierService."Service  Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
+                            if JObject.Contains('carrierCode') then
+                                AJWebCarrierService."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
+                            if AJWebCarrierService.Find then;
+                            if JObject.Contains('name') then
+                                AJWebCarrierService.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierService.Name));
+                            if JObject.Contains('domestic') then
+                                AJWebCarrierService.Domestic := GetJsonValueAsBool(JObject, 'domestic');
+                            if JObject.Contains('international') then
+                                AJWebCarrierService.International := GetJsonValueAsBool(JObject, 'international');
+                            if not AJWebCarrierService.Insert then
+                                AJWebCarrierService.Modify;
+                        end;
                     end;
                 end;
             until AJWebCarrier.Next = 0;
@@ -219,23 +189,24 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         for i := 1 to JArray.Count do begin
             JArray.Get(i - 1, JToken);
             JObject := JToken.AsObject();
-            // change ValueJToken.AsValue.AsText to another types MBS
-            if JObject.Get('marketplaceId', ValueJToken) then begin
+            if JObject.Contains('marketplaceId') then begin
                 AJWebMarketplace."Web Service Code" := AJWebService.Code;
-                AJWebMarketplace.Code := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebMarketplace.Code));
-                if AJWebMarketplace.Find then;
-                if JObject.Get('name', ValueJToken) then
-                    AJWebMarketplace.Description := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebMarketplace.Description));
-                if JObject.Get('canRefresh', ValueJToken) then
-                    AJWebMarketplace."Can Refresh" := ValueJToken.AsValue.AsBoolean();
-                if JObject.Get('supportsCustomMappings', ValueJToken) then
-                    if Evaluate(AJWebMarketplace."Supports Custom Mappings", ValueJToken.AsValue.AsText) then;
-                if JObject.Get('supportsCustomStatuses', ValueJToken) then
-                    if Evaluate(AJWebMarketplace."Supports Custom Statuses", ValueJToken.AsValue.AsText) then;
-                if JObject.Get('canConfirmShipments', ValueJToken) then
-                    if Evaluate(AJWebMarketplace."Can Confirm Shipments", ValueJToken.AsValue.AsText) then;
-                if not AJWebMarketplace.Insert then
-                    AJWebMarketplace.Modify;
+                with AjWebJsonHelper do begin
+                    AJWebMarketplace.Code := CopyStr(GetJsonValueAsText(JObject, 'marketplaceId'), 1, MaxStrLen(AJWebMarketplace.Code));
+                    if AJWebMarketplace.Find then;
+                    if JObject.Get('name', ValueJToken) then
+                        AJWebMarketplace.Description := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebMarketplace.Description));
+                    if JObject.Get('canRefresh', ValueJToken) then
+                        AJWebMarketplace."Can Refresh" := ValueJToken.AsValue.AsBoolean();
+                    if JObject.Get('supportsCustomMappings', ValueJToken) then
+                        AJWebMarketplace."Supports Custom Mappings" := GetJsonValueAsBool(JObject, 'supportsCustomMappings');
+                    if JObject.Get('supportsCustomStatuses', ValueJToken) then
+                        AJWebMarketplace."Supports Custom Statuses" := GetJsonValueAsBool(JObject, 'supportsCustomStatuses');
+                    if JObject.Get('canConfirmShipments', ValueJToken) then
+                        AJWebMarketplace."Can Confirm Shipments" := GetJsonValueAsBool(JObject, 'canConfirmShipments');
+                    if not AJWebMarketplace.Insert then
+                        AJWebMarketplace.Modify;
+                end;
             end;
         end;
         //CheckResponce(HttpWebResponse, AJWebService);
@@ -262,6 +233,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         HttpWebHeaders: HttpHeaders;
         HttpWebResponse: HttpResponseMessage;
         AJWebServiceBase: Codeunit "AJ Web Service Base";
+        AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         JArray: JsonArray;
         JToken: JsonToken;
         JObject: JsonObject;
@@ -285,80 +257,111 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             JArray.Get(i - 1, JToken);
             JObject := JToken.AsObject();
 
-            if JObject.Get('warehouseId', ValueJToken) then begin
-                AJWebServiceWarehouse."Web Service Code" := AJWebService.Code;
-                AJWebServiceWarehouse."Warehouse ID" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Warehouse ID"));
-                if AJWebServiceWarehouse.Find then;
-                if JObject.Get('warehouseName', ValueJToken) then
-                    AJWebServiceWarehouse.Description := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse.Description));
+            with AJWebJsonHelper do begin
+                if JObject.Get('warehouseId', ValueJToken) then begin
+                    AJWebServiceWarehouse."Web Service Code" := AJWebService.Code;
+                    AJWebServiceWarehouse."Warehouse ID" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Warehouse ID"));
+                    if AJWebServiceWarehouse.Find then;
+                    if JObject.Get('warehouseName', ValueJToken) then
+                        AJWebServiceWarehouse.Description := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse.Description));
 
-                if JObject.Contains('originAddress') then begin
-                    JObject.SelectToken('originAddress', JToken);
-                    JObject2 := JToken.AsObject();
+                    if JObject.Contains('originAddress') then begin
+                        JObject.SelectToken('originAddress', JToken);
+                        JObject2 := JToken.AsObject();
 
-                    if JObject2.Get('name', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
-                    if JObject2.Get('company', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
-                    if JObject2.Get('street1', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
-                    if JObject2.Get('street2', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
-                    if JObject2.Get('street3', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
-                    if JObject2.Get('city', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
-                    if JObject2.Get('state', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
-                    if JObject2.Get('postalCode', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
-                    if JObject2.Get('country', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
-                    if JObject2.Get('phone', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
-                    if JObject2.Get('residential', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Residential" := ValueJToken.AsValue.AsBoolean();
-                    if JObject2.Get('addressVerified', ValueJToken) then
-                        AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
+                        /*
+                        my old code
+                        if JObject2.Get('name', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
+                        if JObject2.Get('company', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
+                        if JObject2.Get('street1', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
+                        if JObject2.Get('street2', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
+                        if JObject2.Get('street3', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
+                        if JObject2.Get('city', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
+                        if JObject2.Get('state', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
+                        if JObject2.Get('postalCode', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
+                        if JObject2.Get('country', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
+                        if JObject2.Get('phone', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
+                        if JObject2.Get('residential', ValueJToken) then
+                            AJWebServiceWarehouse."Ship-From Residential" := ValueJToken.AsValue.AsBoolean();
+                        if JObject2.Get('addressVerified', ValueJToken) then
+                            // problem MBS
+                            AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(GetJsonValueAsText(JObject2, 'addressVerified'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
+                        //AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
+                        */
+                        if JObject2.Contains('name') then
+                            AJWebServiceWarehouse."Ship-From Name" := CopyStr(GetJsonValueAsText(JObject2, 'name'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
+                        if JObject2.Contains('company') then
+                            AJWebServiceWarehouse."Ship-From Company" := CopyStr(GetJsonValueAsText(JObject2, 'company'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
+                        if JObject2.Contains('street1') then
+                            AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(GetJsonValueAsText(JObject2, 'street1'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
+                        if JObject2.Contains('street2') then
+                            AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(GetJsonValueAsText(JObject2, 'street2'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
+                        if JObject2.Contains('street3') then
+                            AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(GetJsonValueAsText(JObject2, 'street3'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
+                        if JObject2.Contains('city') then
+                            AJWebServiceWarehouse."Ship-From City" := CopyStr(GetJsonValueAsText(JObject2, 'city'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
+                        if JObject2.Contains('state') then
+                            AJWebServiceWarehouse."Ship-From State" := CopyStr(GetJsonValueAsText(JObject2, 'state'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
+                        if JObject2.Contains('postalCode') then
+                            AJWebServiceWarehouse."Ship-From Zip" := CopyStr(GetJsonValueAsText(JObject2, 'postalCode'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
+                        if JObject2.Contains('country') then
+                            AJWebServiceWarehouse."Ship-From Country" := CopyStr(GetJsonValueAsText(JObject2, 'country'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
+                        if JObject2.Contains('phone') then
+                            AJWebServiceWarehouse."Ship-From Phone" := CopyStr(GetJsonValueAsText(JObject2, 'phone'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
+                        if JObject2.Contains('residential') then
+                            AJWebServiceWarehouse."Ship-From Residential" := GetJsonValueAsBool(JObject2, 'residential');
+                        if JObject2.Contains('addressVerified') then
+                            AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(GetJsonValueAsText(JObject2, 'addressVerified'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
+                    end;
+
+
+                    if JObject.Contains('returnAddress') then begin
+                        JObject.SelectToken('returnAddress', JToken);
+                        JObject2 := JToken.AsObject();
+
+                        if JObject2.Contains('name') then
+                            AJWebServiceWarehouse."Return Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Name"));
+                        if JObject2.Contains('company') then
+                            AJWebServiceWarehouse."Return Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Company"));
+                        if JObject2.Contains('street1') then
+                            AJWebServiceWarehouse."Return Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 1"));
+                        if JObject2.Contains('street2') then
+                            AJWebServiceWarehouse."Return Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 2"));
+                        if JObject2.Contains('street3') then
+                            AJWebServiceWarehouse."Return Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 3"));
+                        if JObject2.Contains('city') then
+                            AJWebServiceWarehouse."Return City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return City"));
+                        if JObject2.Contains('state') then
+                            AJWebServiceWarehouse."Return State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return State"));
+                        if JObject2.Contains('postalCode') then
+                            AJWebServiceWarehouse."Return Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Zip"));
+                        if JObject2.Contains('country') then
+                            AJWebServiceWarehouse."Return Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Country"));
+                        if JObject2.Contains('phone') then
+                            AJWebServiceWarehouse."Return Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Phone"));
+                        if JObject2.Contains('residential') then
+                            AJWebServiceWarehouse."Return Residential" := GetJsonValueAsBool(JObject2, 'residential');
+                        if JObject2.Contains('addressVerified') then
+                            AJWebServiceWarehouse."Return Address Verified" := CopyStr(GetJsonValueAsText(JObject2, 'addressVerified'), 1, MaxStrLen(AJWebServiceWarehouse."Return Address Verified"));
+                    end;
                 end;
 
+                if JObject.Get('createDate', ValueJToken) then
+                    AJWebServiceWarehouse."Created At" := ValueJToken.AsValue.AsDateTime();
+                if JObject.Get('isDefault', ValueJToken) then
+                    AJWebServiceWarehouse.Default := ValueJToken.AsValue.AsBoolean();
 
-                if JObject.Contains('returnAddress') then begin
-                    JObject.SelectToken('returnAddress', JToken);
-                    JObject2 := JToken.AsObject();
-
-                    if JObject2.Get('name', ValueJToken) then
-                        AJWebServiceWarehouse."Return Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Name"));
-                    if JObject2.Get('company', ValueJToken) then
-                        AJWebServiceWarehouse."Return Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Company"));
-                    if JObject2.Get('street1', ValueJToken) then
-                        AJWebServiceWarehouse."Return Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 1"));
-                    if JObject2.Get('street2', ValueJToken) then
-                        AJWebServiceWarehouse."Return Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 2"));
-                    if JObject2.Get('street3', ValueJToken) then
-                        AJWebServiceWarehouse."Return Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 3"));
-                    if JObject2.Get('city', ValueJToken) then
-                        AJWebServiceWarehouse."Return City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return City"));
-                    if JObject2.Get('state', ValueJToken) then
-                        AJWebServiceWarehouse."Return State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return State"));
-                    if JObject2.Get('postalCode', ValueJToken) then
-                        AJWebServiceWarehouse."Return Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Zip"));
-                    if JObject2.Get('country', ValueJToken) then
-                        AJWebServiceWarehouse."Return Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Country"));
-                    if JObject2.Get('phone', ValueJToken) then
-                        AJWebServiceWarehouse."Return Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Phone"));
-                    if JObject2.Get('residential', ValueJToken) then
-                        if Evaluate(AJWebServiceWarehouse."Return Residential", ValueJToken.AsValue.AsText) then;
-                    if JObject2.Get('addressVerified', ValueJToken) then
-                        AJWebServiceWarehouse."Return Address Verified" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address Verified"));
-                end;
             end;
-
-            if JObject.Get('createDate', ValueJToken) then
-                AJWebServiceWarehouse."Created At" := ValueJToken.AsValue.AsDateTime();
-            if JObject.Get('isDefault', ValueJToken) then
-                AJWebServiceWarehouse.Default := ValueJToken.AsValue.AsBoolean();
-
             if not AJWebServiceWarehouse.Insert then
                 AJWebServiceWarehouse.Modify;
         end;
