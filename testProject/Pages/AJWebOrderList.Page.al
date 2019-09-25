@@ -289,7 +289,7 @@ page 37072308 "AJ Web Order List"
                         begin
                             CurrPage.SetSelectionFilter(AJWebOrderHeader);
 
-                            GetShippingLabel(AJWebOrderHeader);
+                            //GetShippingLabel(AJWebOrderHeader);
 
                             Message('Done');
                         end;
@@ -327,7 +327,7 @@ page 37072308 "AJ Web Order List"
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesFilter: Text;
 
-    local procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
+    procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
     var
         //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;

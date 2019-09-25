@@ -1,4 +1,4 @@
-tableextension 291 TableExtansion291 extends "Shipping Agent"
+tableextension 50103 TableExtansion291 extends "Shipping Agent"
 {
     fields
     {

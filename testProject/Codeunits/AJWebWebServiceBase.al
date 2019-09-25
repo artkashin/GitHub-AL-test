@@ -2,7 +2,7 @@ codeunit 37072301 "AJ Web Service Base"
 {
     procedure CallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; Body: Text) ResponseTxt: Text
     begin
-        IF not TryCallWebService(AJWebService, URI, Body, ContentType, Method) then
+        IF not TryCallWebService(AJWebService, URI, Method, ContentType, Body) then
             Error(Body)
         else
             ResponseTxt := Body;
@@ -18,7 +18,7 @@ codeunit 37072301 "AJ Web Service Base"
         ResponseMessage: HttpResponseMessage;
         Content: HttpContent;
     begin
-        RequestMessage.Method := Method;
+        RequestMessage.Method(Method);
         RequestMessage.SetRequestUri(URI);
         RequestMessage.GetHeaders(Headers);
 

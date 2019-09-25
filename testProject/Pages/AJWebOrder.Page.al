@@ -540,16 +540,7 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                         end;
                     }
-                    field(AJWOH_CarrierShpCharge; "Carier Shipping Charge")
-                    {
-                        Caption = 'Carrier Shipping Charge';
-                        Editable = false;
 
-                        trigger OnAssistEdit()
-                        begin
-                            AJWebOrderList.GetShippingLabel(Rec);
-                        end;
-                    }
                     field(AJWOH_CarrierTrackingNumber; "Carier Tracking Number")
                     {
                         Caption = 'Carrier Tracking#';
@@ -646,7 +637,7 @@ page 37072309 "AJ Web Order"
                     begin
                         CurrPage.SetSelectionFilter(AJWebOrderHeader);
 
-                        AJWebOrderList.GetShippingLabel(AJWebOrderHeader);
+                        //AJWebOrderList.GetShippingLabel(AJWebOrderHeader);
 
                         Message('Done');
                     end;

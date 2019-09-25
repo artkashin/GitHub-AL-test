@@ -25,9 +25,6 @@ page 37072307 "AJ Web Marketplaces"
                 field("Item ID Type"; "Item ID Type")
                 {
                 }
-                field("Table ID"; "Table ID")
-                {
-                }
             }
         }
     }
@@ -72,7 +69,6 @@ page 37072307 "AJ Web Marketplaces"
         }
     }
 
-    var
-    //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+
 }
 
