@@ -43,4 +43,25 @@ codeunit 50100 "AJ Web Order Service Mgmt New"
     begin
         exit(HttpWebClient.Send(HttpWebRequest, HttpWebResponse));
     end;
+
+    procedure TestCaseWithParamaters()
+    var
+        AJWebServParameters: Record "AJ Web Service Parameters" temporary;
+        AJWebServiceBase: Codeunit "AJ Web Service Base";
+        Txt: text;
+    begin
+        /*Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-19","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
+
+        AJWebServParameters.SetRequestContentasTxt(Txt);
+        AJWebServParameters.URI := 'https://ssapi.shipstation.com/orders/createlabelfororder';
+        AJWebServParameters.Method := AJWebServParameters.Method::post;
+        AJWebServParameters.UserName := 'ccb2a0af002b4cb7affc046461a4334d';
+        AJWebServParameters.Password := 'c434f11bc78340ca9944f57a19ea30d5';
+        AJWebServParameters.ContentType := 'application/json';
+
+        AJWebServiceBase.CallWebService(AJWebServParameters);
+
+        Message(AJWebServParameters.GetResponseContentAsText());
+        */
+    end;
 }

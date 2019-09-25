@@ -110,9 +110,9 @@ page 37072303 "AJ Web Service Card"
 
                     trigger OnAction()
                     var
-                    //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
-                        //AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
+                        AJWebShipstationMgmt.ShipStation_GetMarketlaces(Rec);
                     end;
                 }
                 action("Load Carriers")
@@ -123,9 +123,9 @@ page 37072303 "AJ Web Service Card"
 
                     trigger OnAction()
                     var
-                    // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
-                        //AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
+                        AJWebShipstationMgmt.GetShipAgentInfo(Rec);
                     end;
                 }
             }
@@ -134,32 +134,25 @@ page 37072303 "AJ Web Service Card"
                 action(Marketplaces)
                 {
                     Image = Relationship;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
                     RunObject = Page "AJ Web Marketplaces";
                     RunPageLink = "Web Service Code" = FIELD (Code);
                 }
                 action(Carriers)
                 {
                     Image = Delivery;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
+
                     RunObject = Page "AJ Web Carriers";
                     RunPageLink = "Web Service Code" = FIELD (Code);
                 }
                 action("Shipping Carriers")
                 {
                     Image = Delivery;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
                     RunObject = Page "AJ Web Carriers";
                     RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
                 }
                 action("Shipping Constants")
                 {
                     Image = VariableList;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
                     RunObject = Page "AJ Web Service Constants";
                     RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
                     RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");

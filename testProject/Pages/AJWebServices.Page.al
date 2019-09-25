@@ -72,43 +72,45 @@ page 37072302 "AJ Web Services"
                 Image = Setup;
                 group(Import)
                 {
+                    action("Create Wev Service & Get Label")
+                    {
+                        Image = ImportDatabase;
+                        trigger OnAction()
+                        var
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
+                        begin
+                            AJWebShipstationMgmt.Run();
+                        end;
+                    }
+
                     action("Import Marketplaces")
                     {
                         Image = ImportDatabase;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
+                            AJWebShipstationMgmt.ShipStation_GetMarketlaces(Rec);
                         end;
                     }
                     action("Import Warehouses")
                     {
                         Image = ImportDatabase;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetWarehouses(Rec);
+                            AJWebShipstationMgmt.ShipStation_GetWarehouses(Rec);
                         end;
                     }
                     action("Import Carriers")
                     {
                         Image = ExportShipment;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
+                            AJWebShipstationMgmt.GetShipAgentInfo(Rec);
                         end;
                     }
                 }
@@ -117,8 +119,7 @@ page 37072302 "AJ Web Services"
                     action(Marketplaces)
                     {
                         Image = Relationship;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
+
                         RunObject = Page "AJ Web Marketplaces";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
@@ -130,8 +131,7 @@ page 37072302 "AJ Web Services"
                     action("Shipping Carriers")
                     {
                         Image = Delivery;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
+
                         RunObject = Page "AJ Web Carriers";
                         RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
                     }
@@ -143,8 +143,7 @@ page 37072302 "AJ Web Services"
                     action("Shipping Constants")
                     {
                         Image = VariableList;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
+
                         RunObject = Page "AJ Web Service Constants";
                         RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
                         RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");
@@ -174,9 +173,9 @@ page 37072302 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        // AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_CheckConnection(Rec);
+                            //AJWebShipstationMgmt.WOS_CheckConnection(Rec);
                         end;
                     }
                     action("Get Orders")
@@ -189,15 +188,15 @@ page 37072302 "AJ Web Services"
                         trigger OnAction()
                         var
                             AJWebService: Record "AJ Web Service";
-                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
                             // IF NOT CONFIRM('Get Web Orders?') THEN
                             //  ERROR('Cancelled');
                             //
                             // CurrPage.SETSELECTIONFILTER(AJWebService);
                             // IF AJWebService.FINDFIRST THEN REPEAT
-                            //  CLEAR(AJWebOrderServiceMgmt);
-                            //  AJWebOrderServiceMgmt.WOS_GetOrders(AJWebService);
+                            //  CLEAR(AJWebShipstationMgmt);
+                            //  AJWebShipstationMgmt.WOS_GetOrders(AJWebService);
                             //  COMMIT;
                             // UNTIL AJWebService.NEXT = 0;
                             //
@@ -212,7 +211,7 @@ page 37072302 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
                         end;
                     }
@@ -233,11 +232,11 @@ page 37072302 "AJ Web Services"
 
                         trigger OnAction()
                         var
-                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                             AJWebOrderHeader: Record "AJ Web Order Header";
                         begin
                             // AJWebOrderHeader.SETRANGE("Web Service Code",Code);
-                            // AJWebOrderServiceMgmt.WOS_CreateOrders(AJWebOrderHeader);
+                            // AJWebShipstationMgmt.WOS_CreateOrders(AJWebOrderHeader);
                         end;
                     }
                 }
