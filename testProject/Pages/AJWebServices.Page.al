@@ -16,48 +16,62 @@ page 37072302 "AJ Web Services"
             {
                 field("Code"; Code)
                 {
+                    ApplicationArea = All;
                 }
                 field(Description; Description)
                 {
+                    ApplicationArea = All;
                 }
                 field("Web Service Type"; "Web Service Type")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error and New Web Orders"; "# Error and New Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# New Web Orders"; "# New Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error Web Orders"; "# Error Web Orders")
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Style = Unfavorable;
                     StyleExpr = TRUE;
                 }
                 field("# Pending Web Orders"; "# Pending Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# New Web Returns"; "# New Web Returns")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error Web Returns"; "# Error Web Returns")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Shipped Web Orders"; "# Shipped Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Completed Web Orders"; "# Completed Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Open NAV Orders"; "# Open NAV Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 60 Days Orders"; "Last60dyyOrd Qnt")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 30 Days Orders"; QtyOrders30Day)
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -74,6 +88,7 @@ page 37072302 "AJ Web Services"
                 {
                     action("Create Wev Service & Get Label")
                     {
+                        ApplicationArea = All;
                         Image = ImportDatabase;
                         trigger OnAction()
                         var
@@ -85,6 +100,7 @@ page 37072302 "AJ Web Services"
 
                     action("Import Marketplaces")
                     {
+                        ApplicationArea = All;
                         Image = ImportDatabase;
                         trigger OnAction()
                         var
@@ -95,6 +111,7 @@ page 37072302 "AJ Web Services"
                     }
                     action("Import Warehouses")
                     {
+                        ApplicationArea = All;
                         Image = ImportDatabase;
                         trigger OnAction()
                         var
@@ -105,6 +122,7 @@ page 37072302 "AJ Web Services"
                     }
                     action("Import Carriers")
                     {
+                        ApplicationArea = All;
                         Image = ExportShipment;
                         trigger OnAction()
                         var
@@ -118,32 +136,34 @@ page 37072302 "AJ Web Services"
                 {
                     action(Marketplaces)
                     {
+                        ApplicationArea = All;
                         Image = Relationship;
-
                         RunObject = Page "AJ Web Marketplaces";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action(Warehouses)
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Service Warehouse Setup";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action("Shipping Carriers")
                     {
+                        ApplicationArea = All;
                         Image = Delivery;
-
                         RunObject = Page "AJ Web Carriers";
                         RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
                     }
                     action("Carrier services")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Carrier Services";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action("Shipping Constants")
                     {
+                        ApplicationArea = All;
                         Image = VariableList;
-
                         RunObject = Page "AJ Web Service Constants";
                         RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
                         RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");
@@ -152,7 +172,7 @@ page 37072302 "AJ Web Services"
                     {
                         action("Delete Curr Record")
                         {
-
+                            ApplicationArea = All;
                             trigger OnAction()
                             var
                                 WebService: Record "AJ Web Service";
@@ -167,24 +187,13 @@ page 37072302 "AJ Web Services"
                 }
                 group("Web Operations")
                 {
-                    action("Check Connection")
-                    {
-                        Visible = false;
-
-                        trigger OnAction()
-                        var
-                        // AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
-                        begin
-                            //AJWebShipstationMgmt.WOS_CheckConnection(Rec);
-                        end;
-                    }
                     action("Get Orders")
                     {
+                        ApplicationArea = All;
                         Image = Import;
                         Promoted = true;
                         PromotedCategory = Process;
                         PromotedIsBig = true;
-
                         trigger OnAction()
                         var
                             AJWebService: Record "AJ Web Service";
@@ -205,6 +214,7 @@ page 37072302 "AJ Web Services"
                     }
                     action("Web Orders")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Order List";
                         RunPageLink = "Web Service Code" = FIELD (Code),
                                   "Document Type" = CONST (Order);
@@ -217,6 +227,7 @@ page 37072302 "AJ Web Services"
                     }
                     action("Web Returns")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Return List";
                         RunPageLink = "Web Service Code" = FIELD (Code),
                                   "Document Type" = CONST (Return);
@@ -226,10 +237,10 @@ page 37072302 "AJ Web Services"
                 {
                     action("Create Orders")
                     {
+                        ApplicationArea = All;
                         Image = CreateDocument;
                         Promoted = true;
                         PromotedIsBig = true;
-
                         trigger OnAction()
                         var
                             //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
