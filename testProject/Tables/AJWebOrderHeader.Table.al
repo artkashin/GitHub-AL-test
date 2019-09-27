@@ -912,5 +912,18 @@ table 37072307 "AJ Web Order Header"
 
         Rec := AJWebOrderHeader;
     end;
+
+    procedure SetResponseContent(var value: HttpContent)
+    var
+        InStr: InStream;
+        OutStr: OutStream;
+    begin
+        "Shipping Agent Label".CreateInStream(InStr);
+        value.ReadAs(InStr);
+
+        "Shipping Agent Label".CreateOutStream(OutStr);
+        CopyStream(OutStr, InStr);
+
+    end;
 }
 

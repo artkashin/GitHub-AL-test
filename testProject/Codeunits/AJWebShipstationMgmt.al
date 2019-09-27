@@ -5,8 +5,61 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebServParameters: Record "AJ Web Service Parameters" temporary;
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         AJWebService: Record "AJ Web Service";
+        AJWebOrderHeader: Record "AJ Web Order Header";
+        AJWebJsonHelper: Codeunit "AJ Web Json Helper";
+        Base64Convert: Codeunit Base64Convert;
+        ValueJToken: JsonToken;
+        JObject: JsonObject;
+        JToken: JsonToken;
+        InStr: InStream;
+        OutStr: OutStream;
+        Txt: Text;
+        ResponseTxt: Text;
+        Uri: Text;
+        LabelPdf: Text;
+    begin
+
+        if not AJWebService.FindFirst() then begin
+            InitRecords();
+        end;
+
+        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-26","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
+        Uri := AJWebService."API Endpoint Domain" + 'orders/createlabelfororder';
+        Txt := AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt);
+
+        JObject.ReadFrom(Txt);
+        AJWebOrderHeader.FindFirst();
+        if JObject.Contains('labelData') then begin
+            LabelPdf := AJWebJsonHelper.GetJsonValueAsText(JObject, 'labelData');
+            AJWebOrderHeader."Shipping Agent Label".CreateOutStream(OutStr);
+            Base64Convert.FromBase64StringToStream(LabelPdf, OutStr);
+
+            AJWebOrderHeader."Carier Shipping Charge" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'shipmentCost');
+            AJWebOrderHeader."Carier Tracking Number" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber');//,MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
+            AJWebOrderHeader."Carier Insurance Cost" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'insuranceCost');
+            AJWebOrderHeader."Web Service Shipment ID" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId');//,MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
+            AJWebOrderHeader."Labels Created" := true;
+            AJWebOrderHeader."Labels Printed" := false;
+            AJWebOrderHeader.Modify;
+        end;
+    end;
+
+    procedure GetLabelForOrder(AJWebService: Record "AJ Web Service")
+    var
+        AJWebServiceBase: Codeunit "AJ Web Service Base";
         Txt: Text;
         Uri: Text;
+    begin
+        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-26","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
+        Uri := 'https://ssapi.shipstation.com/orders/createlabelfororder';
+        Message(AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt));
+    end;
+
+    procedure InitRecords()
+    var
+        AJWebService: Record "AJ Web Service";
+        AJWebOrderHeader: Record "AJ Web Order Header";
+        AJWebContans: Record "AJ Web Service Constants";
     begin
         if not AJWebService.FindFirst() then begin
             AJWebService.Init();
@@ -17,25 +70,141 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             AJWebService.Validate("API Password (Secret)", 'c434f11bc78340ca9944f57a19ea30d5');
             AJWebService.Insert();
         end;
-        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-25","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
-        Uri := AJWebService."API Endpoint Domain" + 'orders/createlabelfororder';
-        Message(AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt));
-    end;
 
-    procedure GetLabelForPackage(AJWebService: Record "AJ Web Service")
-    var
-        AJWebServiceBase: Codeunit "AJ Web Service Base";
-        Txt: Text;
-        Uri: Text;
-    begin
-        Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-19","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
-        Uri := 'https://ssapi.shipstation.com/orders/createlabelfororder';
-        Message(AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt));
-    end;
+        AJWebContans.SetRange("Web Order Service Code", AJWebService.Code);
+        if not AJWebContans.FindFirst() then begin
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Confirmation;
+            AJWebContans."Option Value" := 'adult_signature';
+            AJWebContans.Insert();
 
-    local procedure InitParameters(Parameters: Record "AJ Web Service Parameters" temporary; AJWebService: Record "AJ Web Service")
-    var
-    begin
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Confirmation;
+            AJWebContans."Option Value" := 'delivery';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Confirmation;
+            AJWebContans."Option Value" := 'none';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Confirmation;
+            AJWebContans."Option Value" := 'signature';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Weight;
+            AJWebContans."Option Value" := 'units';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Weight;
+            AJWebContans."Option Value" := 'value';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Weight;
+            AJWebContans."Option Value" := 'WeightUnits';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Dimension;
+            AJWebContans."Option Value" := 'height';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Dimension;
+            AJWebContans."Option Value" := 'length';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Dimension;
+            AJWebContans."Option Value" := 'units';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Dimension;
+            AJWebContans."Option Value" := 'width';
+            AJWebContans.Insert();
+            AJWebContans.Init();
+
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Insurance;
+            AJWebContans."Option Value" := 'insuredValue';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Insurance;
+            AJWebContans."Option Value" := 'insureShipment';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Insurance;
+            AJWebContans."Option Value" := 'provider';
+            AJWebContans.Insert();
+
+            AJWebContans.Init();
+            AJWebContans."Web Order Service Code" := AJWebService.Code;
+            AJWebContans.Type := AJWebContans.Type::Option;
+            AJWebContans."Option Value" := 'nonDelivery';
+            AJWebContans.Insert();
+        end;
+
+        if not AJWebOrderHeader.FindFirst() then begin
+            AJWebOrderHeader.Init();
+            AJWebOrderHeader."Web Order No." := 'AW-000002';
+            AJWebOrderHeader."Web Service Code" := AJWebService.Code;
+            AJWebOrderHeader."Shipping Web Service Order No." := '3767637';
+            AJWebOrderHeader."Order DateTime" := CreateDateTime(20190926D, 0T);
+            AJWebOrderHeader."Web Service Shipment ID" := '975752';
+            AJWebOrderHeader."Web Service PO Number" := '101018';
+            AJWebOrderHeader."Shipping Web Service Code" := AJWebService.Code;
+            AJWebOrderHeader."Shp. Product Dimension Unit" := 'units';
+            AJWebOrderHeader."Shp. Product Weight Unit" := 'value';
+            AJWebOrderHeader."Shipping Carrier Code" := 'fedex';
+            AJWebOrderHeader."Shipping Package Type" := 'package';
+            AJWebOrderHeader."Shipping Carrier Service" := 'fedex_2day';
+            AJWebOrderHeader."Bill-To Customer Name" := 'New Concepts Furniture';
+            AJWebOrderHeader."Bill-To Customer Zip" := '31772';
+            AJWebOrderHeader."Bill-To Customer Country" := 'US';
+            AJWebOrderHeader."Bill-To Customer State" := 'GA';
+            AJWebOrderHeader."Bill-To Customer City" := 'Atlanta';
+            AJWebOrderHeader."Bill-To Customer Address 1" := '705 West Peachtree Street';
+            AJWebOrderHeader."Bill-To Company" := 'New Concepts Furniture';
+            AJWebOrderHeader."Ship-To Customer Name" := 'New Concepts Furniture';
+            AJWebOrderHeader."Ship-To Customer Zip" := '31772';
+            AJWebOrderHeader."Ship-To Customer Country" := 'US';
+            AJWebOrderHeader."Ship-To Customer State" := 'GA';
+            AJWebOrderHeader."Ship-To Customer City" := 'Atlanta';
+            AJWebOrderHeader."Ship-To Customer Address 1" := '705 West Peachtree Street';
+            AJWebOrderHeader."Ship-To Company" := 'New Concepts Furniture';
+            AJWebOrderHeader."Ship-To E-mail" := 'JR@contoso.com;JR@contoso.com';
+            AJWebOrderHeader."Merchandise Amount" := 1083.41;
+            AJWebOrderHeader."Shipping Options" := 'nonDelivery';
+            AJWebOrderHeader."Shipping Delivery Confirm" := 'none';
+            AJWebOrderHeader."Ship Date" := 20190926D;
+            AJWebOrderHeader."Custom Field 1" := 'ID: 01454545 DOC: 101018';
+            AJWebOrderHeader."Bill-to Type" := AJWebOrderHeader."Bill-to Type"::my_account;
+            AJWebOrderHeader."Acknowlegement Sent" := true;
+            AJWebOrderHeader."Carier Shipping Charge" := 21.66;
+            AJWebOrderHeader."Carier Tracking Number" := '789828713420';
+            AJWebOrderHeader."Total Quantity" := 6;
+            AJWebOrderHeader.Insert();
+        end;
     end;
 
     local procedure Http_TryGetResponse(var HttpWebRequest: HttpRequestMessage; var HttpWebResponse: HttpResponseMessage): Boolean
@@ -50,7 +219,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebCarrier: Record "AJ Web Carrier";
         AJWebCarrierService: Record "AJ Web Carrier Service";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-        AjWebJsonHelper: Codeunit "AJ Web Json Helper";
+        AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         HttpWebRequest: HttpRequestMessage;
         HttpWebContentHeaders: HttpHeaders;
@@ -80,7 +249,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
             if JObject.Contains('code') then begin
                 AJWebCarrier."Web Service Code" := AJWebService.Code;
-                with AjWebJsonHelper do begin
+                with AJWebJsonHelper do begin
                     AJWebCarrier.Code := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrier.Code));
                     if AJWebCarrier.Find then;
                     if JObject.Contains('name') then
@@ -112,7 +281,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
                     if JObject.Contains('code') then begin
                         AJWebCarrierPackageType."Web Service Code" := AJWebService.Code;
-                        with AjWebJsonHelper do begin
+                        with AJWebJsonHelper do begin
                             AJWebCarrierPackageType."Package Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierPackageType."Package Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierPackageType."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierPackageType."Web Carrier Code"));
@@ -141,7 +310,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
                     if JObject.Contains('code') then begin
                         AJWebCarrierService."Web Service Code" := AJWebService.Code;
-                        with AjWebJsonHelper do begin
+                        with AJWebJsonHelper do begin
                             AJWebCarrierService."Service  Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierService."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
@@ -166,7 +335,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         HttpWebRequest: HttpRequestMessage;
         HttpWebHeaders: HttpHeaders;
         HttpWebResponse: HttpResponseMessage;
-        AjWebJsonHelper: Codeunit "AJ Web Json Helper";
+        AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         Uri: Text;
         Txt: Text;
@@ -180,7 +349,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebService.TestField("API Endpoint Domain");
         AJWebService.TestField("API Encoded String");
         Uri := AJWebService."API Endpoint Domain" + 'stores/marketplaces';
-
         Txt := AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', '');
 
         if not JArray.ReadFrom(Txt) then
@@ -191,7 +359,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             JObject := JToken.AsObject();
             if JObject.Contains('marketplaceId') then begin
                 AJWebMarketplace."Web Service Code" := AJWebService.Code;
-                with AjWebJsonHelper do begin
+                with AJWebJsonHelper do begin
                     AJWebMarketplace.Code := CopyStr(GetJsonValueAsText(JObject, 'marketplaceId'), 1, MaxStrLen(AJWebMarketplace.Code));
                     if AJWebMarketplace.Find then;
                     if JObject.Get('name', ValueJToken) then
@@ -364,6 +532,23 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             end;
             if not AJWebServiceWarehouse.Insert then
                 AJWebServiceWarehouse.Modify;
+        end;
+    end;
+
+    procedure ShipStation_SaveLabel(AJWebOrderHeader: Record "AJ Web Order Header")
+    var
+        FileManagement: Codeunit "File Management";
+        TempBlob: Record TempBlob temporary;
+        OS: OutStream;
+        IS: InStream;
+        ToFile: Text;
+    begin
+        AJWebOrderHeader.Find;
+        AJWebOrderHeader.CalcFields("Shipping Agent Label");
+        if AJWebOrderHeader."Shipping Agent Label".HasValue then begin
+            AJWebOrderHeader."Shipping Agent Label".CreateInStream(IS);
+            ToFile := 'LBL-' + AJWebOrderHeader."Web Order No." + '.pdf';
+            DownloadFromStream(IS, 'Save label as', 'C:\', 'Adobe Acrobat file(*.pdf)|*.pdf', ToFile);
         end;
     end;
 }

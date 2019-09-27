@@ -86,7 +86,7 @@ page 37072302 "AJ Web Services"
                 Image = Setup;
                 group(Import)
                 {
-                    action("Create Wev Service & Get Label")
+                    action("Init Tables")
                     {
                         ApplicationArea = All;
                         Image = ImportDatabase;
@@ -94,6 +94,7 @@ page 37072302 "AJ Web Services"
                         var
                             AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
+                            AJWebShipstationMgmt.InitRecords();
                             AJWebShipstationMgmt.Run();
                         end;
                     }
