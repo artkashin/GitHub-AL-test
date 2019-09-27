@@ -1,11 +1,13 @@
 codeunit 37072301 "AJ Web Service Base"
 {
-    procedure CallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; Body: Text) ResponseTxt: Text
+    procedure CallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text) Result: Boolean
     begin
         IF not TryCallWebService(AJWebService, URI, Method, ContentType, Body) then
-            Error(Body)
+            Message(Body)
         else
-            ResponseTxt := Body;
+            exit(true);
+
+        exit(false);
     end;
 
     [TryFunction]

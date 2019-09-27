@@ -95,7 +95,6 @@ page 37072302 "AJ Web Services"
                             AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
                             AJWebShipstationMgmt.InitRecords();
-                            AJWebShipstationMgmt.Run();
                         end;
                     }
 

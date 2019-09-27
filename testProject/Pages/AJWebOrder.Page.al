@@ -684,8 +684,7 @@ page 37072309 "AJ Web Order"
                 {
                     ApplicationArea = All;
                     Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Process;
+
                     trigger OnAction()
                     var
                         AJWebOrderHeader: Record "AJ Web Order Header";
