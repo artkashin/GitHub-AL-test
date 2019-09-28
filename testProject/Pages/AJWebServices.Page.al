@@ -106,7 +106,7 @@ page 37072302 "AJ Web Services"
                         var
                             AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            AJWebShipstationMgmt.ShipStation_GetMarketlaces(Rec);
+                            AJWebShipstationMgmt.GetMarketlaces(Rec);
                         end;
                     }
                     action("Import Warehouses")
@@ -117,7 +117,7 @@ page 37072302 "AJ Web Services"
                         var
                             AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            AJWebShipstationMgmt.ShipStation_GetWarehouses(Rec);
+                            AJWebShipstationMgmt.GetWarehouses(Rec);
                         end;
                     }
                     action("Import Carriers")

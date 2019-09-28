@@ -1,7 +1,8 @@
 codeunit 37072300 "AJ Web Json Helper"
 {
-    var 
+    var
         ReplaceNULL: Boolean;
+
     procedure GetJsonToken(JObject: JsonObject; TokenKey: text) JToken: JsonToken;
     begin
         if not JObject.Get(TokenKey, JToken) then
@@ -96,25 +97,26 @@ codeunit 37072300 "AJ Web Json Helper"
         else
             JObject.Add(PropertyName, JToken.ReadFrom('false'));
     end;
+
     procedure JSONAddTxt(var JObject: JsonObject; PropertyName: Text; PropertyValue: Text)
     var
         JToken: JsonToken;
     begin
         if PropertyValue = '' then
-          if ReplaceNULL then
-            JObject.Add(PropertyName,JToken.ReadFrom('""'))
-          else
-            JObject.Add(PropertyName,JToken.ReadFrom('null'))
+            if ReplaceNULL then
+                JObject.Add(PropertyName, JToken.ReadFrom('""'))
+            else
+                JObject.Add(PropertyName, JToken.ReadFrom('null'))
         else
             JObject.Add(PropertyName, JToken.ReadFrom(PropertyValue));
     end;
-    
+
     procedure JSONAddTxtasDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Text)
     var
         JToken: JsonToken;
     begin
-        if PropertyValue = '' then    
-            JObject.Add(PropertyName,JToken.ReadFrom('null'))
+        if PropertyValue = '' then
+            JObject.Add(PropertyName, JToken.ReadFrom('null'))
         else
             JObject.Add(PropertyName, JToken.ReadFrom(PropertyValue));
     end;
@@ -124,10 +126,10 @@ codeunit 37072300 "AJ Web Json Helper"
         ReplaceNULL := NewReplaceNULL;
     end;
 
-    procedure JSONAddNULL(var JObject: JsonObject;PropertyName: Text)
+    procedure JSONAddNULL(var JObject: JsonObject; PropertyName: Text)
     var
         JToken: JsonToken;
     begin
-        JObject.Add(PropertyName,JToken.ReadFrom('null'));
+        JObject.Add(PropertyName, JToken.ReadFrom('null'));
     end;
 }

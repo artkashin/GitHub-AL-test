@@ -806,7 +806,6 @@ table 37072307 "AJ Web Order Header"
         SalesReceivablesSetup: Record "Sales & Receivables Setup";
         AJWebService: Record "AJ Web Service";
 
-    [Scope('Internal')]
     procedure InitRecord(ShippingAgentCode: Code[10])
     var
         ShippingAgent: Record "Shipping Agent";
@@ -836,9 +835,6 @@ table 37072307 "AJ Web Order Header"
         end;
         AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
 
-        //??AJWebService.SETRANGE(AJWebService."Web Service Type",AJWebService."Web Service Type"::Oasis);
-        //??  IF AJWebService.FINDFIRST
-        //??    THEN AJWebOrderHeader.VALIDATE("Web Service Code", AJWebService.Code);
         if AJWebOrderHeader."Web Service Code" = '' then
             AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
 

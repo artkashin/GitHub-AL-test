@@ -679,7 +679,7 @@ page 37072309 "AJ Web Order"
             }
             group("Shipping Label")
             {
-                Caption = 'Shipping Label';
+                Caption = 'Get Shipping Label';
                 action("Get Shipping Label")
                 {
                     ApplicationArea = All;
@@ -691,7 +691,8 @@ page 37072309 "AJ Web Order"
                         AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AJWebOrderHeader);
-                        AJWebShipstationMgmt.Run();
+                        AJWebOrderHeader.FINDFIRST;
+                        AJWebShipstationMgmt.GetOrderLabel(AJWebOrderHeader);
                         Message('Done');
                     end;
                 }
@@ -705,7 +706,7 @@ page 37072309 "AJ Web Order"
                     begin
                         CurrPage.SETSELECTIONFILTER(AJWebOrderHeader);
                         AJWebOrderHeader.FINDFIRST;
-                        AJWebShipstationMgmt.ShipStation_SaveLabel(AJWebOrderHeader);
+                        AJWebShipstationMgmt.SaveLabel(AJWebOrderHeader);
                     end;
                 }
             }

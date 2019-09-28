@@ -135,7 +135,7 @@ page 37072303 "AJ Web Service Card"
                     var
                         AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
-                        AJWebShipstationMgmt.ShipStation_GetMarketlaces(Rec);
+                        AJWebShipstationMgmt.GetMarketlaces(Rec);
                     end;
                 }
                 action("Load Carriers")
