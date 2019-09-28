@@ -2,12 +2,15 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
 {
     layout
     {
-        addafter(WorkflowStatus)
+        addlast(General)
         {
+
             group("AJ Shipping")
             {
+
                 field("Web Order No."; "Web Order No.")
                 {
+                    ApplicationArea = All;
                     AssistEdit = true;
                     Editable = false;
                     QuickEntry = false;
@@ -15,6 +18,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_WebOrderNo; AJWebOrderHeader."Web Order No.")
                 {
+                    ApplicationArea = All;
                     AssistEdit = true;
                     Caption = 'Web Order No.';
                     DrillDown = false;
@@ -102,6 +106,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_WebServiceCode; AJWebOrderHeader."Web Service Code")
                 {
+                    ApplicationArea = All;
                     Caption = 'Web Service Code';
                     Editable = false;
                     Importance = Additional;
@@ -109,6 +114,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpWebServiceCode; AJWebOrderHeader."Shipping Web Service Code")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Web Service Code';
                     QuickEntry = false;
                     TableRelation = "AJ Web Service".Code;
@@ -150,6 +156,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_SipFromWhseID; AJWebOrderHeader."Ship-From Warehouse ID")
                 {
+                    ApplicationArea = All;
                     Caption = 'Ship-From Warehouse ID';
                     QuickEntry = false;
 
@@ -174,6 +181,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpCarrierCode; AJWebOrderHeader."Shipping Carrier Code")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Carrier Code';
                     QuickEntry = false;
 
@@ -215,6 +223,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpCarrierService; AJWebOrderHeader."Shipping Carrier Service")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Carrier Service';
                     QuickEntry = false;
 
@@ -242,6 +251,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpPackageType; AJWebOrderHeader."Shipping Package Type")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Package Type';
                     QuickEntry = false;
 
@@ -271,6 +281,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpDeliveryConf; AJWebOrderHeader."Shipping Delivery Confirm")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Delivery Confirmation';
                     QuickEntry = false;
 
@@ -298,6 +309,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_ShpOption; AJWebOrderHeader."Shipping Options")
                 {
+                    ApplicationArea = All;
                     Caption = 'Shipping Option';
                     QuickEntry = false;
 
@@ -325,6 +337,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdWgt; AJWebOrderHeader."Shp. Product Weight")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Weight';
                     QuickEntry = false;
 
@@ -336,6 +349,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdDim; AJWebOrderHeader."Shp. Product Weight Unit")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Weight Unit';
                     Importance = Additional;
                     QuickEntry = false;
@@ -362,6 +376,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdDimUnit; AJWebOrderHeader."Shp. Product Dimension Unit")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Dimension Unit';
                     Importance = Additional;
                     QuickEntry = false;
@@ -387,6 +402,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdW; AJWebOrderHeader."Shp. Product Width")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Width';
                     Importance = Additional;
                     QuickEntry = false;
@@ -399,6 +415,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdL; AJWebOrderHeader."Shp. Product Length")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Length';
                     Importance = Additional;
                     QuickEntry = false;
@@ -411,6 +428,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PrdH; AJWebOrderHeader."Shp. Product Height")
                 {
+                    ApplicationArea = All;
                     Caption = 'Product Height';
                     Importance = Additional;
                     QuickEntry = false;
@@ -423,6 +441,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_International; AJWebOrderHeader."International Shipment")
                 {
+                    ApplicationArea = All;
                     Caption = 'International';
                     Importance = Additional;
 
@@ -434,6 +453,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_InsureShp; AJWebOrderHeader."Insure Shipment")
                 {
+                    ApplicationArea = All;
                     Caption = 'Insure Shipment';
                     QuickEntry = false;
 
@@ -445,6 +465,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_InsuredValue; AJWebOrderHeader."Insured Value")
                 {
+                    ApplicationArea = All;
                     Caption = 'Insured Value';
                     QuickEntry = false;
 
@@ -456,6 +477,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_AddInsValue; AJWebOrderHeader."Additional Insurance Value")
                 {
+                    ApplicationArea = All;
                     Caption = 'Additional Insurance Value';
                     Importance = Additional;
                     QuickEntry = false;
@@ -469,6 +491,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_CODAmount; AJWebOrderHeader."COD Amount")
                 {
+                    ApplicationArea = All;
                     Caption = 'COD Amount';
                     Importance = Additional;
 
@@ -480,6 +503,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_CarrierShpCharge; AJWebOrderHeader."Carier Shipping Charge")
                 {
+                    ApplicationArea = All;
                     Caption = 'Carrier Shipping Charge';
                     Editable = false;
                     QuickEntry = false;
@@ -491,18 +515,21 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_CarrierTrackingNumber; AJWebOrderHeader."Carier Tracking Number")
                 {
+                    ApplicationArea = All;
                     Caption = 'Carrier Tracking#';
                     Editable = false;
                     QuickEntry = false;
                 }
                 field(AJWOH_CarrierInsuranceCost; AJWebOrderHeader."Carier Insurance Cost")
                 {
+                    ApplicationArea = All;
                     Caption = 'Carrier Insurance Cost';
                     Editable = false;
                     QuickEntry = false;
                 }
                 field(AJWOH_PackagesShipHandAmount; AJWebOrderHeader."Packages Ship. & Hand. Amount")
                 {
+                    ApplicationArea = All;
                     Caption = 'Packages S&H Amount';
                     Editable = false;
                     Importance = Additional;
@@ -510,6 +537,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PackagesCount; AJWebOrderHeader."Packages Count")
                 {
+                    ApplicationArea = Basic;
                     Caption = 'Packages';
                     Editable = false;
                     Importance = Additional;
@@ -529,6 +557,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_CustomField2; AJWebOrderHeader."Customer Reference ID")
                 {
+                    ApplicationArea = basic, Suite;
                     Caption = 'Custom Field 2';
 
                     trigger OnValidate()
