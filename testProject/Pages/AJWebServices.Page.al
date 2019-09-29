@@ -7,6 +7,7 @@ page 37072302 "AJ Web Services"
     ShowFilter = false;
     SourceTable = "AJ Web Service";
     UsageCategory = Lists;
+    Caption = 'Aj Web Services';
 
     layout
     {

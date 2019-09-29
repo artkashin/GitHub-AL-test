@@ -1,17 +1,20 @@
 codeunit 37072301 "AJ Web Service Base"
 {
     procedure CallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text) Result: Boolean
+    var
+        ErrorTxt: Text;
     begin
-        IF not TryCallWebService(AJWebService, URI, Method, ContentType, Body) then
-            Message(Body)
+        if TryCallWebService(AJWebService, URI, Method, ContentType, Body, ErrorTxt) then
+            if ErrorTxt <> '' then
+                Message(Body)
+            else
+                exit(true)
         else
-            exit(true);
-
-        exit(false);
+            exit(false);
     end;
 
     [TryFunction]
-    procedure TryCallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text)
+    procedure TryCallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text; var ErrorTxt: Text)
     var
         Client: HttpClient;
         Headers: HttpHeaders;
@@ -41,13 +44,16 @@ codeunit 37072301 "AJ Web Service Base"
         Client.Send(RequestMessage, ResponseMessage);
         ResponseMessage.Content.ReadAs(Body);
 
+
         if not ResponseMessage.IsSuccessStatusCode then begin
-            Body := StrSubstNo('The web service returned an error message:\\' +
+            ErrorTxt := Body;
+            /*StrSubstNo('The web service returned an error message:\\' +
                 'Status code: %1\' +
                 'Description: %2',
                 ResponseMessage.HttpStatusCode,
                 ResponseMessage.ReasonPhrase);
-            exit(false);
+            */
         end;
+
     end;
 }

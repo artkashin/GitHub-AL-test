@@ -2,12 +2,10 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
 {
     layout
     {
-        addlast(General)
+        addafter("Foreign Trade")
         {
-
             group("AJ Shipping")
             {
-
                 field("Web Order No."; "Web Order No.")
                 {
                     ApplicationArea = All;
