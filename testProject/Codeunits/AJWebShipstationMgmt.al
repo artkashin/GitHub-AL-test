@@ -809,7 +809,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebOrderHeader.TestField("Shp. Product Weight");
         AJWebOrderHeader.TestField("Shp. Product Weight Unit");
 
-        Clear(AddJObject); //asd
+        Clear(AddJObject);
 
         AJWebJsonHelper.JSONAddDec(AddJObject, 'value', AJWebOrderHeader."Shp. Product Weight");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'units', AJWebOrderHeader."Shp. Product Weight Unit");
@@ -935,8 +935,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             AJWebJsonHelper.JSONAddBool(JObject, 'testLabel', true);
 
         JObject.WriteTo(Txt);
-
-        //HttpWebRequest.ContentLength := StrLen(Txt);
 
         if not AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt) then begin
             JObject.ReadFrom(Txt);
