@@ -1055,8 +1055,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJWebOrderHeader."Ship-To Customer State");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJWebOrderHeader."Ship-To Customer Zip");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJWebOrderHeader."Ship-To Customer Country"));
-        AJWebJsonHelper.JSONAddDec(AddJObject, 'phone', 777);
-        //AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJWebOrderHeader."Ship-To Customer Phone");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJWebOrderHeader."Ship-To Customer Phone");
 
         AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJWebOrderHeader."Ship-To Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'shipTo', AddJObject);

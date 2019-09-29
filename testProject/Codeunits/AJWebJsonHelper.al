@@ -186,7 +186,10 @@ codeunit 37072300 "AJ Web Json Helper"
     end;
     */
     procedure JSONAddNULL(var JObject: JsonObject; PropertyName: Text)
+    var
+        jvalue: JsonValue;
     begin
-        JObject.Add(PropertyName, 'null');
+        jvalue.SetValueToNull();
+        JObject.Add(PropertyName, jvalue.AsToken());
     end;
 }
