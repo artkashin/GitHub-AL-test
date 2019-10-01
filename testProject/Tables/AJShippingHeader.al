@@ -1,11 +1,8 @@
-table 37072313 "AJ Web Order Header"
+table 37072307 "AJ Shipping Header"
 {
-    DrillDownPageID = "AJ Web Order List";
-    LookupPageID = "AJ Web Order List";
-
     fields
     {
-        field(1; "Web Order No."; Code[20])
+        field(1; "Log No."; Code[20])
         {
         }
         field(2; "Web Service Order ID"; Code[50])
@@ -549,14 +546,14 @@ table 37072313 "AJ Web Order Header"
 
             trigger OnValidate()
             var
-                AJWebOrderLine: Record "AJ Web Order Line";
+                AJShippingHeader: Record "AJ Shipping Line";
             begin
-                AJWebOrderLine.SetRange("Web Order No.", "Web Order No.");
-                if AJWebOrderLine.FindFirst then
+                AJShippingHeader.SetRange("Log No.", "Log No.");
+                if AJShippingHeader.FindFirst then
                     repeat
-                        AJWebOrderLine."NAV Order Status" := "NAV Order Status";
-                        AJWebOrderLine.Modify;
-                    until AJWebOrderLine.Next = 0;
+                        AJShippingHeader."NAV Order Status" := "NAV Order Status";
+                        AJShippingHeader.Modify;
+                    until AJShippingHeader.Next = 0;
             end;
         }
         field(1002; "Created Order Text"; BLOB)
@@ -576,7 +573,7 @@ table 37072313 "AJ Web Order Header"
         }
         field(1007; "NAV Order Count"; Integer)
         {
-            CalcFormula = Count ("Sales Header" WHERE ("Web Order No." = FIELD ("Web Order No."),
+            CalcFormula = Count ("Sales Header" WHERE ("Web Order No." = FIELD ("Log No."),
                                                       "Document Type" = CONST (Order)));
             Editable = false;
             FieldClass = FlowField;
@@ -621,21 +618,21 @@ table 37072313 "AJ Web Order Header"
         field(1200; Packages; Boolean)
         {
             CalcFormula = Exist ("AJ Web Package" WHERE ("Source Type" = CONST (37074833),
-                                                        "Source No." = FIELD ("Web Order No.")));
+                                                        "Source No." = FIELD ("Log No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(1201; "Packages Ship. & Hand. Amount"; Decimal)
         {
             CalcFormula = Sum ("AJ Web Package"."Shipping & Handling Amount" WHERE ("Source Type" = CONST (37074833),
-                                                                                   "Source No." = FIELD ("Web Order No.")));
+                                                                                   "Source No." = FIELD ("Log No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(1202; "Packages Count"; Integer)
         {
             CalcFormula = Count ("AJ Web Package" WHERE ("Source Type" = CONST (37074833),
-                                                        "Source No." = FIELD ("Web Order No.")));
+                                                        "Source No." = FIELD ("Log No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -707,7 +704,7 @@ table 37072313 "AJ Web Order Header"
 
             trigger OnValidate()
             var
-                WebOrdLine: Record "AJ Web Order Line";
+                WebOrdLine: Record "AJ Shipping Line";
             begin
             end;
         }
@@ -716,14 +713,14 @@ table 37072313 "AJ Web Order Header"
         }
         field(5008; "Total Quantity"; Decimal)
         {
-            CalcFormula = Sum ("AJ Web Order Line".Quantity WHERE ("Web Order No." = FIELD ("Web Order No.")));
+            CalcFormula = Sum ("AJ Shipping Line".Quantity WHERE ("Log No." = FIELD ("Log No.")));
             DecimalPlaces = 0 : 2;
             Editable = false;
             FieldClass = FlowField;
         }
         field(5009; Lines; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Line" WHERE ("Web Order No." = FIELD ("Web Order No."),
+            CalcFormula = Count ("AJ Shipping Line" WHERE ("Log No." = FIELD ("Log No."),
                                                            Quantity = FILTER (<> 0)));
             Editable = false;
             FieldClass = FlowField;
@@ -748,7 +745,7 @@ table 37072313 "AJ Web Order Header"
 
     keys
     {
-        key(Key1; "Web Order No.")
+        key(Key1; "Log No.")
         {
             Clustered = true;
         }
@@ -760,7 +757,7 @@ table 37072313 "AJ Web Order Header"
 
     trigger OnDelete()
     var
-        AJWebOrderLine: Record "AJ Web Order Line";
+        AJShippingHeader: Record "AJ Shipping Line";
         SalesHeader: Record "Sales Header";
         AJWebPackage: Record "AJ Web Package";
     begin
@@ -770,7 +767,7 @@ table 37072313 "AJ Web Order Header"
                     Error('You cannot delete Web Order!');
 
         SalesHeader.Reset;
-        SalesHeader.SetRange("Web Order No.", "Web Order No.");
+        SalesHeader.SetRange("Web Order No.", "Log No.");
         SalesHeader.SetFilter("Document Type", '%1|%2', SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice);
         if SalesHeader.FindFirst then
             if not "Created From Sales Order" then begin
@@ -781,13 +778,13 @@ table 37072313 "AJ Web Order Header"
             end;
 
         AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
-        AJWebPackage.SetRange("Source No.", "Web Order No.");
+        AJWebPackage.SetRange("Source No.", "Log No.");
         if not AJWebPackage.IsEmpty then
             AJWebPackage.DeleteAll(true);
 
-        AJWebOrderLine.SetRange("Web Order No.", "Web Order No.");
-        if not AJWebOrderLine.IsEmpty then
-            AJWebOrderLine.DeleteAll(true);
+        AJShippingHeader.SetRange("Log No.", "Log No.");
+        if not AJShippingHeader.IsEmpty then
+            AJShippingHeader.DeleteAll(true);
     end;
 
     trigger OnInsert()
@@ -795,10 +792,10 @@ table 37072313 "AJ Web Order Header"
         AJWebSetup: Record "AJ Web Setup";
         NoSeriesManagement: Codeunit NoSeriesManagement;
     begin
-        if "Web Order No." = '' then begin
+        if "Log No." = '' then begin
             AJWebSetup.Get;
             AJWebSetup.TestField("Web Order No. Series");
-            "Web Order No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Order No. Series", WorkDate, true);
+            "Log No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Order No. Series", WorkDate, true);
         end;
     end;
 
@@ -811,19 +808,19 @@ table 37072313 "AJ Web Order Header"
         ShippingAgent: Record "Shipping Agent";
         AJWebService: Record "AJ Web Service";
         AJWebCarrier: Record "AJ Web Carrier";
-        AJWebOrderHeader: Record "AJ Web Order Header";
+        AJShippingHeader: Record "AJ Shipping Header";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
     begin
         SalesReceivablesSetup.Get;
 
-        AJWebOrderHeader := Rec;
+        AJShippingHeader := Rec;
 
-        AJWebOrderHeader.Init;
-        AJWebOrderHeader."Web Order No." := '';
-        AJWebOrderHeader."Created From Sales Order" := true;
-        AJWebOrderHeader."Created DateTime" := CurrentDateTime;
-        AJWebOrderHeader."Order DateTime" := CurrentDateTime;
-        AJWebOrderHeader.Insert(true);
+        AJShippingHeader.Init;
+        AJShippingHeader."Log No." := '';
+        AJShippingHeader."Created From Sales Order" := true;
+        AJShippingHeader."Created DateTime" := CurrentDateTime;
+        AJShippingHeader."Order DateTime" := CurrentDateTime;
+        AJShippingHeader.Insert(true);
 
         if not ShippingAgent.Get(ShippingAgentCode) then
             ShippingAgent.Init;
@@ -833,19 +830,19 @@ table 37072313 "AJ Web Order Header"
             AJWebService.SetRange(AJWebService."Web Service Type", AJWebService."Web Service Type"::ShipStation);
             if AJWebService.FindFirst then;
         end;
-        AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
+        AJShippingHeader.Validate("Shipping Web Service Code", AJWebService.Code);
 
-        if AJWebOrderHeader."Web Service Code" = '' then
-            AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
+        if AJShippingHeader."Web Service Code" = '' then
+            AJShippingHeader.Validate("Web Service Code", AJWebService.Code);
 
         if ShippingAgent."Shipping Carrier Code" <> '' then begin
             AJWebCarrier.Get(ShippingAgent."Shipping Web Service Code", ShippingAgent."Shipping Carrier Code");
-            AJWebOrderHeader."Shipping Carrier Code" := ShippingAgent."Shipping Carrier Code";
+            AJShippingHeader."Shipping Carrier Code" := ShippingAgent."Shipping Carrier Code";
         end;
 
-        AJWebOrderHeader.Modify;
+        AJShippingHeader.Modify;
 
-        Rec := AJWebOrderHeader;
+        Rec := AJShippingHeader;
     end;
 
     local procedure TestLabelCreated()
@@ -869,19 +866,19 @@ table 37072313 "AJ Web Order Header"
     var
         AJWebService: Record "AJ Web Service";
         AJWebCarrier: Record "AJ Web Carrier";
-        AJWebOrderHeader: Record "AJ Web Order Header";
+        AJShippingHeader: Record "AJ Shipping Header";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
         ShipmentMethod: Record "Shipment Method";
         AJWebCarrierService: Record "AJ Web Carrier Service";
     begin
-        AJWebOrderHeader := Rec;
+        AJShippingHeader := Rec;
 
-        AJWebOrderHeader.Init;
-        AJWebOrderHeader."Web Order No." := '';
-        AJWebOrderHeader."Created From Sales Order" := true;
-        AJWebOrderHeader."Created DateTime" := CurrentDateTime;
-        AJWebOrderHeader."Order DateTime" := CurrentDateTime;
-        AJWebOrderHeader.Insert(true);
+        AJShippingHeader.Init;
+        AJShippingHeader."Log No." := '';
+        AJShippingHeader."Created From Sales Order" := true;
+        AJShippingHeader."Created DateTime" := CurrentDateTime;
+        AJShippingHeader."Order DateTime" := CurrentDateTime;
+        AJShippingHeader.Insert(true);
 
         if not ShipmentMethod.Get(ShipmentMethodCode) then
             ShipmentMethod.Init;
@@ -889,24 +886,24 @@ table 37072313 "AJ Web Order Header"
         if AJWebCarrierService.FindFirst then begin
             AJWebService.Get(AJWebCarrierService."Web Service Code");
 
-            AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
-            AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
-            AJWebOrderHeader.Validate("Shipping Carrier Code", AJWebCarrierService."Web Carrier Code");
-            AJWebOrderHeader.Validate("Shipping Carrier Service", AJWebCarrierService."Service  Code");
-            AJWebOrderHeader.Validate("Shipping Package Type", AJWebCarrierService."Default Package Code");
+            AJShippingHeader.Validate("Web Service Code", AJWebService.Code);
+            AJShippingHeader.Validate("Shipping Web Service Code", AJWebService.Code);
+            AJShippingHeader.Validate("Shipping Carrier Code", AJWebCarrierService."Web Carrier Code");
+            AJShippingHeader.Validate("Shipping Carrier Service", AJWebCarrierService."Service  Code");
+            AJShippingHeader.Validate("Shipping Package Type", AJWebCarrierService."Default Package Code");
 
         end else begin
             AJWebService.SetRange(AJWebService."Web Service Type", AJWebService."Web Service Type"::ShipStation);
             if not AJWebService.FindFirst then
                 Error('Web Service not found!');
-            if AJWebOrderHeader."Web Service Code" = '' then
-                AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
-            AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
+            if AJShippingHeader."Web Service Code" = '' then
+                AJShippingHeader.Validate("Web Service Code", AJWebService.Code);
+            AJShippingHeader.Validate("Shipping Web Service Code", AJWebService.Code);
         end;
 
-        AJWebOrderHeader.Modify;
+        AJShippingHeader.Modify;
 
-        Rec := AJWebOrderHeader;
+        Rec := AJShippingHeader;
     end;
 
     procedure SetResponseContent(var value: HttpContent)

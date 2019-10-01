@@ -2,26 +2,20 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 {
     trigger OnRun()
     var
-        AJWebServParameters: Record "AJ Web Service Parameters" temporary;
-        AJWebServiceBase: Codeunit "AJ Web Service Base";
         AJWebService: Record "AJ Web Service";
         AJWebOrderHeader: Record "AJ Web Order Header";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         Base64Convert: Codeunit Base64Convert;
-        ValueJToken: JsonToken;
+        AJWebServiceBase: Codeunit "AJ Web Service Base";
         JObject: JsonObject;
-        JToken: JsonToken;
-        InStr: InStream;
         OutStr: OutStream;
         Txt: Text;
-        ResponseTxt: Text;
         Uri: Text;
         LabelPdf: Text;
     begin
 
-        if not AJWebService.FindFirst() then begin
+        if not AJWebService.FindFirst() then
             InitRecords();
-        end;
 
         Txt := '{"orderId": 3767637,"carrierCode": "fedex","serviceCode": "fedex_2day","packageCode": "package","confirmation": "none","shipDate": "2019-09-27","weight": {"value": 1,"units": "value"},"dimensions": {"units": "units","length": 1,"width": 1,"height": 1},"insuranceOptions": null,"internationalOptions": null,"advancedOptions": {"warehouseId": "0","nonMachinable": false,"saturdayDelivery": false,"containsAlcohol": false,"customField1": "101018","customField2": null,"customField3": null}}';
         Uri := AJWebService."API Endpoint Domain" + 'orders/createlabelfororder';
@@ -36,17 +30,17 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             Base64Convert.FromBase64StringToStream(LabelPdf, OutStr);
 
             AJWebOrderHeader."Carier Shipping Charge" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'shipmentCost');
-            AJWebOrderHeader."Carier Tracking Number" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber');//,MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
+            AJWebOrderHeader."Carier Tracking Number" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber'), 1, MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
             AJWebOrderHeader."Carier Insurance Cost" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'insuranceCost');
         end;
-        AJWebOrderHeader."Web Service Shipment ID" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId');//,MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
+        AJWebOrderHeader."Web Service Shipment ID" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId'), 1, MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
         AJWebOrderHeader."Labels Created" := true;
         AJWebOrderHeader."Labels Printed" := false;
-        AJWebOrderHeader.Modify;
+        AJWebOrderHeader.Modify();
     end;
 
     var
-        Text014: Label 'Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.';
+        AddressErr: Label 'Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.';
         DoNotSendOrder: Boolean;
 
     procedure GetLabelForOrderInMessage(AJWebService: Record "AJ Web Service")
@@ -220,7 +214,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         end;
     end;
 
-
     procedure GetShipAgentInfo(AJWebService: Record "AJ Web Service")
     var
         AJWebCarrier: Record "AJ Web Carrier";
@@ -228,13 +221,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
-        HttpWebRequest: HttpRequestMessage;
-        HttpWebContentHeaders: HttpHeaders;
-        HttpWebHeaders: HttpHeaders;
-        HttpWebContent: HttpContent;
-        HttpWebResponse: HttpResponseMessage;
         JArray: JsonArray;
-        ValueJToken: JsonToken;
         JObject: JsonObject;
         JToken: JsonToken;
         i: Integer;
@@ -250,7 +237,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not JArray.ReadFrom(Txt) then
             Error('Bad response');
 
-        for i := 1 to JArray.Count do begin
+        for i := 1 to JArray.Count() do begin
             JArray.Get(i - 1, JToken); //asd
             Clear(JObject);
 
@@ -258,7 +245,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 AJWebCarrier."Web Service Code" := AJWebService.Code;
                 with AJWebJsonHelper do begin
                     AJWebCarrier.Code := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrier.Code));
-                    if AJWebCarrier.Find then;
+                    if AJWebCarrier.FindFirst() then;
                     if JObject.Contains('name') then
                         AJWebCarrier.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrier.Name));
                     if JObject.Contains('accountNumber') then
@@ -267,14 +254,14 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                         AJWebCarrier."Requires Funded Account" := GetJsonValueAsBool(JObject, 'requiresFundedAccount');
                     if JObject.Contains('balance') then
                         AJWebCarrier.Balance := GetJsonValueAsDec(JObject, 'balance');
-                    if not AJWebCarrier.Insert then
-                        AJWebCarrier.Modify;
+                    if not AJWebCarrier.Insert() then
+                        AJWebCarrier.Modify();
                 end;
             end;
         end;
 
         AJWebCarrier.SetRange("Web Service Code", AJWebService.Code);
-        if AJWebCarrier.FindFirst then
+        if AJWebCarrier.FindFirst() then
             repeat
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listpackages?carrierCode=' + AJWebCarrier.Code;
                 AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', Txt);
@@ -282,7 +269,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
 
-                for i := 1 to JArray.Count do begin
+                for i := 1 to JArray.Count() do begin
                     JArray.Get(i - 1, JToken);
                     Clear(JObject);
 
@@ -292,15 +279,15 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                             AJWebCarrierPackageType."Package Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierPackageType."Package Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierPackageType."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierPackageType."Web Carrier Code"));
-                            if AJWebCarrierPackageType.Find then;
+                            if AJWebCarrierPackageType.FindFirst() then;
                             if JObject.Contains('name') then
                                 AJWebCarrierPackageType."Package Name" := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierPackageType."Package Name"));
                             if JObject.Contains('domestic') then
                                 AJWebCarrierPackageType.Domestic := GetJsonValueAsBool(JObject, 'domestic');
                             if JObject.Contains('international') then
                                 AJWebCarrierPackageType.International := GetJsonValueAsBool(JObject, 'international');
-                            if not AJWebCarrierPackageType.Insert then
-                                AJWebCarrierPackageType.Modify;
+                            if not AJWebCarrierPackageType.Insert() then
+                                AJWebCarrierPackageType.Modify();
                         end;
                     end;
                 end;
@@ -311,7 +298,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
 
-                for i := 1 to JArray.Count do begin
+                for i := 1 to JArray.Count() do begin
                     JArray.Get(i - 1, JToken);
                     Clear(JObject);
 
@@ -321,32 +308,28 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                             AJWebCarrierService."Service  Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierService."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
-                            if AJWebCarrierService.Find then;
+                            if AJWebCarrierService.FindFirst() then;
                             if JObject.Contains('name') then
                                 AJWebCarrierService.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierService.Name));
                             if JObject.Contains('domestic') then
                                 AJWebCarrierService.Domestic := GetJsonValueAsBool(JObject, 'domestic');
                             if JObject.Contains('international') then
                                 AJWebCarrierService.International := GetJsonValueAsBool(JObject, 'international');
-                            if not AJWebCarrierService.Insert then
-                                AJWebCarrierService.Modify;
+                            if not AJWebCarrierService.Insert() then
+                                AJWebCarrierService.Modify();
                         end;
                     end;
                 end;
-            until AJWebCarrier.Next = 0;
+            until AJWebCarrier.Next() = 0;
     end;
 
     procedure GetMarketlaces(AJWebService: Record "AJ Web Service")
     var
         AJWebMarketplace: Record "AJ Web Marketplace (Mailbox)";
-        HttpWebRequest: HttpRequestMessage;
-        HttpWebHeaders: HttpHeaders;
-        HttpWebResponse: HttpResponseMessage;
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         Uri: Text;
         Txt: Text;
-        ErrorText: Text;
         JArray: JsonArray;
         JToken: JsonToken;
         JObject: JsonObject;
@@ -361,54 +344,52 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not JArray.ReadFrom(Txt) then
             Error('Bad response');
 
-        for i := 1 to JArray.Count do begin
+        for i := 1 to JArray.Count() do begin
             JArray.Get(i - 1, JToken);
             Clear(JObject);
             if JObject.Contains('marketplaceId') then begin
                 AJWebMarketplace."Web Service Code" := AJWebService.Code;
                 with AJWebJsonHelper do begin
                     AJWebMarketplace.Code := CopyStr(GetJsonValueAsText(JObject, 'marketplaceId'), 1, MaxStrLen(AJWebMarketplace.Code));
-                    if AJWebMarketplace.Find then;
+                    if AJWebMarketplace.Find() then;
                     if JObject.Get('name', ValueJToken) then
                         AJWebMarketplace.Description := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebMarketplace.Description));
                     if JObject.Get('canRefresh', ValueJToken) then
-                        AJWebMarketplace."Can Refresh" := ValueJToken.AsValue.AsBoolean();
+                        AJWebMarketplace."Can Refresh" := ValueJToken.AsValue().AsBoolean();
                     if JObject.Get('supportsCustomMappings', ValueJToken) then
                         AJWebMarketplace."Supports Custom Mappings" := GetJsonValueAsBool(JObject, 'supportsCustomMappings');
                     if JObject.Get('supportsCustomStatuses', ValueJToken) then
                         AJWebMarketplace."Supports Custom Statuses" := GetJsonValueAsBool(JObject, 'supportsCustomStatuses');
                     if JObject.Get('canConfirmShipments', ValueJToken) then
                         AJWebMarketplace."Can Confirm Shipments" := GetJsonValueAsBool(JObject, 'canConfirmShipments');
-                    if not AJWebMarketplace.Insert then
-                        AJWebMarketplace.Modify;
+                    if not AJWebMarketplace.Insert() then
+                        AJWebMarketplace.Modify();
                 end;
             end;
         end;
         //CheckResponce(HttpWebResponse, AJWebService);
     end;
 
-    /*
-    local procedure CheckResponce(var HttpWebResponse: HttpResponseMessage;var AJWebService: Record "AJ Web Service")
-    var
-        HttpWebHeaders: HttpHeaders;
-    begin
-        HttpWebHeaders := HttpWebResponse.Headers;
-        if Evaluate(AJWebService."Rate Limit",HttpWebHeaders. .Get('X-Rate-Limit-Limit')) then;
-        if Evaluate(AJWebService."Limit Remaining",HttpWebHeaders.Get('X-Rate-Limit-Remaining')) then;
-        if Evaluate(AJWebService."Limit Reset",HttpWebHeaders.Get('X-Rate-Limit-Reset')) then;
-        AJWebService.Modify;
-        if (AJWebService."Limit Remaining" = 0) and (AJWebService."Limit Reset" <> 0) then begin
-          Message('Web Service request limit reached. Reset in %1 seconds.',AJWebService."Limit Reset");
-          Sleep(1000*AJWebService."Limit Reset");
-        end;
-    end;
-    */
+
+    // local procedure CheckResponce(var HttpWebResponse: HttpResponseMessage;var AJWebService: Record "AJ Web Service")
+    // var
+    //     HttpWebHeaders: HttpHeaders;
+    // begin
+    //     HttpWebHeaders := HttpWebResponse.Headers;
+    //     if Evaluate(AJWebService."Rate Limit",HttpWebHeaders. .Get('X-Rate-Limit-Limit')) then;
+    //     if Evaluate(AJWebService."Limit Remaining",HttpWebHeaders.Get('X-Rate-Limit-Remaining')) then;
+    //     if Evaluate(AJWebService."Limit Reset",HttpWebHeaders.Get('X-Rate-Limit-Reset')) then;
+    //     AJWebService.Modify();
+    //     if (AJWebService."Limit Remaining" = 0) and (AJWebService."Limit Reset" <> 0) then begin
+    //       Message('Web Service request limit reached. Reset in %1 seconds.',AJWebService."Limit Reset");
+    //       Sleep(1000*AJWebService."Limit Reset");
+    //     end;
+    // end;
+
+
     procedure GetWarehouses(AJWebService: Record "AJ Web Service")
     var
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-        HttpWebRequest: HttpRequestMessage;
-        HttpWebHeaders: HttpHeaders;
-        HttpWebResponse: HttpResponseMessage;
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         JArray: JsonArray;
@@ -418,7 +399,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         JObject2: JsonObject;
         Uri: Text;
         Txt: Text;
-        ErrorText: Text;
         i: Integer;
     begin
         AJWebService.TestField("API Endpoint Domain");
@@ -430,17 +410,17 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not JArray.ReadFrom(Txt) then
             Error('Bad response');
 
-        for i := 1 to JArray.Count do begin
+        for i := 1 to JArray.Count() do begin
             JArray.Get(i - 1, JToken);
             Clear(JObject);
 
             with AJWebJsonHelper do begin
                 if JObject.Get('warehouseId', ValueJToken) then begin
                     AJWebServiceWarehouse."Web Service Code" := AJWebService.Code;
-                    AJWebServiceWarehouse."Warehouse ID" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Warehouse ID"));
-                    if AJWebServiceWarehouse.Find then;
+                    AJWebServiceWarehouse."Warehouse ID" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Warehouse ID"));
+                    if AJWebServiceWarehouse.Find() then;
                     if JObject.Get('warehouseName', ValueJToken) then
-                        AJWebServiceWarehouse.Description := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse.Description));
+                        AJWebServiceWarehouse.Description := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse.Description));
 
                     if JObject.Contains('originAddress') then begin
                         JObject.SelectToken('originAddress', JToken);
@@ -449,31 +429,31 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                         /*
                         my old code
                         if JObject2.Get('name', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
+                            AJWebServiceWarehouse."Ship-From Name" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
                         if JObject2.Get('company', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
+                            AJWebServiceWarehouse."Ship-From Company" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
                         if JObject2.Get('street1', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
+                            AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
                         if JObject2.Get('street2', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
+                            AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
                         if JObject2.Get('street3', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
+                            AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
                         if JObject2.Get('city', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
+                            AJWebServiceWarehouse."Ship-From City" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
                         if JObject2.Get('state', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
+                            AJWebServiceWarehouse."Ship-From State" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
                         if JObject2.Get('postalCode', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
+                            AJWebServiceWarehouse."Ship-From Zip" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
                         if JObject2.Get('country', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
+                            AJWebServiceWarehouse."Ship-From Country" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
                         if JObject2.Get('phone', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
+                            AJWebServiceWarehouse."Ship-From Phone" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
                         if JObject2.Get('residential', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Residential" := ValueJToken.AsValue.AsBoolean();
+                            AJWebServiceWarehouse."Ship-From Residential" := ValueJToken.AsValue().AsBoolean();
                         if JObject2.Get('addressVerified', ValueJToken) then
                             // problem MBS
                             AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(GetJsonValueAsText(JObject2, 'addressVerified'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
-                        //AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
+                        //AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
                         */
                         if JObject2.Contains('name') then
                             AJWebServiceWarehouse."Ship-From Name" := CopyStr(GetJsonValueAsText(JObject2, 'name'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
@@ -507,25 +487,25 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                         JObject2 := JToken.AsObject();
 
                         if JObject2.Contains('name') then
-                            AJWebServiceWarehouse."Return Name" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Name"));
+                            AJWebServiceWarehouse."Return Name" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Name"));
                         if JObject2.Contains('company') then
-                            AJWebServiceWarehouse."Return Company" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Company"));
+                            AJWebServiceWarehouse."Return Company" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Company"));
                         if JObject2.Contains('street1') then
-                            AJWebServiceWarehouse."Return Address 1" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 1"));
+                            AJWebServiceWarehouse."Return Address 1" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Address 1"));
                         if JObject2.Contains('street2') then
-                            AJWebServiceWarehouse."Return Address 2" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 2"));
+                            AJWebServiceWarehouse."Return Address 2" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Address 2"));
                         if JObject2.Contains('street3') then
-                            AJWebServiceWarehouse."Return Address 3" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Address 3"));
+                            AJWebServiceWarehouse."Return Address 3" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Address 3"));
                         if JObject2.Contains('city') then
-                            AJWebServiceWarehouse."Return City" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return City"));
+                            AJWebServiceWarehouse."Return City" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return City"));
                         if JObject2.Contains('state') then
-                            AJWebServiceWarehouse."Return State" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return State"));
+                            AJWebServiceWarehouse."Return State" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return State"));
                         if JObject2.Contains('postalCode') then
-                            AJWebServiceWarehouse."Return Zip" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Zip"));
+                            AJWebServiceWarehouse."Return Zip" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Zip"));
                         if JObject2.Contains('country') then
-                            AJWebServiceWarehouse."Return Country" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Country"));
+                            AJWebServiceWarehouse."Return Country" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Country"));
                         if JObject2.Contains('phone') then
-                            AJWebServiceWarehouse."Return Phone" := CopyStr(ValueJToken.AsValue.AsText, 1, MaxStrLen(AJWebServiceWarehouse."Return Phone"));
+                            AJWebServiceWarehouse."Return Phone" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Return Phone"));
                         if JObject2.Contains('residential') then
                             AJWebServiceWarehouse."Return Residential" := GetJsonValueAsBool(JObject2, 'residential');
                         if JObject2.Contains('addressVerified') then
@@ -534,27 +514,24 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 end;
 
                 if JObject.Get('createDate', ValueJToken) then
-                    AJWebServiceWarehouse."Created At" := ValueJToken.AsValue.AsDateTime();
+                    AJWebServiceWarehouse."Created At" := ValueJToken.AsValue().AsDateTime();
                 if JObject.Get('isDefault', ValueJToken) then
-                    AJWebServiceWarehouse.Default := ValueJToken.AsValue.AsBoolean();
+                    AJWebServiceWarehouse.Default := ValueJToken.AsValue().AsBoolean();
 
             end;
-            if not AJWebServiceWarehouse.Insert then
-                AJWebServiceWarehouse.Modify;
+            if not AJWebServiceWarehouse.Insert() then
+                AJWebServiceWarehouse.Modify();
         end;
     end;
 
     procedure SaveLabel(AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        FileManagement: Codeunit "File Management";
-        TempBlob: Record TempBlob temporary;
-        OS: OutStream;
         IS: InStream;
         ToFile: Text;
     begin
-        AJWebOrderHeader.Find;
+        AJWebOrderHeader.Find();
         AJWebOrderHeader.CalcFields("Shipping Agent Label");
-        if AJWebOrderHeader."Shipping Agent Label".HasValue then begin
+        if AJWebOrderHeader."Shipping Agent Label".HasValue() then begin
             AJWebOrderHeader."Shipping Agent Label".CreateInStream(IS);
             ToFile := 'LBL-' + AJWebOrderHeader."Web Order No." + '.pdf';
             DownloadFromStream(IS, 'Save label as', 'C:\', 'Adobe Acrobat file(*.pdf)|*.pdf', ToFile);
@@ -565,13 +542,11 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
     var
         SalesLine: Record "Sales Line";
         AJWebOrderLine: Record "AJ Web Order Line";
-        ShiptoAddress: Record "Ship-to Address";
         Customer: Record Customer;
         Currency: Record Currency;
         SalesInvoiceLine: Record "Sales Invoice Line";
         SalespersonPurchaser: Record "Salesperson/Purchaser";
         AJWebService: Record "AJ Web Service";
-        ShippingAgentServices: Record "Shipping Agent Services";
     begin
         if AJWebOrderHeader."Web Order No." = '' then begin
             AJWebOrderHeader."Created From Sales Order" := true;
@@ -598,7 +573,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebOrderHeader."Order DateTime" := CreateDateTime(SalesHeader."Order Date", 0T);
 
         AJWebOrderHeader."Bill-To Customer Name" := SalesHeader."Bill-to Name";
-        AJWebOrderHeader."Bill-To Company" := SalesHeader."Bill-to Name";
+        AJWebOrderHeader."Bill-To Company" := CopyStr(SalesHeader."Bill-to Name", 1, MaxStrLen(AJWebOrderHeader."Bill-To Company"));
         AJWebOrderHeader."Bill-To Customer Address 1" := SalesHeader."Bill-to Address";
         AJWebOrderHeader."Bill-To Customer Address 2" := SalesHeader."Bill-to Address 2";
         AJWebOrderHeader."Bill-To Customer Address 3" := '';
@@ -647,7 +622,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         //  IF ShippingAgentServices.GET(SalesHeader."Shipping Agent Code", SalesHeader."Shipping Agent Service Code") THEN
         //     AJWebOrderHeader."Saturday Delivery" := ShippingAgentServices."Saturday Delivery";
         // MBS commented <<
-        AJWebOrderHeader.Modify;
+        AJWebOrderHeader.Modify();
 
         AJWebOrderHeader.TestField("Ship-To Customer Address 1");
 
@@ -699,7 +674,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             end;
             AJWebOrderHeader."Merchandise Amount" := Round(AJWebOrderHeader."Merchandise Amount", Currency."Amount Rounding Precision"); // 4/12/2018
             AJWebOrderHeader."NAV Order Status" := AJWebOrderHeader."NAV Order Status"::Created; // 4/12/2018
-            AJWebOrderHeader.Modify;
+            AJWebOrderHeader.Modify();
         end;
 
         CreateOrder(AJWebOrderHeader);
@@ -939,7 +914,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt) then begin
             JObject.ReadFrom(Txt);
             if JObject.Get('ExceptionMessage', ValueJToken) then
-                Error('Web service error:\%1', ValueJToken.AsValue.AsText())
+                Error('Web service error:\%1', ValueJToken.AsValue().AsText())
             else
                 Error('Web service error:\%1', Txt);
         end;
@@ -960,7 +935,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebOrderHeader."Web Service Shipment ID" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId');//,MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
         AJWebOrderHeader."Labels Created" := true;
         AJWebOrderHeader."Labels Printed" := false;
-        AJWebOrderHeader.Modify;
+        AJWebOrderHeader.Modify();
     end;
 
     procedure GetOrderLabelParam(NewDoNotSendOrder: Boolean)
@@ -1012,7 +987,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if AJWebCarrier."2 Lines Address only" and ((AJWebOrderHeader."Bill-To Customer Address 3" <> '')
           or (AJWebOrderHeader."Ship-To Customer Address 3" <> ''))
         then
-            Error(StrSubstNo(Text014, AJWebCarrier.Code));
+            Error(StrSubstNo(AddressErr, AJWebCarrier.Code));
         //<< Additional Check
 
         Uri := AJWebService."API Endpoint Domain" + 'orders/createorder';
@@ -1123,7 +1098,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         JObject.ReadFrom(Txt);
         if JObject.Contains('orderId') then begin
             AJWebOrderHeader."Shipping Web Service Order No." := AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId');
-            AJWebOrderHeader.Modify;
+            AJWebOrderHeader.Modify();
         end;
     end;
 
@@ -1431,7 +1406,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         JObject.ReadFrom(Txt);
         if JObject.Contains('orderId') then begin
             AJWebOrderHeader."Shipping Web Service Order No." := AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId');
-            AJWebOrderHeader.Modify;
+            AJWebOrderHeader.Modify();
         end;
     end;
 

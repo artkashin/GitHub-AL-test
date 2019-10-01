@@ -2,7 +2,7 @@ table 37072302 "AJ Web Service"
 {
     DrillDownPageID = "AJ Web Services";
     LookupPageID = "AJ Web Services";
-
+    Caption = 'Aj Web Services';
     fields
     {
         field(1; "Code"; Code[10])

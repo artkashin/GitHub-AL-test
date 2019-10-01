@@ -8,7 +8,7 @@ page 37072302 "AJ Web Services"
     SourceTable = "AJ Web Service";
     UsageCategory = Lists;
     Caption = 'Aj Web Services';
-
+    ApplicationArea = all;
     layout
     {
         area(content)
