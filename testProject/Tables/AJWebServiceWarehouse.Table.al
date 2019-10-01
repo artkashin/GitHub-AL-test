@@ -25,32 +25,32 @@ table 37072311 "AJ Web Service Warehouse"
         }
         field(21; "Def. Shipping Carrier Code"; Text[50])
         {
-            TableRelation = "AJ Web Carrier".Code WHERE ("Web Service Code" = FIELD ("Def. Shipping Web Service Code"));
+            TableRelation = "AJ Web Carrier".Code WHERE("Web Service Code" = FIELD("Def. Shipping Web Service Code"));
         }
         field(22; "Def. Shipping Package Type"; Text[50])
         {
-            TableRelation = "AJ Web Carrier Package Type"."Package Code" WHERE ("Web Service Code" = FIELD ("Def. Shipping Web Service Code"),
-                                                                                "Web Carrier Code" = FIELD ("Def. Shipping Carrier Code"));
+            TableRelation = "AJ Web Carrier Package Type"."Package Code" WHERE("Web Service Code" = FIELD("Def. Shipping Web Service Code"),
+                                                                                "Web Carrier Code" = FIELD("Def. Shipping Carrier Code"));
 
             trigger OnLookup()
             begin
-                GetPackageCodeAndPackageName;
+                GetPackageCodeAndPackageName();
             end;
         }
         field(23; "Def. Shipping Delivery Confirm"; Text[50])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code" = FIELD ("Def. Shipping Web Service Code"),
-                                                                             Type = CONST (Confirmation));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE("Web Order Service Code" = FIELD("Def. Shipping Web Service Code"),
+                                                                             Type = CONST(Confirmation));
         }
         field(24; "Def. Shipping Insutance Provd"; Text[50])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code" = FIELD ("Def. Shipping Web Service Code"),
-                                                                             Type = CONST (Insurance));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE("Web Order Service Code" = FIELD("Def. Shipping Web Service Code"),
+                                                                             Type = CONST(Insurance));
         }
         field(25; "Def. Shipping Carrier Service"; Text[50])
         {
-            TableRelation = "AJ Web Carrier Service"."Service  Code" WHERE ("Web Service Code" = FIELD ("Def. Shipping Web Service Code"),
-                                                                            "Web Carrier Code" = FIELD ("Def. Shipping Carrier Code"));
+            TableRelation = "AJ Web Carrier Service"."Service  Code" WHERE("Web Service Code" = FIELD("Def. Shipping Web Service Code"),
+                                                                            "Web Carrier Code" = FIELD("Def. Shipping Carrier Code"));
         }
         field(26; "Def. Insure Shipment"; Boolean)
         {
@@ -61,8 +61,8 @@ table 37072311 "AJ Web Service Warehouse"
         }
         field(28; "Def. Product Weight Unit"; Text[30])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE (Type = CONST (Weight),
-                                                                             "Web Order Service Code" = FIELD ("Def. Shipping Web Service Code"));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE(Type = CONST(Weight),
+                                                                             "Web Order Service Code" = FIELD("Def. Shipping Web Service Code"));
         }
         field(60; "Ship-From Name"; Text[100])
         {
@@ -167,9 +167,8 @@ table 37072311 "AJ Web Service Warehouse"
         TestField("Def. Shipping Carrier Code");
         AJWebCarrierPackage.SetRange("Web Service Code", "Web Service Code");
         AJWebCarrierPackage.SetRange("Web Carrier Code", "Def. Shipping Carrier Code");
-        if PAGE.RunModal(0, AJWebCarrierPackage) = ACTION::LookupOK then begin
+        if PAGE.RunModal(0, AJWebCarrierPackage) = ACTION::LookupOK then
             "Def. Shipping Package Type" := AJWebCarrierPackage."Package Code";
-        end;
     end;
 }
 

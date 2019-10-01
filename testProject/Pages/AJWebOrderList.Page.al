@@ -6,7 +6,7 @@ page 37072308 "AJ Web Order List"
     PageType = List;
     SourceTable = "AJ Web Order Header";
     SourceTableView = ORDER(Descending)
-                      WHERE ("Document Type" = CONST (Order));
+                      WHERE("Document Type" = CONST(Order));
 
     layout
     {
@@ -73,12 +73,11 @@ page 37072308 "AJ Web Order List"
                     begin
                         lr_SH.SetRange("Web Order No.", "Web Order No.");
                         lr_SH.SetRange("Document Type", lr_SH."Document Type"::Order);
-                        if lr_SH.FindFirst
-                          then
+                        if lr_SH.FindFirst() then
                             PAGE.RunModal(42, lr_SH);
                     end;
                 }
-                field("Posted Orders"; SalesInvoiceHeader.Count)
+                field("Posted Orders"; SalesInvoiceHeader.Count())
                 {
                     ApplicationArea = All;
                     Caption = 'Posted Orders';
@@ -87,7 +86,7 @@ page 37072308 "AJ Web Order List"
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         SalesInvoiceHeader.SetRange(SalesInvoiceHeader."Web Order No.", "Web Order No.");
-                        if SalesInvoiceHeader.FindFirst then
+                        if SalesInvoiceHeader.FindFirst() then
                             PAGE.RunModal(132, SalesInvoiceHeader);
                     end;
                 }
@@ -245,12 +244,6 @@ page 37072308 "AJ Web Order List"
                 {
                     ApplicationArea = All;
                 }
-                field("""Shipping Agent Label"".HASVALUE"; "Shipping Agent Label".HasValue)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Label Imported';
-                    Editable = false;
-                }
                 field("Web Service Customer ID"; "Web Service Customer ID")
                 {
                     ApplicationArea = All;
@@ -341,8 +334,7 @@ page 37072308 "AJ Web Order List"
         lr_WOL: Record "AJ Web Order Line";
     begin
         lr_WOL.SetRange("Web Order No.", "Web Order No.");
-        if lr_WOL.FindFirst
-          then
+        if lr_WOL.FindFirst() then
             gc_FirstSKU := lr_WOL.SKU
         else
             gc_FirstSKU := '';
@@ -354,35 +346,24 @@ page 37072308 "AJ Web Order List"
     end;
 
     var
-        Text001: Label 'Are you sure you want to post %1 orders?';
-        Text002: Label 'Operation cancelled by user.';
-        Text003: Label 'NAV orders not found.';
-        Text004: Label 'Access Denied.';
+        SalesInvoiceHeader: Record "Sales Invoice Header";
         //gcd_WebOrderMgt: Codeunit "AJ Web Order Service Mgmt";
         gc_FirstSKU: Code[30];
-        vAmazonPrime: Boolean;
-        SalesInvoiceHeader: Record "Sales Invoice Header";
-        SalesFilter: Text;
 
     procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
     var
-        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
-        Wnd: Dialog;
+        WebService: Record "AJ Web Service";
         Customer: Record Customer;
         AJWebPackage: Record "AJ Web Package";
-        Cnt: Integer;
         SalesHeader: Record "Sales Header";
-        SalesInvoiceHeader: Record "Sales Invoice Header";
-        SalesInvoiceLine: Record "Sales Invoice Line";
-        WebOrdLine: Record "AJ Web Order Line";
-        ShippingAmount: Decimal;
-        WebService: Record "AJ Web Service";
-        NotAmazonShipping: Boolean;
+        SalesInvHeader: Record "Sales Invoice Header";
+        Wnd: Dialog;
+        Cnt: Integer;
     begin
-        SalesHeader.Reset;
+        SalesHeader.Reset();
         SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
         SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-        if not SalesHeader.FindFirst then
+        if not SalesHeader.FindFirst() then
             Clear(SalesHeader);
 
         WebService.Get(AJWebOrderHeader."Web Service Code");
@@ -394,9 +375,9 @@ page 37072308 "AJ Web Order List"
         end;
 
         if SalesHeader."No." = '' then begin
-            SalesInvoiceHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if not SalesInvoiceHeader.FindFirst then
-                Clear(SalesInvoiceHeader);
+            SalesInvHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
+            if not SalesInvHeader.FindFirst() then
+                Clear(SalesInvHeader);
         end;
 
         AJWebOrderHeader.TestField("Shipping Web Service Code");
@@ -410,43 +391,40 @@ page 37072308 "AJ Web Order List"
         //AJWebOrderServiceMgmt.WOS_CreateWebOrderFromSalesOrder(SalesHeader, AJWebOrderHeader);
 
         AJWebOrderHeader.CalcFields(Packages);
-        if AJWebOrderHeader.Packages then begin
+        if AJWebOrderHeader.Packages then
             if Confirm('There are Packages for Web Order %1. Do you want to create labels for packages?', true, AJWebOrderHeader."Web Order No.") then begin
-
                 Cnt := 0;
                 Wnd.Open('Requesting shipping label #1##...');
 
-                AJWebPackage.Reset;
+                AJWebPackage.Reset();
                 AJWebPackage.SetCurrentKey("Source Type", "Source No.");
                 AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
                 AJWebPackage.SetRange("Source No.", AJWebOrderHeader."Web Order No.");
-                if AJWebPackage.FindFirst then
+                if AJWebPackage.FindFirst() then
                     repeat
                         Cnt += 1;
                         Wnd.Update(1, Cnt);
 
-                        if GetLabelLocal then begin
-                            if AJWebPackage."Label Created" then begin
-                                if Confirm('Label for package %1 already created! Cancel it and create new one?', true, AJWebPackage."No.") then begin
-                                    // AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
-                                    Commit;
-                                end;
-                            end;
+                    // if GetLabelLocal then begin
+                    //     // if AJWebPackage."Label Created" then begin
+                    //     //     if Confirm('Label for package %1 already created! Cancel it and create new one?', true, AJWebPackage."No.") then begin
+                    //     //         AJWebOrderServiceMgmt.WOS_CancelLabelForPackage(AJWebPackage);
+                    //     //         Commit();
+                    //     //     end;
+                    //     // end;
 
-                            if not AJWebPackage."Label Created" then begin
-                                // AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
-                                Commit;
-                            end;
-                        end;
+                    //     if not AJWebPackage."Label Created" then begin
+                    //          AJWebOrderServiceMgmt.WOS_GetLabelForPackage(AJWebPackage);
+                    //         Commit();
+                    //     end;
+                    // end;
+                    until AJWebPackage.Next() = 0;
 
-                    until AJWebPackage.Next = 0;
-
-                Wnd.Close;
+                Wnd.Close();
 
                 exit;
             end else
                 Error('Cancelled.');
-        end;
 
         if GetLabelLocal then begin
             if AJWebOrderHeader."Labels Created" then
@@ -454,59 +432,55 @@ page 37072308 "AJ Web Order List"
                     Wnd.Open('Cancelling shipping label...');
                     if (SalesHeader."No." <> '') then begin
                         SalesHeader."Package Tracking No." := '';
-                        SalesHeader.Modify;
-                        Commit;
+                        SalesHeader.Modify();
+                        Commit();
                     end;
-                    Wnd.Close;
+                    Wnd.Close();
                 end else
                     Error('Operation was cancelled');
 
             Wnd.Open('Requesting shipping label...');
             //AJWebOrderServiceMgmt.WOS_GetOrderLabel(AJWebOrderHeader);
-            Wnd.Close;
+            Wnd.Close();
         end;
 
         if SalesHeader."No." <> '' then begin
             SalesHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
-            SalesHeader.Validate("Posting Date", WorkDate);
+            SalesHeader.Validate("Posting Date", WorkDate());
             SalesHeader.Modify(true);
             //AJSalesMgt.On_SalesReleased(SalesHeader); // Insert G/L lines
-            Commit;
+            Commit();
         end;
 
         if SalesInvoiceHeader."No." <> '' then begin
             //SalesInvoiceHeader."Shipping & Handling Amount" := AJWebOrderHeader."Shipping & Handling Amount"; // MBS commented
             SalesInvoiceHeader."Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
-            SalesInvoiceHeader.Modify;
+            SalesInvoiceHeader.Modify();
         end;
     end;
 
     [Scope('Internal')]
     procedure GetShippingLabel(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;
-        AJWebOrderService: Record "AJ Web Service";
-        ActionType: Option "Order Header","Order Line","Eligible Shipping service","Create Shipment","Cancel Shipment",Status,"Label Again","Order Acknowelege Feed","Feed Submission Result","Feed Submission List","Order fulfillment feed","Order Adjustments feed";
-        Completeness: Option All,GELL,Shipment;
     begin
         Wnd.Open('Checking Acknowledgement status');
 
-        if AJWebOrderHeader.FindFirst then
+        if AJWebOrderHeader.FindFirst() then
             repeat
                 AJWebOrderHeader.TestField("Acknowlegement Sent", true);
-            until AJWebOrderHeader.Next = 0;
+            until AJWebOrderHeader.Next() = 0;
 
-        Wnd.Close;
+        Wnd.Close();
         Wnd.Open('Requesting Shipping Labels');
 
-        if AJWebOrderHeader.FindFirst then
+        if AJWebOrderHeader.FindFirst() then
             repeat
                 GetShipLabels(AJWebOrderHeader, true);
-                Commit;
-            until AJWebOrderHeader.Next = 0;
+                Commit();
+            until AJWebOrderHeader.Next() = 0;
 
-        Wnd.Close;
+        Wnd.Close();
     end;
 }
 

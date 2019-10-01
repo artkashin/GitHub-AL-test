@@ -17,7 +17,7 @@ codeunit 37072303 Base64Convert
         Length: Integer;
         BinaryValue: Text;
     begin
-        while not Value.EOS do begin
+        while not Value.EOS() do begin
             Value.Read(SingleByte, 1);
             Length += 1;
             BinaryValue += ByteToBinary(SingleByte, 8);
@@ -123,7 +123,7 @@ codeunit 37072303 Base64Convert
         Buffer.AddText(Value);
 
         Pos := 1;
-        while Pos < Buffer.Length do begin
+        while Pos < Buffer.Length() do begin
             Buffer.GetSubText(SingleByte, Pos, 8);
             CharValue[1] := BinaryToInt(SingleByte);
             ReturnValue += CharValue;
@@ -141,7 +141,7 @@ codeunit 37072303 Base64Convert
         Buffer.AddText(Value);
 
         Pos := 1;
-        while Pos < Buffer.Length do begin
+        while Pos < Buffer.Length() do begin
             Buffer.GetSubText(SingleByte, Pos, 8);
             ByteValue := BinaryToInt(SingleByte);
             ReturnValue.Write(ByteValue, 1);
@@ -197,9 +197,8 @@ codeunit 37072303 Base64Convert
     local procedure GetBase64Char(Value: Integer): text;
     var
         chars: text;
-        i: Integer;
     begin
-        chars := Base64Chars;
+        chars := Base64Chars();
         exit(chars[Value + 1]);
     end;
 
@@ -210,7 +209,7 @@ codeunit 37072303 Base64Convert
         if Value = '=' then
             exit(0);
 
-        chars := Base64Chars;
+        chars := Base64Chars();
         exit(StrPos(chars, Value) - 1);
     end;
 

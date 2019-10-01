@@ -38,26 +38,6 @@ page 37072307 "AJ Web Marketplaces"
     {
         area(creation)
         {
-            action("Upload Inventory")
-            {
-
-                trigger OnAction()
-                var
-                    UploadToFTP: Boolean;
-                    Wnd: Dialog;
-                begin
-                    //
-                    // UploadToFTP := CONFIRM('Upload files to ftp? Otherwise files will be created in local directory.');
-                    //
-                    // Wnd.OPEN('Creating Inventory status');
-                    //
-                    // AJWebOrderServiceMgmt.CommerceHUB_CreateInventoryStatus(Rec, UploadToFTP);
-                    //
-                    // Wnd.CLOSE;
-                    //
-                    // MESSAGE('Done');
-                end;
-            }
             action("Delete Line")
             {
                 ApplicationArea = All;
@@ -67,7 +47,7 @@ page 37072307 "AJ Web Marketplaces"
                 begin
                     if Confirm('Do you wont delete line?') then begin
                         MarketplaceL := Rec;
-                        MarketplaceL.Delete;
+                        MarketplaceL.Delete();
                     end;
                 end;
             }

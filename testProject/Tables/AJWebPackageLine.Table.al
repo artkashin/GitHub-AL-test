@@ -39,12 +39,12 @@ table 37072310 "AJ Web Package Line"
     begin
         // Unpack
         if ("Source Type" = DATABASE::"AJ Web Order Line") and (Quantity > 0) then begin
-            AJWebOrderLine.Reset;
+            AJWebOrderLine.Reset();
             AJWebOrderLine."Web Order No." := "Source No.";
             AJWebOrderLine."Line No." := "Source Line No.";
-            if AJWebOrderLine.Find then begin
+            if AJWebOrderLine.Find() then begin
                 AJWebOrderLine."Quantity Packed" -= Quantity;
-                AJWebOrderLine.Modify;
+                AJWebOrderLine.Modify();
             end;
         end;
     end;

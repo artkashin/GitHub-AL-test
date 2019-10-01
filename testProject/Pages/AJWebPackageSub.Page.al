@@ -11,19 +11,18 @@ page 37072314 "AJ Web Package Sub"
             {
                 field("Package No."; "Package No.")
                 {
+                    ApplicationArea = All;
                 }
                 field("Line No."; "Line No.")
                 {
+                    ApplicationArea = All;
                 }
                 field(Quantity; Quantity)
                 {
+                    ApplicationArea = All;
                 }
             }
         }
-    }
-
-    actions
-    {
     }
 }
 

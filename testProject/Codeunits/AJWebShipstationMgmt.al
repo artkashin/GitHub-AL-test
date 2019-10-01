@@ -578,8 +578,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebOrderHeader."Bill-To Customer Address 2" := SalesHeader."Bill-to Address 2";
         AJWebOrderHeader."Bill-To Customer Address 3" := '';
         AJWebOrderHeader."Bill-To Customer City" := SalesHeader."Bill-to City";
-        AJWebOrderHeader."Bill-To Customer State" := SalesHeader."Bill-to County";
-        AJWebOrderHeader."Bill-To Customer Zip" := SalesHeader."Bill-to Post Code";
+        AJWebOrderHeader."Bill-To Customer State" := CopyStr(SalesHeader."Bill-to County", 1, MaxStrLen(AJWebOrderHeader."Bill-To Customer State"));
+        AJWebOrderHeader."Bill-To Customer Zip" := CopyStr(SalesHeader."Bill-to Post Code", 1, MaxStrLen(AJWebOrderHeader."Bill-To Customer Zip"));
         AJWebOrderHeader."Bill-To Customer Country" := SalesHeader."Bill-to Country/Region Code";
         AJWebOrderHeader."Bill-To Customer Phone" := '';
         if Customer.Get(SalesHeader."Bill-to Customer No.") then
@@ -595,8 +595,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             AJWebOrderHeader."Ship-To Customer Address 2" := SalesHeader."Ship-to Address 2";
         AJWebOrderHeader."Ship-To Customer Address 3" := '';
         AJWebOrderHeader."Ship-To Customer City" := SalesHeader."Ship-to City";
-        AJWebOrderHeader."Ship-To Customer State" := SalesHeader."Ship-to County";
-        AJWebOrderHeader."Ship-To Customer Zip" := SalesHeader."Ship-to Post Code";
+        AJWebOrderHeader."Ship-To Customer State" := CopyStr(SalesHeader."Ship-to County", 1, MaxStrLen(AJWebOrderHeader."Ship-To Customer State"));
+        AJWebOrderHeader."Ship-To Customer Zip" := CopyStr(SalesHeader."Ship-to Post Code", 1, MaxStrLen(AJWebOrderHeader."Ship-To Customer Zip"));
         AJWebOrderHeader."Ship-To Customer Country" := SalesHeader."Ship-to Country/Region Code";
         //AJWebOrderHeader."Ship-To Customer Phone" := SalesHeader."Ship-to Phone No.";
         AJWebOrderHeader."Ship-To Residential" := false;
@@ -604,17 +604,17 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         //>> add salesperson e-mail
         if not SalespersonPurchaser.Get(SalesHeader."Salesperson Code") then
-            SalespersonPurchaser.Init;
+            SalespersonPurchaser.Init();
         if SalespersonPurchaser."E-Mail" <> '' then
             if StrLen(AJWebOrderHeader."Ship-To E-mail" + ';' + SalespersonPurchaser."E-Mail") <= MaxStrLen(AJWebOrderHeader."Ship-To E-mail") then
                 if AJWebOrderHeader."Ship-To E-mail" = '' then
-                    AJWebOrderHeader."Ship-To E-mail" := SalespersonPurchaser."E-Mail"
+                    AJWebOrderHeader."Ship-To E-mail" := CopyStr(SalespersonPurchaser."E-Mail", 1, MaxStrLen(AJWebOrderHeader."Ship-To E-mail"))
                 else
                     AJWebOrderHeader."Ship-To E-mail" += ';' + SalespersonPurchaser."E-Mail";
 
 
         if not AJWebService.Get(AJWebOrderHeader."Shipping Web Service Code") then
-            AJWebService.Init;
+            AJWebService.Init();
 
         AJWebOrderHeader."Merchandise Amount" := 0;
         // MBS commented >>
@@ -627,50 +627,50 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebOrderHeader.TestField("Ship-To Customer Address 1");
 
         if AJWebOrderHeader."Created From Sales Order" then begin
-            AJWebOrderLine.Reset;
+            AJWebOrderLine.Reset();
             AJWebOrderLine.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if not AJWebOrderLine.IsEmpty then
+            if not AJWebOrderLine.IsEmpty() then
                 AJWebOrderLine.DeleteAll(true);
 
-            Currency.InitRoundingPrecision;
+            Currency.InitRoundingPrecision();
             AJWebOrderHeader."Merchandise Amount" := 0;
             if SalesHeader."Document Type" = -1 then begin
-                SalesInvoiceLine.Reset;
+                SalesInvoiceLine.Reset();
                 SalesInvoiceLine.SetRange("Document No.", SalesHeader."No.");
                 SalesInvoiceLine.SetRange(Type, SalesLine.Type::Item);
                 SalesInvoiceLine.SetFilter("No.", '<>%1', '');
                 SalesInvoiceLine.SetFilter(Quantity, '<>%1', 0);
-                if SalesInvoiceLine.FindFirst then
+                if SalesInvoiceLine.FindFirst() then
                     repeat
-                        AJWebOrderLine.Init;
+                        AJWebOrderLine.Init();
                         AJWebOrderLine."Web Order No." := AJWebOrderHeader."Web Order No.";
                         AJWebOrderLine."Line No." := SalesInvoiceLine."Line No.";
                         AJWebOrderLine."Order Item ID" := SalesInvoiceLine."No.";
                         AJWebOrderLine.Quantity := SalesInvoiceLine.Quantity;
                         AJWebOrderLine."Unit Price" := Round(SalesInvoiceLine."Amount Including VAT" / SalesInvoiceLine.Quantity, 0.001);
-                        AJWebOrderLine.Insert;
+                        AJWebOrderLine.Insert();
                         AJWebOrderHeader."Merchandise Amount" += AJWebOrderLine.Quantity * AJWebOrderLine."Unit Price";
-                    until SalesInvoiceLine.Next = 0;
+                    until SalesInvoiceLine.Next() = 0;
             end else begin
-                SalesLine.Reset;
+                SalesLine.Reset();
                 SalesLine.SetRange("Document Type", SalesHeader."Document Type");
                 SalesLine.SetRange("Document No.", SalesHeader."No.");
                 SalesLine.SetRange(Type, SalesLine.Type::Item);
                 SalesLine.SetFilter("No.", '<>%1', '');
                 SalesLine.SetFilter("Qty. to Ship", '<>%1', 0);
-                if SalesLine.FindFirst then
+                if SalesLine.FindFirst() then
                     repeat
-                        AJWebOrderLine.Init;
+                        AJWebOrderLine.Init();
                         AJWebOrderLine."Web Order No." := AJWebOrderHeader."Web Order No.";
                         AJWebOrderLine."Line No." := SalesLine."Line No.";
                         AJWebOrderLine."Order Item ID" := SalesLine."No.";
                         AJWebOrderLine.Quantity := SalesLine."Qty. to Ship";
                         AJWebOrderLine."Unit Price" := Round(SalesLine."Amount Including VAT" / SalesLine.Quantity, Currency."Unit-Amount Rounding Precision");
                         AJWebOrderLine.Name := SalesLine.Description;
-                        AJWebOrderLine.Insert;
+                        AJWebOrderLine.Insert();
 
                         AJWebOrderHeader."Merchandise Amount" += AJWebOrderLine.Quantity * AJWebOrderLine."Unit Price";
-                    until SalesLine.Next = 0;
+                    until SalesLine.Next() = 0;
             end;
             AJWebOrderHeader."Merchandise Amount" := Round(AJWebOrderHeader."Merchandise Amount", Currency."Amount Rounding Precision"); // 4/12/2018
             AJWebOrderHeader."NAV Order Status" := AJWebOrderHeader."NAV Order Status"::Created; // 4/12/2018
@@ -682,18 +682,13 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
     procedure GetOrderLabel(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        AJWebMarketplace: Record "AJ Web Marketplace (Mailbox)";
         AJWebService: Record "AJ Web Service";
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-        AJWebCarrierService: Record "AJ Web Carrier Service";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         AJWebCarrier: Record "AJ Web Carrier";
-        Customer: Record Customer;
         Item: Record Item;
-        CountryRegion: Record "Country/Region";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
         Base64Convert: Codeunit Base64Convert;
@@ -707,15 +702,12 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         SkipDefaultDimensions: Boolean;
         Uri: Text;
         Txt: Text;
-        ErrorText: Text;
         LabelPdf: Text;
-        i: Integer;
-        ld_test: Decimal;
     begin
         SkipDefaultDimensions := true;
 
-        if AJWebOrderHeader."Ship Date" <> Today then begin
-            AJWebOrderHeader.Validate("Ship Date", Today);
+        if AJWebOrderHeader."Ship Date" <> Today() then begin
+            AJWebOrderHeader.Validate("Ship Date", Today());
             AJWebOrderHeader.Modify(false);
         end;
 
@@ -724,13 +716,13 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             (AJWebOrderHeader."Shipping Web Service Code" <> AJWebOrderHeader."Web Service Code")
             then begin
                 CreateOrderForWeb(AJWebOrderHeader);
-                Commit;
+                Commit();
 
             end;
 
         if AJWebOrderHeader."Shipping Web Service Order No." = '' then begin
             CreateOrder(AJWebOrderHeader);
-            Commit;
+            Commit();
         end;
 
         AJWebOrderHeader.TestField("Shipping Web Service Order No.");
@@ -757,12 +749,12 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddTxt(JObject, 'confirmation', AJWebOrderHeader."Shipping Delivery Confirm");
 
         if AJWebOrderHeader."Ship Date" = 0D then
-            AJWebOrderHeader."Ship Date" := WorkDate;
+            AJWebOrderHeader."Ship Date" := WorkDate();
         AJWebJsonHelper.JSONAddTxt(JObject, 'shipDate', Format(AJWebOrderHeader."Ship Date", 0, '<Standard Format,9>'));
 
         if AJWebOrderHeader."Shp. Product Weight" = 0 then begin
             AJWebOrderLine.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if AJWebOrderLine.FindFirst then
+            if AJWebOrderLine.FindFirst() then
                 repeat
                     if AJWebOrderLine.Weight = 0 then begin
                         AJWebCarrierPackageType.Get(AJWebService.Code, AJWebOrderHeader."Shipping Carrier Code", AJWebOrderHeader."Shipping Package Type");
@@ -778,7 +770,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                                 AJWebOrderHeader."Shp. Product Weight" += AJWebOrderLine.Weight
                             else
                                 AJWebOrderHeader.TestField("Shp. Product Weight");
-                until AJWebOrderLine.Next = 0;
+                until AJWebOrderLine.Next() = 0;
         end;
 
         AJWebOrderHeader.TestField("Shp. Product Weight");
@@ -822,22 +814,22 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         if AJWebOrderHeader."International Shipment" then begin
 
-            SalesHeader.Reset;
+            SalesHeader.Reset();
             SalesHeader.SetFilter("Document Type", '%1|%2',
             SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice);
             SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if SalesHeader.FindFirst then begin
+            if SalesHeader.FindFirst() then begin
 
                 JArray := JToken.AsArray();
 
-                SalesLine.Reset;
+                SalesLine.Reset();
                 SalesLine.SetRange("Document Type", SalesHeader."Document Type");
                 SalesLine.SetRange("Document No.", SalesHeader."No.");
                 SalesLine.SetRange(Type, SalesLine.Type::Item);
                 SalesLine.SetFilter("No.", '<>%1', '');
                 SalesLine.SetFilter(Quantity, '<>%1', 0);
                 SalesLine.SetFilter("Qty. to Ship", '<>0');
-                if SalesLine.FindFirst then
+                if SalesLine.FindFirst() then
                     repeat
                         Item.Get(SalesLine."No.");
 
@@ -847,7 +839,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                         AJWebJsonHelper.JSONAddDec(AddJObject, 'value', SalesLine."Unit Price");
 
                         JArray.Add(AddJObject.AsToken());
-                    until SalesLine.Next = 0
+                    until SalesLine.Next() = 0
                 else
                     Error('No items to ship has been found!');
 
@@ -867,10 +859,10 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddBool(AddJObject, 'containsAlcohol', AJWebOrderHeader."Contains Alcohol");
         //AJWebJsonHelper.JSONAddTxt(AddJObject,'storeId', '51791'); // MBS commented
 
-        SalesHeader.Reset;
+        SalesHeader.Reset();
         SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
         SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-        if SalesHeader.FindFirst then begin
+        if SalesHeader.FindFirst() then begin
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField1', SalesHeader."No.");   //sales order #
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField2', SalesHeader."External Document No.");  //external document #
         end;
@@ -899,7 +891,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Bill-to Account Country Code");
                 AJWebOrderHeader."Bill-to Type" := AJWebCarrier."Bill-to Type";
                 AJWebOrderHeader."Bill-To Account" := AJWebCarrier."Bill-to Account No.";
-                AJWebOrderHeader."Bill-To Postal Code" := AJWebCarrier."Bill-to Account Post Code";
+                AJWebOrderHeader."Bill-To Postal Code" := CopyStr(AJWebCarrier."Bill-to Account Post Code", 1, MaxStrLen(AJWebOrderHeader."Bill-To Postal Code"));
                 AJWebOrderHeader."Bill-To Country Code" := AJWebCarrier."Bill-to Account Country Code";
             end;
         end;
@@ -928,11 +920,11 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             Base64Convert.FromBase64StringToStream(LabelPdf, OutStr);
 
             AJWebOrderHeader."Carier Shipping Charge" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'shipmentCost');
-            AJWebOrderHeader."Carier Tracking Number" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber');//,MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
+            AJWebOrderHeader."Carier Tracking Number" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber'), 1, MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
             AJWebOrderHeader."Carier Insurance Cost" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'insuranceCost');
         end;
 
-        AJWebOrderHeader."Web Service Shipment ID" := AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId');//,MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
+        AJWebOrderHeader."Web Service Shipment ID" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId'), 1, MaxStrLen(AJWebOrderHeader."Web Service Shipment ID"));
         AJWebOrderHeader."Labels Created" := true;
         AJWebOrderHeader."Labels Printed" := false;
         AJWebOrderHeader.Modify();
@@ -945,29 +937,18 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
     local procedure CreateOrderForWeb(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        AJWebMarketplace: Record "AJ Web Marketplace (Mailbox)";
         AJWebCarrier: Record "AJ Web Carrier";
-        AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
+
         AJWebService: Record "AJ Web Service";
-        AJWebOrderLine: Record "AJ Web Order Line";
         AJWebService2: Record "AJ Web Service";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
-        Base64Convert: Codeunit Base64Convert;
         JArray: JsonArray;
-        LabelBytes: JsonArray;
         JToken: JsonToken;
-        ValueJToken: JsonToken;
         AddJObject: JsonObject;
         JObject: JsonObject;
-        JValue: JsonValue;
-        OutStr: OutStream;
         Uri: Text;
         Txt: Text;
-        ErrorText: Text;
-        LabelPdf: Text;
-        i: Integer;
     begin
         if AJWebOrderHeader."Shipping Web Service Code" <> '' then
             AJWebService.Get(AJWebOrderHeader."Shipping Web Service Code")
@@ -1057,7 +1038,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             AJWebOrderHeader."Custom Field 3" := AJWebOrderHeader."Web Service PO Number"
         else
             //>> COD
-            AJWebOrderHeader."Custom Field 3" := IsCOD(AJWebOrderHeader);
+            AJWebOrderHeader."Custom Field 3" := CopyStr(IsCOD(AJWebOrderHeader), 1, MaxStrLen(AJWebOrderHeader."Custom Field 3"));
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField3', AJWebOrderHeader."Custom Field 3");
         //<< COD
 
@@ -1073,7 +1054,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             AJWebJsonHelper.JSONAddDec(AddJObject, 'quantity', 1);
             AJWebJsonHelper.JSONAddDec(AddJObject, 'unitPrice', AJWebOrderHeader."COD Amount");
 
-            JArray := AddJObject.AsToken.AsArray();
+            JArray := AddJObject.AsToken().AsArray();
             JArray.Add(JToken);
             JObject.Add('items', JArray.AsToken());
         end;
@@ -1097,19 +1078,17 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         JObject.ReadFrom(Txt);
         if JObject.Contains('orderId') then begin
-            AJWebOrderHeader."Shipping Web Service Order No." := AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId');
+            AJWebOrderHeader."Shipping Web Service Order No." := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId'), 1, MaxStrLen(AJWebOrderHeader."Shipping Web Service Order No."));
             AJWebOrderHeader.Modify();
         end;
     end;
 
     procedure CreateOrder(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
-        AJWebMarketplace: Record "AJ Web Marketplace (Mailbox)";
         AJWebCarrier: Record "AJ Web Carrier";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         Item: Record Item;
-        CountryRegion: Record "Country/Region";
         AJWebService2: Record "AJ Web Service";
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
@@ -1117,19 +1096,12 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebService: Record "AJ Web Service";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
         AJWebServiceBase: Codeunit "AJ Web Service Base";
-        Base64Convert: Codeunit Base64Convert;
         JArray: JsonArray;
-        LabelBytes: JsonArray;
         JObject: JsonObject;
         AddJObject: JsonObject;
-        ValueJToken: JsonToken;
         JToken: JsonToken;
-        OutStr: OutStream;
-        LabelPdf: Text;
         Uri: Text;
         Txt: Text;
-        ErrorText: Text;
-        i: Integer;
     begin
         if AJWebOrderHeader."Shipping Web Service Code" <> '' then
             AJWebService.Get(AJWebOrderHeader."Shipping Web Service Code")
@@ -1148,13 +1120,13 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if AJWebOrderHeader."Shipping Carrier Service" = '' then
             AJWebOrderHeader."Shipping Carrier Service" := AJWebServiceWarehouse."Def. Shipping Carrier Service";
         if AJWebOrderHeader."Shipping Package Type" = '' then
-            AJWebOrderHeader."Shipping Package Type" := AJWebServiceWarehouse."Def. Shipping Package Type";
+            AJWebOrderHeader."Shipping Package Type" := CopyStr(AJWebServiceWarehouse."Def. Shipping Package Type", 1, MaxStrLen(AJWebOrderHeader."Shipping Package Type"));
         if AJWebOrderHeader."Shipping Delivery Confirm" = '' then
-            AJWebOrderHeader."Shipping Delivery Confirm" := AJWebServiceWarehouse."Def. Shipping Delivery Confirm";
+            AJWebOrderHeader."Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen(AJWebOrderHeader."Shipping Delivery Confirm"));
         if AJWebOrderHeader."Shipping Insutance Provider" = '' then
-            AJWebOrderHeader."Shipping Insutance Provider" := AJWebServiceWarehouse."Def. Shipping Insutance Provd";
-        if (AJWebOrderHeader."Ship Date" = 0D) or (AJWebOrderHeader."Ship Date" < WorkDate) then
-            AJWebOrderHeader."Ship Date" := WorkDate;
+            AJWebOrderHeader."Shipping Insutance Provider" := CopyStr(AJWebServiceWarehouse."Def. Shipping Insutance Provd", 1, MaxStrLen(AJWebOrderHeader."Shipping Insutance Provider"));
+        if (AJWebOrderHeader."Ship Date" = 0D) or (AJWebOrderHeader."Ship Date" < WorkDate()) then
+            AJWebOrderHeader."Ship Date" := WorkDate();
         if AJWebOrderHeader."Ship-To Customer Country" = '' then
             AJWebOrderHeader."Ship-To Customer Country" := 'US';
 
@@ -1192,12 +1164,12 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddTxt(JObject, 'confirmation', AJWebOrderHeader."Shipping Delivery Confirm");
 
         if AJWebOrderHeader."Ship Date" = 0D then
-            AJWebOrderHeader."Ship Date" := WorkDate;
+            AJWebOrderHeader."Ship Date" := WorkDate();
         AJWebJsonHelper.JSONAddTxt(JObject, 'shipDate', Format(AJWebOrderHeader."Ship Date", 0, '<Standard Format,9>'));
 
         if AJWebOrderHeader."Shp. Product Weight" = 0 then begin
             AJWebOrderLine.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if AJWebOrderLine.FindFirst then
+            if AJWebOrderLine.FindFirst() then
                 repeat
                     if AJWebOrderLine.Weight = 0 then begin
                         AJWebCarrierPackageType.Get(AJWebService.Code, AJWebOrderHeader."Shipping Carrier Code", AJWebOrderHeader."Shipping Package Type");
@@ -1213,7 +1185,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                                 AJWebOrderHeader."Shp. Product Weight" += AJWebOrderLine.Weight
                             else
                                 AJWebOrderHeader.TestField("Shp. Product Weight");
-                until AJWebOrderLine.Next = 0;
+                until AJWebOrderLine.Next() = 0;
         end;
 
         AJWebOrderHeader.TestField("Shp. Product Weight");
@@ -1252,22 +1224,22 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
 
         if AJWebOrderHeader."International Shipment" then begin
-            SalesHeader.Reset;
+            SalesHeader.Reset();
             SalesHeader.SetFilter("Document Type", '%1|%2',
               SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice);
             SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if SalesHeader.FindFirst then begin
+            if SalesHeader.FindFirst() then begin
 
                 JArray := JToken.AsArray();
 
-                SalesLine.Reset;
+                SalesLine.Reset();
                 SalesLine.SetRange("Document Type", SalesHeader."Document Type");
                 SalesLine.SetRange("Document No.", SalesHeader."No.");
                 SalesLine.SetRange(Type, SalesLine.Type::Item);
                 SalesLine.SetFilter("No.", '<>%1', '');
                 SalesLine.SetFilter(Quantity, '<>%1', 0);
                 SalesLine.SetFilter("Qty. to Ship", '<>0');
-                if SalesLine.FindFirst then
+                if SalesLine.FindFirst() then
                     repeat
 
                         Item.Get(SalesLine."No.");
@@ -1279,7 +1251,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
                         JToken := AddJObject.AsToken();
                         JArray.Add(JToken);
-                    until SalesLine.Next = 0
+                    until SalesLine.Next() = 0
                 else
                     Error('No items to ship has been found!');
 
@@ -1339,9 +1311,9 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if AJWebService2."Reference 3" <> AJWebService2."Reference 3"::PO then
 
             //>> COD
-            AJWebOrderHeader."Custom Field 3" := IsCOD(AJWebOrderHeader);
+            AJWebOrderHeader."Custom Field 3" := CopyStr(IsCOD(AJWebOrderHeader), 1, MaxStrLen(AJWebOrderHeader."Custom Field 3"));
 
-        if StrPos(UpperCase(UserId), 'SK') > 0 then
+        if StrPos(UpperCase(UserId()), 'SK') > 0 then
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField3', 'CUSTOM3')
         else
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField3', AJWebOrderHeader."Custom Field 3");
@@ -1356,7 +1328,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJWebOrderHeader."Bill-To Account");
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebOrderHeader."Bill-To Postal Code");
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebOrderHeader."Bill-To Country Code");
-        end else begin
+        end else
             if AJWebCarrier."Bill-to Type" <> 0 then begin
                 AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJWebCarrier."Bill-to Type"));
                 if AJWebCarrier."Bill-to Type" = AJWebCarrier."Bill-to Type"::my_other_account then
@@ -1366,7 +1338,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebCarrier."Bill-to Account Post Code");
                 AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Bill-to Account Country Code");
             end;
-        end;
         AJWebJsonHelper.JSONAddObject(JObject, 'advancedOptions', AddJObject);
 
         //>> COD
@@ -1405,7 +1376,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         JObject.ReadFrom(Txt);
         if JObject.Contains('orderId') then begin
-            AJWebOrderHeader."Shipping Web Service Order No." := AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId');
+            AJWebOrderHeader."Shipping Web Service Order No." := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'orderId'), 1, MaxStrLen(AJWebOrderHeader."Shipping Web Service Order No."));
             AJWebOrderHeader.Modify();
         end;
     end;
@@ -1439,9 +1410,9 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not AJWebOrderHeader."Created From Sales Order" then
             exit;
         SalesHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-        if not SalesHeader.FindFirst then begin
+        if not SalesHeader.FindFirst() then begin
             SalesInvoiceHeader.SetRange("Web Order No.", AJWebOrderHeader."Web Order No.");
-            if not SalesInvoiceHeader.FindFirst then
+            if not SalesInvoiceHeader.FindFirst() then
                 exit;
             SalesHeader.TransferFields(SalesInvoiceHeader);
         end;

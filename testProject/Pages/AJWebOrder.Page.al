@@ -90,7 +90,8 @@ page 37072309 "AJ Web Order"
             }
             part(Control1000000043; "AJ Web Order Subform")
             {
-                SubPageLink = "Web Order No." = FIELD ("Web Order No.");
+                ApplicationArea = All;
+                SubPageLink = "Web Order No." = field("Web Order No.");
             }
             group("Bill-to")
             {
@@ -150,7 +151,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Company"; "Ship-To Company")
@@ -158,7 +159,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Address 1"; "Ship-To Customer Address 1")
@@ -166,7 +167,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Address 2"; "Ship-To Customer Address 2")
@@ -174,7 +175,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Address 3"; "Ship-To Customer Address 3")
@@ -182,7 +183,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer City"; "Ship-To Customer City")
@@ -190,7 +191,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Zip"; "Ship-To Customer Zip")
@@ -198,7 +199,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer State"; "Ship-To Customer State")
@@ -206,7 +207,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Country"; "Ship-To Customer Country")
@@ -214,7 +215,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Customer Phone"; "Ship-To Customer Phone")
@@ -222,7 +223,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To E-mail"; "Ship-To E-mail")
@@ -230,7 +231,7 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnValidate()
                     begin
-                        Modify;
+                        Modify();
                     end;
                 }
                 field("Ship-To Address Verified"; "Ship-To Address Verified")
@@ -334,6 +335,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Shp. Product Length"; "Shp. Product Length")
                 {
+                    ApplicationArea = All;
                 }
                 field("Shp. Product Height"; "Shp. Product Height")
                 {
@@ -373,12 +375,10 @@ page 37072309 "AJ Web Order"
                         trigger OnLookup(var Text: Text): Boolean
                         var
                             AJWebService: Record "AJ Web Service";
-                            AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
                         begin
                             AJWebService.SetRange("Web Service Type", AJWebService."Web Service Type"::ShipStation);
-                            if PAGE.RunModal(PAGE::"AJ Web Services", AJWebService) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(PAGE::"AJ Web Services", AJWebService) = ACTION::LookupOK then
                                 Validate("Shipping Web Service Code", AJWebService.Code);
-                            end;
                         end;
                     }
                     field(AJWOH_SipFromWhseID; "Ship-From Warehouse ID")
@@ -392,16 +392,8 @@ page 37072309 "AJ Web Order"
                         begin
                             TestField("Shipping Web Service Code");
                             AJWebServiceWarehouse.SetRange("Web Service Code", "Shipping Web Service Code");
-                            if PAGE.RunModal(PAGE::"AJ Web Service Warehouses", AJWebServiceWarehouse) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(PAGE::"AJ Web Service Warehouses", AJWebServiceWarehouse) = ACTION::LookupOK then
                                 Validate("Ship-From Warehouse ID", AJWebServiceWarehouse."Warehouse ID");
-                            end;
-                        end;
-
-                        trigger OnValidate()
-                        var
-                            AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-                            AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-                        begin
                         end;
                     }
                     field("Latest Delivery Date"; "Latest Delivery Date")
@@ -419,9 +411,8 @@ page 37072309 "AJ Web Order"
                             AJWebCarrier: Record "AJ Web Carrier";
                         begin
                             AJWebCarrier.SetRange("Web Service Code", "Shipping Web Service Code");
-                            if PAGE.RunModal(PAGE::"AJ Web Carriers", AJWebCarrier) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(PAGE::"AJ Web Carriers", AJWebCarrier) = ACTION::LookupOK then
                                 Validate("Shipping Carrier Code", AJWebCarrier.Code);
-                            end;
                         end;
                     }
                     field(AJWOH_ShpCarrierService; "Shipping Carrier Service")
@@ -436,9 +427,8 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                             AJWebCarrierService.SetRange("Web Service Code", "Shipping Web Service Code");
                             AJWebCarrierService.SetRange("Web Carrier Code", "Shipping Carrier Code");
-                            if PAGE.RunModal(PAGE::"AJ Web Carrier Services", AJWebCarrierService) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(PAGE::"AJ Web Carrier Services", AJWebCarrierService) = ACTION::LookupOK then
                                 Validate("Shipping Carrier Service", AJWebCarrierService."Service  Code");
-                            end;
                         end;
                     }
                     field(AJWOH_ShpPackageType; "Shipping Package Type")
@@ -453,15 +443,8 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                             AJWebCarrierPackageType.SetRange("Web Service Code", "Shipping Web Service Code");
                             AJWebCarrierPackageType.SetRange("Web Carrier Code", "Shipping Carrier Code");
-                            if PAGE.RunModal(PAGE::"AJ Web Carier Package Types", AJWebCarrierPackageType) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(PAGE::"AJ Web Carier Package Types", AJWebCarrierPackageType) = ACTION::LookupOK then
                                 Validate("Shipping Package Type", AJWebCarrierPackageType."Package Code");
-                            end;
-                        end;
-
-                        trigger OnValidate()
-                        var
-                            AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-                        begin
                         end;
                     }
                     field(AJWOH_ShpDeliveryConf; "Shipping Delivery Confirm")
@@ -476,9 +459,8 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                             AJWebServiceConstants.SetRange("Web Order Service Code", "Shipping Web Service Code");
                             AJWebServiceConstants.SetRange(Type, AJWebServiceConstants.Type::Confirmation);
-                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
-                                Validate("Shipping Delivery Confirm", AJWebServiceConstants."Option Value"); // SK 5/18/2017 change to validate
-                            end;
+                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then
+                                Validate("Shipping Delivery Confirm", AJWebServiceConstants."Option Value");
                         end;
 
                         trigger OnValidate()
@@ -500,7 +482,7 @@ page 37072309 "AJ Web Order"
                     {
                         ApplicationArea = All;
                         Caption = 'Product Weight Unit';
-                        TableRelation = "AJ Web Service Constants"."Option Value" WHERE (Type = CONST (Weight));
+                        TableRelation = "AJ Web Service Constants"."Option Value" WHERE(Type = CONST(Weight));
 
                         trigger OnLookup(var Text: Text): Boolean
                         var
@@ -509,9 +491,8 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                             AJWebServiceConstants.SetRange("Web Order Service Code", "Shipping Web Service Code");
                             AJWebServiceConstants.SetRange(Type, AJWebServiceConstants.Type::Weight);
-                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then
                                 "Shp. Product Weight Unit" := AJWebServiceConstants."Option Value";
-                            end;
                         end;
 
                         trigger OnValidate()
@@ -531,9 +512,8 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                             AJWebServiceConstants.SetRange("Web Order Service Code", "Shipping Web Service Code");
                             AJWebServiceConstants.SetRange(Type, AJWebServiceConstants.Type::Dimension);
-                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
+                            if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then
                                 "Shp. Product Dimension Unit" := AJWebServiceConstants."Option Value";
-                            end;
                         end;
 
                         trigger OnValidate()
@@ -658,8 +638,8 @@ page 37072309 "AJ Web Order"
             part(Control1000000078; "AJ Web Package Part")
             {
                 ApplicationArea = All;
-                SubPageLink = "Source Type" = CONST (37074833),
-                              "Source No." = FIELD ("Web Order No.");
+                SubPageLink = "Source Type" = CONST(37074833),
+                              "Source No." = FIELD("Web Order No.");
                 UpdatePropagation = Both;
             }
         }
@@ -691,7 +671,7 @@ page 37072309 "AJ Web Order"
                         AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AJWebOrderHeader);
-                        AJWebOrderHeader.FINDFIRST;
+                        AJWebOrderHeader.FindFirst();
                         AJWebShipstationMgmt.GetOrderLabel(AJWebOrderHeader);
                         Message('Done');
                     end;
@@ -705,7 +685,7 @@ page 37072309 "AJ Web Order"
                         AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
                         CurrPage.SETSELECTIONFILTER(AJWebOrderHeader);
-                        AJWebOrderHeader.FINDFIRST;
+                        AJWebOrderHeader.FindFirst();
                         AJWebShipstationMgmt.SaveLabel(AJWebOrderHeader);
                     end;
                 }
@@ -717,11 +697,11 @@ page 37072309 "AJ Web Order"
                     ApplicationArea = All;
                     trigger OnAction()
                     var
-                        FileManagement: Codeunit "File Management";
                         TempBlob: Record TempBlob temporary;
+                        FileManagement: Codeunit "File Management";
                     begin
                         CalcFields("Created Order Text");
-                        if not Rec."Created Order Text".HasValue then
+                        if not Rec."Created Order Text".HasValue() then
                             Error('There is no Order Text loaded!');
                         TempBlob.Blob := "Created Order Text";
                         FileManagement.BLOBExport(TempBlob, "Web Service Order ID" + '.JSON', true);
@@ -754,17 +734,15 @@ page 37072309 "AJ Web Order"
     trigger OnOpenPage()
     begin
         if not AJWebService.Get("Web Service Code") then
-            AJWebService.Init;
+            AJWebService.Init();
 
         PageUnlockTracking(false);
     end;
 
     var
         // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
-        vAmazonPrime: Boolean;
         AJWebService: Record "AJ Web Service";
         vCarrierTrackingEditable: Boolean;
-        AJWebOrderList: Page "AJ Web Order List";
 
     local procedure PageUnlockTracking(SetEnable: Boolean)
     begin

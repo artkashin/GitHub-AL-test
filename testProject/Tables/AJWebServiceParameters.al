@@ -68,7 +68,7 @@ table 37072312 "AJ Web Service Parameters"
 
     procedure HasResponseContent(): Boolean
     begin
-        exit(Blob.HasValue);
+        exit(Blob.HasValue());
     end;
 
     procedure GetResponseContent(var value: HttpContent)
@@ -85,13 +85,13 @@ table 37072312 "AJ Web Service Parameters"
         InStr: InStream;
         Line: text;
     begin
-        if not HasResponseContent then
+        if not HasResponseContent() then
             exit;
 
         Blob.CreateInStream(InStr);
         InStr.ReadText(ReturnValue);
 
-        while not InStr.EOS do begin
+        while not InStr.EOS() do begin
             InStr.ReadText(Line);
             ReturnValue += Line;
         end;

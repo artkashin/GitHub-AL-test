@@ -19,7 +19,7 @@ table 37072302 "AJ Web Service"
 
             trigger OnValidate()
             begin
-                CalcAPIEncodedString;
+                CalcAPIEncodedString();
             end;
         }
         field(6; "API Password (Secret)"; Text[100])
@@ -28,7 +28,7 @@ table 37072302 "AJ Web Service"
 
             trigger OnValidate()
             begin
-                CalcAPIEncodedString;
+                CalcAPIEncodedString();
             end;
         }
         field(7; "API Encoded String"; Text[250])
@@ -63,88 +63,88 @@ table 37072302 "AJ Web Service"
         }
         field(29; "# New Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (.. Created),
-                                                             "Document Type" = CONST (Order)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(.. Created),
+                                                             "Document Type" = CONST(Order)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(30; "# Error Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Errors),
-                                                             "Document Type" = CONST (Order)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Errors),
+                                                             "Document Type" = CONST(Order)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(32; "# Open NAV Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Created)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Created)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(34; "# Ship Labels Created"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Created),
-                                                             "Labels Created" = CONST (true)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Created),
+                                                             "Labels Created" = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(35; "# Packing Lists Created"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Created),
-                                                             "Packing List Created" = CONST (true)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Created),
+                                                             "Packing List Created" = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(36; "# Ship Labels Printed"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Created),
-                                                             "Labels Printed" = CONST (true)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Created),
+                                                             "Labels Printed" = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(37; "# Packing Lists Printed"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Created),
-                                                             "Packing List Printed" = CONST (true)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Created),
+                                                             "Packing List Printed" = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(38; "# Shipped Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Shipped),
-                                                             "Shipping Advice" = CONST (Require)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Shipped),
+                                                             "Shipping Advice" = CONST(Require)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(39; "# Completed Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Shipped),
-                                                             "Shipping Advice" = FILTER (" " | Sent)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Shipped),
+                                                             "Shipping Advice" = FILTER(" " | Sent)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(41; "# Pending Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Pending),
-                                                             "Document Type" = CONST (Order)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Pending),
+                                                             "Document Type" = CONST(Order)));
             Editable = false;
             FieldClass = FlowField;
         }
         field(44; "# Error and New Web Orders"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER ("New Order" | Errors),
-                                                             "Document Type" = CONST (Order)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER("New Order" | Errors),
+                                                             "Document Type" = CONST(Order)));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -154,9 +154,9 @@ table 37072302 "AJ Web Service"
         }
         field(60; "# New Web Returns"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (.. Created),
-                                                             "Document Type" = CONST (Return)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(.. Created),
+                                                             "Document Type" = CONST(Return)));
             Editable = false;
             FieldClass = FlowField;
 
@@ -165,7 +165,7 @@ table 37072302 "AJ Web Service"
                 AJWebOrderHeader: Record "AJ Web Order Header";
             begin
 
-                AJWebOrderHeader.Reset;
+                AJWebOrderHeader.Reset();
                 AJWebOrderHeader.SetRange("Web Service Code", Code);
                 AJWebOrderHeader.SetRange("Document Type", AJWebOrderHeader."Document Type"::Return);
                 AJWebOrderHeader.SetFilter("NAV Order Status", '..Created');
@@ -174,9 +174,9 @@ table 37072302 "AJ Web Service"
         }
         field(61; "# Error Web Returns"; Integer)
         {
-            CalcFormula = Count ("AJ Web Order Header" WHERE ("Web Service Code" = FIELD (Code),
-                                                             "NAV Order Status" = FILTER (Errors),
-                                                             "Document Type" = CONST (Return)));
+            CalcFormula = Count ("AJ Web Order Header" WHERE("Web Service Code" = FIELD(Code),
+                                                             "NAV Order Status" = FILTER(Errors),
+                                                             "Document Type" = CONST(Return)));
             Editable = false;
             FieldClass = FlowField;
 
@@ -184,7 +184,7 @@ table 37072302 "AJ Web Service"
             var
                 AJWebOrderHeader: Record "AJ Web Order Header";
             begin
-                AJWebOrderHeader.Reset;
+                AJWebOrderHeader.Reset();
                 AJWebOrderHeader.SetRange("Web Service Code", Code);
                 AJWebOrderHeader.SetRange("Document Type", AJWebOrderHeader."Document Type"::Return);
                 AJWebOrderHeader.SetFilter("NAV Order Status", 'Errors');
@@ -235,12 +235,6 @@ table 37072302 "AJ Web Service"
         {
             DataClassification = ToBeClassified;
             TableRelation = "AJ Web Service Warehouse"."Warehouse ID";
-
-            trigger OnValidate()
-            var
-                AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-            begin
-            end;
         }
         field(510; "Shipping Service"; Option)
         {
@@ -248,7 +242,7 @@ table 37072302 "AJ Web Service"
         }
         field(511; "Default MarketPlace id"; Code[10])
         {
-            TableRelation = "AJ Web Marketplace (Mailbox)".Code WHERE ("Web Service Code" = FIELD (Code));
+            TableRelation = "AJ Web Marketplace (Mailbox)".Code WHERE("Web Service Code" = FIELD(Code));
         }
         field(530; "Allow to Delete WebOrder"; Boolean)
         {
@@ -273,9 +267,9 @@ table 37072302 "AJ Web Service"
         field(3003; "Shipping Charge No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = IF ("Shipping Charge Type" = CONST ("G/L Account")) "G/L Account"."No."
+            TableRelation = IF ("Shipping Charge Type" = CONST("G/L Account")) "G/L Account"."No."
             ELSE
-            IF ("Shipping Charge Type" = CONST (Item)) Item."No.";
+            IF ("Shipping Charge Type" = CONST(Item)) Item."No.";
         }
         field(31004; "HMAC Key"; Text[100])
         {
@@ -301,7 +295,10 @@ table 37072302 "AJ Web Service"
     begin
         if ("API User ID (Key)" = '') or ("API Password (Secret)" = '') then
             exit;
-        "API Encoded String" := Base64Convert.TextToBase64String(StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)"));
+        "API Encoded String" := CopyStr(
+                                Base64Convert.TextToBase64String(StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)")),
+                                1,
+                                MaxStrLen("API Encoded String"));
     end;
 }
 

@@ -50,7 +50,7 @@ table 37072305 "AJ Web Carrier Service"
         }
         field(30; "Shipping Agent Service Code"; Code[10])
         {
-            TableRelation = "Shipping Agent Services".Code WHERE ("Shipping Agent Code" = FIELD ("Shipping Agent Code"));
+            TableRelation = "Shipping Agent Services".Code WHERE("Shipping Agent Code" = FIELD("Shipping Agent Code"));
         }
         field(50; Blocked; Boolean)
         {
@@ -63,7 +63,7 @@ table 37072305 "AJ Web Carrier Service"
 
             trigger OnLookup()
             begin
-                GetPackageCodeAndPackageName;
+                GetPackageCodeAndPackageName();
             end;
         }
         field(412; "Default Package Name"; Text[100])
@@ -71,12 +71,12 @@ table 37072305 "AJ Web Carrier Service"
 
             trigger OnLookup()
             begin
-                GetPackageCodeAndPackageName;
+                GetPackageCodeAndPackageName();
             end;
         }
         field(419; "Shipping Service Code"; Code[20])
         {
-            CalcFormula = Lookup ("AJ Web Service"."Shipping Service Code" WHERE (Code = FIELD ("Web Service Code")));
+            CalcFormula = Lookup ("AJ Web Service"."Shipping Service Code" WHERE(Code = FIELD("Web Service Code")));
             Editable = false;
             FieldClass = FlowField;
         }

@@ -87,8 +87,8 @@ table 37072308 "AJ Web Order Line"
         }
         field(26; "Weigh Unit"; Text[30])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code" = FIELD ("Web Service Code"),
-                                                                             Type = CONST (Weight));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE("Web Order Service Code" = FIELD("Web Service Code"),
+                                                                             Type = CONST(Weight));
         }
         field(28; "Qty. to Ship"; Decimal)
         {
@@ -190,17 +190,17 @@ table 37072308 "AJ Web Order Line"
         }
         field(1200; "Package No."; Code[20])
         {
-            CalcFormula = Lookup ("AJ Web Package Line"."Package No." WHERE ("Source Type" = CONST (37074834),
-                                                                            "Source No." = FIELD ("Web Order No."),
-                                                                            "Source Line No." = FIELD ("Line No.")));
+            CalcFormula = Lookup ("AJ Web Package Line"."Package No." WHERE("Source Type" = CONST(37074834),
+                                                                            "Source No." = FIELD("Web Order No."),
+                                                                            "Source Line No." = FIELD("Line No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(1201; "Package Quantity"; Decimal)
         {
-            CalcFormula = Sum ("AJ Web Package Line".Quantity WHERE ("Source Type" = CONST (37074834),
-                                                                    "Source No." = FIELD ("Web Order No."),
-                                                                    "Source Line No." = FIELD ("Line No.")));
+            CalcFormula = Sum ("AJ Web Package Line".Quantity WHERE("Source Type" = CONST(37074834),
+                                                                    "Source No." = FIELD("Web Order No."),
+                                                                    "Source Line No." = FIELD("Line No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -251,11 +251,11 @@ table 37072308 "AJ Web Order Line"
 
     trigger OnDelete()
     begin
-        AJWebPackageLine.Reset;
+        AJWebPackageLine.Reset();
         AJWebPackageLine.SetRange("Source Type", DATABASE::"AJ Web Order Line");
         AJWebPackageLine.SetRange("Source No.", "Package No.");
         AJWebPackageLine.SetRange("Source Line No.", "Line No.");
-        if AJWebPackageLine.FindFirst then
+        if AJWebPackageLine.FindFirst() then
             Error('Could not delete order line %1! Please delete package %2.', "Line No.", AJWebPackageLine."Package No.");
     end;
 

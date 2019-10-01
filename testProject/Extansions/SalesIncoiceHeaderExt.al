@@ -7,7 +7,4 @@ tableextension 37072302 TableExtansion112 extends "Sales Invoice Header"
             TableRelation = "AJ Web Order Header";
         }
     }
-
-    var
-        myInt: Integer;
 }

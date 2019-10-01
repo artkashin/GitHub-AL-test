@@ -42,18 +42,16 @@ codeunit 37072301 "AJ Web Service Base"
         end;
 
         Client.Send(RequestMessage, ResponseMessage);
-        ResponseMessage.Content.ReadAs(Body);
+        ResponseMessage.Content().ReadAs(Body);
 
 
-        if not ResponseMessage.IsSuccessStatusCode then begin
+        if not ResponseMessage.IsSuccessStatusCode() then
             ErrorTxt := Body;
-            /*StrSubstNo('The web service returned an error message:\\' +
-                'Status code: %1\' +
-                'Description: %2',
-                ResponseMessage.HttpStatusCode,
-                ResponseMessage.ReasonPhrase);
-            */
-        end;
+        // StrSubstNo('The web service returned an error message:\\' +
+        //     'Status code: %1\' +
+        //     'Description: %2',
+        //     ResponseMessage.HttpStatusCode,
+        //     ResponseMessage.ReasonPhrase);
 
     end;
 }

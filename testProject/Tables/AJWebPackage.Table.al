@@ -25,7 +25,7 @@ table 37072309 "AJ Web Package"
         }
         field(13; "Shipping Warehouse ID"; Code[40])
         {
-            TableRelation = "AJ Web Service Warehouse"."Warehouse ID" WHERE ("Web Service Code" = FIELD ("Shipping Web Service Code"));
+            TableRelation = "AJ Web Service Warehouse"."Warehouse ID" WHERE("Web Service Code" = FIELD("Shipping Web Service Code"));
 
             trigger OnValidate()
             var
@@ -52,44 +52,26 @@ table 37072309 "AJ Web Package"
         }
         field(21; "Shipping Carrier Code"; Text[50])
         {
-
-            trigger OnValidate()
-            var
-                AJWebCarrier: Record "AJ Web Carrier";
-            begin
-            end;
         }
         field(22; "Shipping Carrier Service"; Text[50])
         {
-
-            trigger OnValidate()
-            var
-                AJWebCarrierServices: Record "AJ Web Carrier Service";
-            begin
-            end;
         }
         field(23; "Shipping Package Type"; Text[30])
         {
-
-            trigger OnValidate()
-            var
-                AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-            begin
-            end;
         }
         field(24; "Shipping Delivery Confirm"; Text[30])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code" = FIELD ("Shipping Web Service Code"),
-                                                                             Type = CONST (Confirmation),
-                                                                             Blocked = CONST (false));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE("Web Order Service Code" = FIELD("Shipping Web Service Code"),
+                                                                             Type = CONST(Confirmation),
+                                                                             Blocked = CONST(false));
         }
         field(31; "Shp. Product Dimension Unit"; Text[30])
         {
         }
         field(32; "Shp. Product Weight Unit"; Text[30])
         {
-            TableRelation = "AJ Web Service Constants"."Option Value" WHERE ("Web Order Service Code" = FIELD ("Shipping Web Service Code"),
-                                                                             Type = CONST (Weight));
+            TableRelation = "AJ Web Service Constants"."Option Value" WHERE("Web Order Service Code" = FIELD("Shipping Web Service Code"),
+                                                                             Type = CONST(Weight));
         }
         field(33; "Shp. Product Weight"; Decimal)
         {
@@ -206,28 +188,27 @@ table 37072309 "AJ Web Package"
 
         TestField("Label Created", false);
 
-        AJWebPackageLine.Reset;
+        AJWebPackageLine.Reset();
         AJWebPackageLine.SetRange("Package No.", "No.");
-        if not AJWebPackageLine.IsEmpty then
+        if not AJWebPackageLine.IsEmpty() then
             AJWebPackageLine.DeleteAll(true);
     end;
 
     trigger OnInsert()
     begin
         if "No." = '' then begin
-            AJWebSetup.Get;
+            AJWebSetup.Get();
             AJWebSetup.TestField("Web Package No. Series");
-            "No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Package No. Series", WorkDate, true);
+            "No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Package No. Series", WorkDate(), true);
         end;
     end;
 
     var
-        AJWebService: Record "AJ Web Service";
         AJWebSetup: Record "AJ Web Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
         AJWebPackageLine: Record "AJ Web Package Line";
+        NoSeriesManagement: Codeunit NoSeriesManagement;
 
-    [Scope('Internal')]
+
     procedure UpdateShippingParameters()
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
@@ -253,7 +234,7 @@ table 37072309 "AJ Web Package"
                 if AJWebCarrier."Bill-to Type" = AJWebCarrier."Bill-to Type"::third_party then begin
                     "Bill-to Type" := AJWebCarrier."Bill-to Type";
                     "Bill-To Account" := AJWebCarrier."Bill-to Account No.";
-                    "Bill-To Postal Code" := AJWebCarrier."Bill-to Account Post Code";
+                    "Bill-To Postal Code" := CopyStr(AJWebCarrier."Bill-to Account Post Code", 1, MaxStrLen("Bill-To Postal Code"));
                     "Bill-To Country Code" := AJWebCarrier."Bill-to Account Country Code";
                 end;
             end;
@@ -264,7 +245,7 @@ table 37072309 "AJ Web Package"
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateBoxParameters()
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
@@ -280,19 +261,18 @@ table 37072309 "AJ Web Package"
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure CalcBoxWeight()
     var
-        AJWebPackageLine: Record "AJ Web Package Line";
         AJWebOrderLine: Record "AJ Web Order Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
     begin
         "Shp. Product Weight" := 0;
         "Shp. Product Weight Unit" := '';
 
-        AJWebPackageLine.Reset;
+        AJWebPackageLine.Reset();
         AJWebPackageLine.SetRange("Package No.", "No.");
-        if AJWebPackageLine.FindFirst then
+        if AJWebPackageLine.FindFirst() then
             repeat
                 if AJWebPackageLine."Source Type" = DATABASE::"AJ Web Order Line" then begin
                     AJWebOrderLine.Get(AJWebPackageLine."Source No.", AJWebPackageLine."Source Line No.");
@@ -309,14 +289,13 @@ table 37072309 "AJ Web Package"
                     else
                         AJWebOrderLine.FieldError("Weigh Unit");
                 end;
-            until AJWebPackageLine.Next = 0;
+            until AJWebPackageLine.Next() = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageToShip(AJWebOrderLine: Record "AJ Web Order Line"): Boolean
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
-        AJWebPackageLine: Record "AJ Web Package Line";
         AJWebPackage: Record "AJ Web Package";
     begin
 
@@ -328,12 +307,12 @@ table 37072309 "AJ Web Package"
         AJWebPackageLine.SetRange("Source Type", DATABASE::"AJ Web Order Line");
         AJWebPackageLine.SetRange("Source No.", AJWebOrderLine."Web Order No."); // fixed 4/27/2017
         AJWebPackageLine.SetRange("Source Line No.", AJWebOrderLine."Line No."); // fixed 4/27/2017
-        if AJWebPackageLine.FindFirst then begin
+        if AJWebPackageLine.FindFirst() then begin
             repeat
                 AJWebPackage.Get(AJWebPackageLine."Package No.");
                 if AJWebPackage."Shipment No." <> '' then begin
                     AJWebPackageLine.SetFilter("Package No.", '>%1', AJWebPackage."No.");
-                    if not AJWebPackageLine.FindFirst then
+                    if AJWebPackageLine.IsEmpty() then
                         exit(false);
                 end;
             until AJWebPackage."Shipment No." = '';
@@ -344,11 +323,10 @@ table 37072309 "AJ Web Package"
         exit(false);
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForShipConf(AJWebOrderLine: Record "AJ Web Order Line"): Boolean
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
-        AJWebPackageLine: Record "AJ Web Package Line";
         AJWebPackage: Record "AJ Web Package";
     begin
 
@@ -360,12 +338,12 @@ table 37072309 "AJ Web Package"
         AJWebPackageLine.SetRange("Source Type", DATABASE::"AJ Web Order Line");
         AJWebPackageLine.SetRange("Source No.", AJWebOrderLine."Web Order No."); // fixed 4/27/2017
         AJWebPackageLine.SetRange("Source Line No.", AJWebOrderLine."Line No."); // fixed 4/27/2017
-        if AJWebPackageLine.FindFirst then begin
+        if AJWebPackageLine.FindFirst() then begin
             repeat
                 AJWebPackage.Get(AJWebPackageLine."Package No.");
                 if AJWebPackage."Shipping Advice" <> AJWebPackage."Shipping Advice"::" " then begin
                     AJWebPackageLine.SetFilter("Package No.", '>%1', AJWebPackage."No.");
-                    if not AJWebPackageLine.FindFirst then
+                    if AJWebPackageLine.IsEmpty() then
                         exit(false);
                 end;
             until AJWebPackage."Shipping Advice" = AJWebPackage."Shipping Advice"::" ";
@@ -376,11 +354,9 @@ table 37072309 "AJ Web Package"
         exit(false);
     end;
 
-    [Scope('Internal')]
     procedure FindPackageToInvoice(AJWebOrderLine: Record "AJ Web Order Line"): Boolean
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
-        AJWebPackageLine: Record "AJ Web Package Line";
         AJWebPackage: Record "AJ Web Package";
     begin
 
@@ -392,12 +368,12 @@ table 37072309 "AJ Web Package"
         AJWebPackageLine.SetRange("Source Type", DATABASE::"AJ Web Order Line");
         AJWebPackageLine.SetRange("Source No.", AJWebOrderLine."Web Order No."); // fixed 4/27/2017
         AJWebPackageLine.SetRange("Source Line No.", AJWebOrderLine."Line No."); // fixed 4/27/2017
-        if AJWebPackageLine.FindFirst then begin
+        if AJWebPackageLine.FindFirst() then begin
             repeat
                 AJWebPackage.Get(AJWebPackageLine."Package No.");
                 if AJWebPackage."Invoice No." <> '' then begin
                     AJWebPackageLine.SetFilter("Package No.", '>%1', AJWebPackage."No.");
-                    if not AJWebPackageLine.FindFirst then
+                    if AJWebPackageLine.IsEmpty() then
                         exit(false);
                 end;
             until AJWebPackage."Invoice No." = '';
@@ -408,11 +384,10 @@ table 37072309 "AJ Web Package"
         exit(false);
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackage(AJWebOrderLine: Record "AJ Web Order Line"): Boolean
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
-        AJWebPackageLine: Record "AJ Web Package Line";
         AJWebPackage: Record "AJ Web Package";
     begin
 
@@ -424,7 +399,7 @@ table 37072309 "AJ Web Package"
         AJWebPackageLine.SetRange("Source Type", DATABASE::"AJ Web Order Line");
         AJWebPackageLine.SetRange("Source No.", AJWebOrderLine."Web Order No."); // fixed 4/27/2017
         AJWebPackageLine.SetRange("Source Line No.", AJWebOrderLine."Line No."); // fixed 4/27/2017
-        if AJWebPackageLine.FindFirst then begin
+        if AJWebPackageLine.FindFirst() then begin
             AJWebPackage.Get(AJWebPackageLine."Package No.");
             Rec := AJWebPackage;
             exit(true);
@@ -433,12 +408,12 @@ table 37072309 "AJ Web Package"
         exit(false);
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForSalesInvHeader(SalesInvoiceHeader: Record "Sales Invoice Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
 
         if SalesInvoiceHeader."Web Order No." <> '' then begin
@@ -449,18 +424,18 @@ table 37072309 "AJ Web Package"
             AJWebPackage.SetRange("Source No.", SalesInvoiceHeader."No.");
         end;
 
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForSalesHeader(SalesHeader: Record "Sales Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
 
         if SalesHeader."Web Order No." <> '' then begin
@@ -473,40 +448,31 @@ table 37072309 "AJ Web Package"
             AJWebPackage.SetRange("Source Subtype", SalesHeader."Document Type");
         end;
 
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForSalesCrMemoHeader(SalesCrMemoHeader: Record "Sales Cr.Memo Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
-
-        //if SalesCrMemoHeader."Web Order No." <> '' then begin
-        //  AJWebPackage.SetRange("Source Type", DATABASE::"Sales Cr.Memo Header");
-        //  AJWebPackage.SetRange("Source No.",SalesCrMemoHeader."Web Order No.");
-        //end else begin
-        //  AJWebPackage.SetRange("Source Type", DATABASE::"Sales Cr.Memo Header");
-        //  AJWebPackage.SetRange("Source No.",SalesCrMemoHeader."No.");
-        //end;
-
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForReturnReceiptHeader(ReturnReceiptHeader: Record "Return Receipt Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
 
         //if ReturnReceiptHeader."Web Order No." <> '' then begin
@@ -517,18 +483,18 @@ table 37072309 "AJ Web Package"
         // AJWebPackage.SetRange("Source No.",ReturnReceiptHeader."No.");
         // end;
 
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForPurchaseHeader(PurchaseHeader: Record "Purchase Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
 
 
@@ -542,18 +508,18 @@ table 37072309 "AJ Web Package"
         // AJWebPackage.SetRange("Source Subtype", PurchaseHeader."Document Type");
         // end;
 
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;
     end;
 
-    [Scope('Internal')]
+
     procedure FindPackageForReturnShipmentHeader(ReturnShipmentHeader: Record "Return Shipment Header"): Boolean
     var
         AJWebPackage: Record "AJ Web Package";
     begin
-        AJWebPackage.Reset;
+        AJWebPackage.Reset();
         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
 
         begin
@@ -561,7 +527,7 @@ table 37072309 "AJ Web Package"
             AJWebPackage.SetRange("Source No.", ReturnShipmentHeader."No.");
         end;
 
-        if AJWebPackage.FindFirst then begin
+        if AJWebPackage.FindFirst() then begin
             Rec.Copy(AJWebPackage);
             exit(true);
         end;

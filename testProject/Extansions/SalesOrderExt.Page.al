@@ -27,78 +27,74 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
 
                     trigger OnAssistEdit()
                     var
-                        SalesLine: Record "Sales Line";
                         lr_Customer: Record Customer;
-                        ReleaseSalesDocument: Codeunit "Release Sales Document";
-                        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
                         AJWebPackage: Record "AJ Web Package";
                         PaymentTerms: Record "Payment Terms";
                         AJWebService: Record "AJ Web Service";
                         AJWebOrderHeader2: Record "AJ Web Order Header";
-                        AJWebOrderServiceMgmt: Codeunit "AJ Web Shipstation Mgmt.";
-                        ShippingAgentServices: Record "Shipping Agent Services";
+                        ReleaseSalesDocument: Codeunit "Release Sales Document";
                     begin
                         if Status = Status::Released then begin
                             ReleaseSalesDocument.Reopen(Rec);
-                            Commit;
+                            Commit();
                         end;
 
-                        if AJWebOrderHeader."Web Order No." <> '' then
-                            PAGE.Run(PAGE::"AJ Web Order", AJWebOrderHeader)
+                        if AJWebOrderHeader2."Web Order No." <> '' then
+                            PAGE.Run(PAGE::"AJ Web Order", AJWebOrderHeader2)
                         else begin
-                            AJWebOrderHeader."Order DateTime" := CreateDateTime("Order Date", Time);
-                            AJWebOrderHeader.InitRecord("Shipping Agent Code");
-                            if not AJWebService.Get(AJWebOrderHeader."Shipping Web Service Code") then
-                                AJWebService.Init;
+                            AJWebOrderHeader2."Order DateTime" := CreateDateTime("Order Date", Time());
+                            AJWebOrderHeader2.InitRecord("Shipping Agent Code");
+                            if not AJWebService.Get(AJWebOrderHeader2."Shipping Web Service Code") then
+                                AJWebService.Init();
 
                             if lr_Customer.Get("Sell-to Customer No.")
                               then
                                 if lr_Customer."Bill-to Type" = lr_Customer."Bill-to Type"::third_party then begin
-                                    AJWebOrderHeader."Bill-to Type" := lr_Customer."Bill-to Type";
-                                    AJWebOrderHeader."Bill-To Account" := lr_Customer."Bill-to Account No.";
-                                    AJWebOrderHeader."Bill-To Postal Code" := lr_Customer."Bill-to Account Post Code";
-                                    AJWebOrderHeader."Bill-To Country Code" := lr_Customer."Bill-to Account Country Code";
+                                    AJWebOrderHeader2."Bill-to Type" := lr_Customer."Bill-to Type";
+                                    AJWebOrderHeader2."Bill-To Account" := lr_Customer."Bill-to Account No.";
+                                    AJWebOrderHeader2."Bill-To Postal Code" := CopyStr(lr_Customer."Bill-to Account Post Code", 1, MaxStrLen(AJWebOrderHeader2."Bill-To Postal Code"));
+                                    AJWebOrderHeader2."Bill-To Country Code" := lr_Customer."Bill-to Account Country Code";
                                 end;
-                            AJWebPackage.Reset;
+                            AJWebPackage.Reset();
                             AJWebPackage.SetRange("Source Type", DATABASE::Customer);
                             AJWebPackage.SetRange("Source No.", "Sell-to Customer No.");
-                            if AJWebPackage.FindFirst then begin
-                                AJWebOrderHeader."Shipping Web Service Code" := AJWebPackage."Shipping Web Service Code";
-                                //AJWebOrderHeader."Shipping Web Service Store ID" := AJWebPackage."Shipping Web Service Store ID";
-                                AJWebOrderHeader."Ship-From Warehouse ID" := AJWebPackage."Shipping Warehouse ID";
-                                AJWebOrderHeader."Shipping Carrier Code" := AJWebPackage."Shipping Carrier Code";
-                                AJWebOrderHeader."Shipping Carrier Service" := AJWebPackage."Shipping Carrier Service";
-                                AJWebOrderHeader."Shipping Package Type" := AJWebPackage."Shipping Package Type";
-                                AJWebOrderHeader."Shipping Delivery Confirm" := AJWebPackage."Shipping Delivery Confirm";
-                                AJWebOrderHeader."Shp. Product Dimension Unit" := AJWebPackage."Shp. Product Dimension Unit";
-                                AJWebOrderHeader."Shp. Product Weight Unit" := AJWebPackage."Shp. Product Weight Unit";
-                                AJWebOrderHeader."Shp. Product Weight" := AJWebPackage."Shp. Product Weight";
-                                AJWebOrderHeader."Shp. Product Width" := AJWebPackage."Shp. Product Width";
-                                AJWebOrderHeader."Shp. Product Length" := AJWebPackage."Shp. Product Length";
-                                AJWebOrderHeader."Shp. Product Height" := AJWebPackage."Shp. Product Height";
-                                AJWebOrderHeader."Insure Shipment" := AJWebPackage."Insure Shipment";
-                                AJWebOrderHeader."Insured Value" := AJWebPackage."Insured Value";
-                                AJWebOrderHeader."Additional Insurance Value" := AJWebPackage."Additional Insurance Value";
-                                AJWebOrderHeader.Modify;
+                            if AJWebPackage.FindFirst() then begin
+                                AJWebOrderHeader2."Shipping Web Service Code" := AJWebPackage."Shipping Web Service Code";
+                                //AJWebOrderHeader2."Shipping Web Service Store ID" := AJWebPackage."Shipping Web Service Store ID";
+                                AJWebOrderHeader2."Ship-From Warehouse ID" := AJWebPackage."Shipping Warehouse ID";
+                                AJWebOrderHeader2."Shipping Carrier Code" := AJWebPackage."Shipping Carrier Code";
+                                AJWebOrderHeader2."Shipping Carrier Service" := AJWebPackage."Shipping Carrier Service";
+                                AJWebOrderHeader2."Shipping Package Type" := AJWebPackage."Shipping Package Type";
+                                AJWebOrderHeader2."Shipping Delivery Confirm" := AJWebPackage."Shipping Delivery Confirm";
+                                AJWebOrderHeader2."Shp. Product Dimension Unit" := AJWebPackage."Shp. Product Dimension Unit";
+                                AJWebOrderHeader2."Shp. Product Weight Unit" := AJWebPackage."Shp. Product Weight Unit";
+                                AJWebOrderHeader2."Shp. Product Weight" := AJWebPackage."Shp. Product Weight";
+                                AJWebOrderHeader2."Shp. Product Width" := AJWebPackage."Shp. Product Width";
+                                AJWebOrderHeader2."Shp. Product Length" := AJWebPackage."Shp. Product Length";
+                                AJWebOrderHeader2."Shp. Product Height" := AJWebPackage."Shp. Product Height";
+                                AJWebOrderHeader2."Insure Shipment" := AJWebPackage."Insure Shipment";
+                                AJWebOrderHeader2."Insured Value" := AJWebPackage."Insured Value";
+                                AJWebOrderHeader2."Additional Insurance Value" := AJWebPackage."Additional Insurance Value";
+                                AJWebOrderHeader2.Modify();
                             end;
-                            Rec."Web Order No." := AJWebOrderHeader."Web Order No.";
+                            Rec."Web Order No." := AJWebOrderHeader2."Web Order No.";
 
                             if not PaymentTerms.Get("Payment Terms Code") then
-                                PaymentTerms.Init;
-                            AJWebOrderHeader."COD Amount" := 0;
+                                PaymentTerms.Init();
+                            AJWebOrderHeader2."COD Amount" := 0;
 
                             //  IF PaymentTerms."COD Type" <> PaymentTerms."COD Type"::" " THEN BEGIN
-                            //    SalesLine.RESET;
+                            //    SalesLine.Reset();
                             //    SalesLine.SETRANGE("Document Type","Document Type");
                             //    SalesLine.SETRANGE("Document No.","No.");
-                            //    IF SalesLine.FINDFIRST THEN REPEAT
+                            //    IF SalesLine.FindFirst() tHEN REPEAT
                             //      IF NOT ((SalesLine.Type = SalesLine.Type::"G/L Account") AND (SalesLine."Web Line Type" = SalesLine."Web Line Type"::"S&H")) THEN
-                            //        AJWebOrderHeader."COD Amount" += SalesLine."Unit Price" * SalesLine."Qty. to Ship";
+                            //        AJWebOrderHeader2."COD Amount" += SalesLine."Unit Price" * SalesLine."Qty. to Ship";
                             //    UNTIL SalesLine.NEXT = 0;
                             //  END;
 
-                            AJWebOrderHeader.Modify;
-                            Rec.Modify;
+                            AJWebOrderHeader2.Modify();
+                            Rec.Modify();
                         end;
                     end;
                 }
@@ -120,13 +116,12 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         AJWebService: Record "AJ Web Service";
-                        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
                     begin
 
                         AJWebService.SetRange("Web Service Type", AJWebService."Web Service Type"::ShipStation);
                         if PAGE.RunModal(PAGE::"AJ Web Services", AJWebService) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shipping Web Service Code" := AJWebService.Code;
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
@@ -135,21 +130,20 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebService: Record "AJ Web Service";
                     begin
 
-                        if AJWebOrderHeader."Shipping Web Service Code" = '' then begin
-                            AJWebOrderHeader.Init;
-                        end;
+                        if AJWebOrderHeader."Shipping Web Service Code" = '' then
+                            AJWebOrderHeader.Init();
                         if AJWebService.Get(AJWebOrderHeader."Shipping Web Service Code") then begin
                             if AJWebOrderHeader."Web Order No." = '' then begin
                                 AJWebOrderHeader.InitRecord("Shipping Agent Code");
                                 Rec."Web Order No." := AJWebOrderHeader."Web Order No.";
-                                Rec.Modify;
+                                Rec.Modify();
                             end;
                             AJWebOrderHeader."Shipping Web Service Code" := AJWebService.Code;
                             if AJWebOrderHeader."Web Service Code" = '' then
                                 AJWebOrderHeader."Web Service Code" := AJWebService.Code;
                         end;
 
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_SipFromWhseID; AJWebOrderHeader."Ship-From Warehouse ID")
@@ -166,16 +160,10 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebServiceWarehouse.SetRange("Web Service Code", AJWebOrderHeader."Shipping Web Service Code");
                         if PAGE.RunModal(PAGE::"AJ Web Service Warehouses", AJWebServiceWarehouse) = ACTION::LookupOK then begin
                             AJWebOrderHeader.Validate("Ship-From Warehouse ID", AJWebServiceWarehouse."Warehouse ID");
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
-                    trigger OnValidate()
-                    var
-                        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-                        AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
-                    begin
-                    end;
                 }
                 field(AJWOH_ShpCarrierCode; AJWebOrderHeader."Shipping Carrier Code")
                 {
@@ -191,13 +179,13 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebCarrier.SetRange("Web Service Code", AJWebOrderHeader."Shipping Web Service Code");
                         if PAGE.RunModal(PAGE::"AJ Web Carriers", AJWebCarrier) = ACTION::LookupOK then begin
                             AJWebOrderHeader.Validate("Shipping Carrier Code", AJWebCarrier.Code);
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
 
                             // Update Sales Order
                             if (AJWebCarrier."Shipment Method Code" <> '') and ("Shipment Method Code" <> AJWebCarrier."Shipment Method Code") then begin
                                 "Shipment Method Code" := AJWebCarrier."Shipment Method Code";
                                 "Shipping Agent Code" := AJWebCarrier."Shipping Agent  Code";
-                                Modify;
+                                Modify();
                             end;
                         end;
                     end;
@@ -208,14 +196,14 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     begin
 
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
 
                         // Update Sales Order
                         if AJWebCarrier.Get(AJWebOrderHeader."Shipping Web Service Code", AJWebOrderHeader."Shipping Carrier Code") then
                             if (AJWebCarrier."Shipment Method Code" <> '') and ("Shipment Method Code" <> AJWebCarrier."Shipment Method Code") then begin
                                 "Shipment Method Code" := AJWebCarrier."Shipment Method Code";
                                 "Shipping Agent Code" := AJWebCarrier."Shipping Agent  Code";
-                                Modify;
+                                Modify();
                             end;
                     end;
                 }
@@ -236,7 +224,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebCarrierService.SetRange(Blocked, false);
                         if PAGE.RunModal(PAGE::"AJ Web Carrier Services", AJWebCarrierService) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shipping Carrier Service" := AJWebCarrierService."Service  Code";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
@@ -244,7 +232,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     begin
 
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_ShpPackageType; AJWebOrderHeader."Shipping Package Type")
@@ -263,18 +251,15 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebCarrierPackageType.SetRange("Web Carrier Code", AJWebOrderHeader."Shipping Carrier Code");
                         AJWebCarrierPackageType.SetRange(Blocked, false);
                         if PAGE.RunModal(PAGE::"AJ Web Carier Package Types", AJWebCarrierPackageType) = ACTION::LookupOK then begin
-                            AJWebOrderHeader."Shipping Package Type" := AJWebCarrierPackageType."Package Code";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader."Shipping Package Type" := CopyStr(AJWebCarrierPackageType."Package Code", 1, MaxStrLen(AJWebOrderHeader."Shipping Package Type"));
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
                     trigger OnValidate()
-                    var
-                        AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
                     begin
-
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_ShpDeliveryConf; AJWebOrderHeader."Shipping Delivery Confirm")
@@ -294,7 +279,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebServiceConstants.SetRange(Blocked, false);
                         if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shipping Delivery Confirm" := AJWebServiceConstants."Option Value";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
@@ -302,7 +287,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     begin
 
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_ShpOption; AJWebOrderHeader."Shipping Options")
@@ -322,7 +307,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebServiceConstants.SetRange(Blocked, false);
                         if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shipping Options" := AJWebServiceConstants."Option Value";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
@@ -330,7 +315,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     begin
 
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdWgt; AJWebOrderHeader."Shp. Product Weight")
@@ -342,7 +327,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdDim; AJWebOrderHeader."Shp. Product Weight Unit")
@@ -351,7 +336,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     Caption = 'Product Weight Unit';
                     Importance = Additional;
                     QuickEntry = false;
-                    TableRelation = "AJ Web Service Constants"."Option Value" WHERE (Type = CONST (Weight));
+                    TableRelation = "AJ Web Service Constants"."Option Value" WHERE(Type = CONST(Weight));
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -362,14 +347,14 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebServiceConstants.SetRange(Type, AJWebServiceConstants.Type::Weight);
                         if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shp. Product Weight Unit" := AJWebServiceConstants."Option Value";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdDimUnit; AJWebOrderHeader."Shp. Product Dimension Unit")
@@ -388,14 +373,14 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebServiceConstants.SetRange(Type, AJWebServiceConstants.Type::Dimension);
                         if PAGE.RunModal(0, AJWebServiceConstants) = ACTION::LookupOK then begin
                             AJWebOrderHeader."Shp. Product Dimension Unit" := AJWebServiceConstants."Option Value";
-                            AJWebOrderHeader.Modify;
+                            AJWebOrderHeader.Modify();
                         end;
                     end;
 
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdW; AJWebOrderHeader."Shp. Product Width")
@@ -408,7 +393,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdL; AJWebOrderHeader."Shp. Product Length")
@@ -421,7 +406,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_PrdH; AJWebOrderHeader."Shp. Product Height")
@@ -434,7 +419,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_International; AJWebOrderHeader."International Shipment")
@@ -446,7 +431,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_InsureShp; AJWebOrderHeader."Insure Shipment")
@@ -458,7 +443,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_InsuredValue; AJWebOrderHeader."Insured Value")
@@ -470,7 +455,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_AddInsValue; AJWebOrderHeader."Additional Insurance Value")
@@ -484,7 +469,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     begin
 
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_CODAmount; AJWebOrderHeader."COD Amount")
@@ -496,7 +481,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
                 field(AJWOH_CarrierShpCharge; AJWebOrderHeader."Carier Shipping Charge")
@@ -508,7 +493,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
 
                     trigger OnAssistEdit()
                     begin
-                        GetShipLabels;
+                        GetShipLabels();
                     end;
                 }
                 field(AJWOH_CarrierTrackingNumber; AJWebOrderHeader."Carier Tracking Number")
@@ -535,7 +520,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_PackagesCount; AJWebOrderHeader."Packages Count")
                 {
-                    ApplicationArea = Basic;
+                    ApplicationArea = All;
                     Caption = 'Packages';
                     Editable = false;
                     Importance = Additional;
@@ -546,7 +531,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJWebPackage: Record "AJ Web Package";
                     begin
 
-                        AJWebPackage.Reset;
+                        AJWebPackage.Reset();
                         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
                         AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
                         AJWebPackage.SetRange("Source No.", AJWebOrderHeader."Web Order No.");
@@ -555,14 +540,14 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                 }
                 field(AJWOH_CustomField2; AJWebOrderHeader."Customer Reference ID")
                 {
-                    ApplicationArea = basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Custom Field 2';
 
                     trigger OnValidate()
                     begin
                         AJWebOrderHeader.TestField("Shipping Web Service Code");
                         AJWebOrderHeader.TestField("Created From Sales Order", true);
-                        AJWebOrderHeader.Modify;
+                        AJWebOrderHeader.Modify();
                     end;
                 }
             }
@@ -570,17 +555,14 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
     }
     var
         AJWebOrderHeader: Record "AJ Web Order Header";
-        xAJWebOrderHeader: Record "AJ Web Order Header";
 
     local procedure GetShipLabels()
     var
+        Customer: Record Customer;
+        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
         AJWebOrderServiceMgmt: Codeunit "AJ Web Shipstation Mgmt.";
         Wnd: Dialog;
-        Customer: Record Customer;
-        AJWebPackage: Record "AJ Web Package";
-        Cnt: Integer;
         OrderCreated: Boolean;
-        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
     begin
         TestField(Status, Status::Open);
         Customer.Get("Sell-to Customer No.");
@@ -595,44 +577,44 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
         if AJWebOrderHeader."COD Status" = 0 then
             if ("Web Order No." = '') or (AJWebOrderHeader."Created From Sales Order") then begin
                 AJWebOrderServiceMgmt.CreateWebOrderFromSalesOrder(Rec, AJWebOrderHeader);
-                Commit;
+                Commit();
                 OrderCreated := true;
             end;
         AJWebOrderHeader.CalcFields(Packages);
-        if AJWebOrderHeader.Packages then begin
-            if Confirm('There are Packages. Do you want to create labels for them?') then begin
-                Cnt := 0;
-                Wnd.Open('Requesting shipping label #1##...');
-                AJWebPackage.Reset;
-                AJWebPackage.SetCurrentKey("Source Type", "Source No.");
-                AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
-                AJWebPackage.SetRange("Source No.", AJWebOrderHeader."Web Order No.");
-                if AJWebPackage.FindFirst then
-                    repeat
-                        Cnt += 1;
-                        Wnd.Update(1, Cnt);
-                        if not AJWebPackage."Label Created" then begin
-                            //AJWebOrderServiceMgmt.GetLabelForPackage(AJWebPackage);
-                            Commit;
-                        end;
-                    until AJWebPackage.Next = 0;
-                Wnd.Close;
-                Rec.Find;
+        // if AJWebOrderHeader.Packages then begin
+        //     if Confirm('There are Packages. Do you want to create labels for them?') then begin
+        //         Cnt := 0;
+        //         Wnd.Open('Requesting shipping label #1##...');
+        //         AJWebPackage.Reset();
+        //         AJWebPackage.SetCurrentKey("Source Type", "Source No.");
+        //         AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
+        //         AJWebPackage.SetRange("Source No.", AJWebOrderHeader."Web Order No.");
+        //         if AJWebPackage.FindFirst() then
+        //             repeat
+        //                 Cnt += 1;
+        //                 Wnd.Update(1, Cnt);
+        //                 if not AJWebPackage."Label Created" then begin
+        //                     //AJWebOrderServiceMgmt.GetLabelForPackage(AJWebPackage);
+        //                     Commit();
+        //                 end;
+        //             until AJWebPackage.Next = 0;
+        //         Wnd.Close();
+        //         Rec.Find;
 
-                Message('Done');
-                CurrPage.Update(false);
-                exit;
-            end else
-                Error('Cancelled.');
-        end;
+        //         Message('Done');
+        //         CurrPage.Update(false);
+        //         exit;
+        //     end else
+        //         Error('Cancelled.');
+        // end;
         if AJWebOrderHeader."Labels Created" then
             if Confirm('Label already exists! Do you want to cancel it and create new one?') then begin
                 Wnd.Open('Cancelling shipping label...');
                 //AJWebOrderServiceMgmt.WOS_CancelOrderLabel(AJWebOrderHeader); // MBS commented            
                 "Package Tracking No." := '';
-                Modify;
-                Commit;
-                Wnd.Close;
+                Modify();
+                Commit();
+                Wnd.Close();
             end else
                 Error('Operation was cancelled');
         Wnd.Open('Requesting shipping label...');
@@ -640,10 +622,10 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
             AJWebOrderServiceMgmt.GetOrderLabelParam(OrderCreated);
             AJWebOrderServiceMgmt.GetOrderLabel(AJWebOrderHeader);
             "Package Tracking No." := AJWebOrderHeader."Carier Tracking Number";
-            Validate("Posting Date", WorkDate);
+            Validate("Posting Date", WorkDate());
             Modify(true);
         end;
-        Wnd.Close;
+        Wnd.Close();
         CurrPage.Update(false);
     end;
 }

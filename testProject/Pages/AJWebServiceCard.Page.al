@@ -87,6 +87,7 @@ page 37072303 "AJ Web Service Card"
                 }
                 field("Default MarketPlace id"; "Default MarketPlace id")
                 {
+                    ApplicationArea = All;
                 }
                 field("Ship-From Warehouse ID"; "Ship-From Warehouse ID")
                 {
@@ -160,29 +161,29 @@ page 37072303 "AJ Web Service Card"
                     ApplicationArea = All;
                     Image = Relationship;
                     RunObject = Page "AJ Web Marketplaces";
-                    RunPageLink = "Web Service Code" = FIELD (Code);
+                    RunPageLink = "Web Service Code" = FIELD(Code);
                 }
                 action(Carriers)
                 {
                     ApplicationArea = All;
                     Image = Delivery;
                     RunObject = Page "AJ Web Carriers";
-                    RunPageLink = "Web Service Code" = FIELD (Code);
+                    RunPageLink = "Web Service Code" = FIELD(Code);
                 }
                 action("Shipping Carriers")
                 {
                     ApplicationArea = All;
                     Image = Delivery;
                     RunObject = Page "AJ Web Carriers";
-                    RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
+                    RunPageLink = "Web Service Code" = FIELD("Shipping Service Code");
                 }
                 action("Shipping Constants")
                 {
                     ApplicationArea = All;
                     Image = VariableList;
                     RunObject = Page "AJ Web Service Constants";
-                    RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
-                    RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");
+                    RunPageLink = "Web Order Service Code" = FIELD("Shipping Service Code");
+                    RunPageView = SORTING("Web Order Service Code", Type, "Option Value");
                 }
                 action("Copy-to Company")
                 {
@@ -193,7 +194,6 @@ page 37072303 "AJ Web Service Card"
                     trigger OnAction()
                     var
                         Company: Record Company;
-                        AJWebService: Record "AJ Web Service";
                         AJWebService2: Record "AJ Web Service";
                         AJWebMarketplaceMailbox: Record "AJ Web Marketplace (Mailbox)";
                         AJWebMarketplaceMailbox2: Record "AJ Web Marketplace (Mailbox)";
@@ -202,7 +202,7 @@ page 37072303 "AJ Web Service Card"
                         AJWebCarrier: Record "AJ Web Carrier";
                         AJWebCarrier2: Record "AJ Web Carrier";
                     begin
-                        Company.SetFilter(Name, '<>%1', CompanyName);
+                        Company.SetFilter(Name, '<>%1', CompanyName());
                         if PAGE.RunModal(357, Company) <> ACTION::LookupOK then
                             Company.Name := '';
 
@@ -216,28 +216,28 @@ page 37072303 "AJ Web Service Card"
                         AJWebCarrier2.ChangeCompany(Company.Name);
 
                         AJWebService2 := Rec;
-                        AJWebService2.Insert;
+                        AJWebService2.Insert();
 
                         AJWebMarketplaceMailbox.SetRange("Web Service Code", Rec.Code);
-                        if AJWebMarketplaceMailbox.FindFirst then
+                        if AJWebMarketplaceMailbox.FindFirst() then
                             repeat
                                 AJWebMarketplaceMailbox2 := AJWebMarketplaceMailbox;
-                                AJWebMarketplaceMailbox2.Insert;
-                            until AJWebMarketplaceMailbox.Next = 0;
+                                AJWebMarketplaceMailbox2.Insert();
+                            until AJWebMarketplaceMailbox.Next() = 0;
 
                         AJWebServiceWarehouse.SetRange("Web Service Code", Rec.Code);
-                        if AJWebServiceWarehouse.FindFirst then
+                        if AJWebServiceWarehouse.FindFirst() then
                             repeat
                                 AJWebServiceWarehouse2 := AJWebServiceWarehouse;
-                                AJWebServiceWarehouse2.Insert;
-                            until AJWebServiceWarehouse.Next = 0;
+                                AJWebServiceWarehouse2.Insert();
+                            until AJWebServiceWarehouse.Next() = 0;
 
                         AJWebCarrier.SetRange("Web Service Code", Rec.Code);
-                        if AJWebCarrier.FindFirst then
+                        if AJWebCarrier.FindFirst() then
                             repeat
                                 AJWebCarrier2 := AJWebCarrier;
-                                AJWebCarrier2.Insert;
-                            until AJWebCarrier.Next = 0;
+                                AJWebCarrier2.Insert();
+                            until AJWebCarrier.Next() = 0;
 
                         Message('Done');
                     end;
@@ -253,15 +253,12 @@ page 37072303 "AJ Web Service Card"
                     begin
                         if Confirm('Do you want to delete current record?') then begin
                             WebService := Rec;
-                            WebService.Delete;
+                            WebService.Delete();
                         end;
                     end;
                 }
             }
         }
     }
-
-    var
-        AJWebService: Record "AJ Web Service";
 }
 

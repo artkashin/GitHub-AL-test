@@ -66,7 +66,7 @@ page 37072302 "AJ Web Services"
                 {
                     ApplicationArea = All;
                 }
-                field("Last 60 Days Orders"; "Last60dyyOrd Qnt")
+                field("Last 60 Days Orders"; "Last60dyyOrd Qnt"())
                 {
                     ApplicationArea = All;
                 }
@@ -140,34 +140,34 @@ page 37072302 "AJ Web Services"
                         ApplicationArea = All;
                         Image = Relationship;
                         RunObject = Page "AJ Web Marketplaces";
-                        RunPageLink = "Web Service Code" = FIELD (Code);
+                        RunPageLink = "Web Service Code" = FIELD(Code);
                     }
                     action(Warehouses)
                     {
                         ApplicationArea = All;
                         RunObject = Page "AJ Web Service Warehouse Setup";
-                        RunPageLink = "Web Service Code" = FIELD (Code);
+                        RunPageLink = "Web Service Code" = FIELD(Code);
                     }
                     action("Shipping Carriers")
                     {
                         ApplicationArea = All;
                         Image = Delivery;
                         RunObject = Page "AJ Web Carriers";
-                        RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
+                        RunPageLink = "Web Service Code" = FIELD("Shipping Service Code");
                     }
                     action("Carrier services")
                     {
                         ApplicationArea = All;
                         RunObject = Page "AJ Web Carrier Services";
-                        RunPageLink = "Web Service Code" = FIELD (Code);
+                        RunPageLink = "Web Service Code" = FIELD(Code);
                     }
                     action("Shipping Constants")
                     {
                         ApplicationArea = All;
                         Image = VariableList;
                         RunObject = Page "AJ Web Service Constants";
-                        RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
-                        RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");
+                        RunPageLink = "Web Order Service Code" = FIELD("Shipping Service Code");
+                        RunPageView = SORTING("Web Order Service Code", Type, "Option Value");
                     }
                     group("Service functions")
                     {
@@ -180,7 +180,7 @@ page 37072302 "AJ Web Services"
                             begin
                                 if Confirm('Do you want delete current record?') then begin
                                     WebService := Rec;
-                                    WebService.Delete;
+                                    WebService.Delete();
                                 end;
                             end;
                         }
@@ -188,37 +188,12 @@ page 37072302 "AJ Web Services"
                 }
                 group("Web Operations")
                 {
-                    action("Get Orders")
-                    {
-                        ApplicationArea = All;
-                        Image = Import;
-                        Promoted = true;
-                        PromotedCategory = Process;
-                        PromotedIsBig = true;
-                        trigger OnAction()
-                        var
-                            AJWebService: Record "AJ Web Service";
-                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
-                        begin
-                            // IF NOT CONFIRM('Get Web Orders?') THEN
-                            //  ERROR('Cancelled');
-                            //
-                            // CurrPage.SETSELECTIONFILTER(AJWebService);
-                            // IF AJWebService.FINDFIRST THEN REPEAT
-                            //  CLEAR(AJWebShipstationMgmt);
-                            //  AJWebShipstationMgmt.WOS_GetOrders(AJWebService);
-                            //  COMMIT;
-                            // UNTIL AJWebService.NEXT = 0;
-                            //
-                            // MESSAGE('Done');
-                        end;
-                    }
                     action("Web Orders")
                     {
                         ApplicationArea = All;
                         RunObject = Page "AJ Web Order List";
-                        RunPageLink = "Web Service Code" = FIELD (Code),
-                                  "Document Type" = CONST (Order);
+                        RunPageLink = "Web Service Code" = FIELD(Code),
+                                  "Document Type" = CONST(Order);
 
                         trigger OnAction()
                         var
@@ -230,26 +205,8 @@ page 37072302 "AJ Web Services"
                     {
                         ApplicationArea = All;
                         RunObject = Page "AJ Web Return List";
-                        RunPageLink = "Web Service Code" = FIELD (Code),
-                                  "Document Type" = CONST (Return);
-                    }
-                }
-                group("NAV Operations")
-                {
-                    action("Create Orders")
-                    {
-                        ApplicationArea = All;
-                        Image = CreateDocument;
-                        Promoted = true;
-                        PromotedIsBig = true;
-                        trigger OnAction()
-                        var
-                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
-                            AJWebOrderHeader: Record "AJ Web Order Header";
-                        begin
-                            // AJWebOrderHeader.SETRANGE("Web Service Code",Code);
-                            // AJWebShipstationMgmt.WOS_CreateOrders(AJWebOrderHeader);
-                        end;
+                        RunPageLink = "Web Service Code" = FIELD(Code),
+                                  "Document Type" = CONST(Return);
                     }
                 }
             }
@@ -259,16 +216,12 @@ page 37072302 "AJ Web Services"
     var
         dt: Date;
         tm: Time;
-        ShipMgt: Codeunit "AJ Web Shipstation Mgmt.";
-        TestMgt: codeunit "AJ Web Order Service Mgmt New";
     begin
-        dt := Today;
-        dt30 := CalcDate('-30D', dt);
-        dt60 := CalcDate('-60D', dt);
+        dt := Today();
+        dt30 := CalcDate('<-30D>', dt);
+        dt60 := CalcDate('<-60D>', dt);
         tm := 000000T;
         dtm60 := CreateDateTime(dt60, tm);
-        //TestMgt.Run();
-        //ShipMgt.Run();
     end;
 
     var
@@ -286,7 +239,7 @@ page 37072302 "AJ Web Services"
         WebOrderHeader.SetRange(WebOrderHeader."Web Service Code", Code);
         WebOrderHeader.SetRange(WebOrderHeader."NAV Order Status", WebOrderHeader."NAV Order Status"::Shipped);
         WebOrderHeader.SetFilter(WebOrderHeader."Order DateTime", '>=%1', dtm60);
-        if WebOrderHeader.FindSet then
+        if WebOrderHeader.FindSet() then
             repeat
                 if SalInvHead.Get(WebOrderHeader."Invoice No.") then
                     if SalInvHead."Posting Date" >= dt60 then begin
@@ -294,7 +247,7 @@ page 37072302 "AJ Web Services"
                         if SalInvHead."Posting Date" >= dt30 then
                             QtyOrders30Day += 1;
                     end;
-            until WebOrderHeader.Next = 0;
+            until WebOrderHeader.Next() = 0;
     end;
 }
 
