@@ -1,6 +1,6 @@
 {
   "id": "20260952-0018-4e0c-8e24-fa731fccede1",
-  "name": "AdaptiveNav Shipstation",
+  "name": "ALProject1",
   "publisher": "Default publisher",
   "version": "1.0.0.0",
   "brief": "",
@@ -9,12 +9,12 @@
   "EULA": "",
   "help": "",
   "url": "",
-  "logo": "D:/Users/test/logo.jpg",
+  "logo": "",
   "dependencies": [],
   "screenshots": [],
   "platform": "14.0.0.0",
   "application": "14.0.0.0",
-  "target": "Extension",
+  "target":"Internal",
   "idRanges": [
     {
       "from": 1,

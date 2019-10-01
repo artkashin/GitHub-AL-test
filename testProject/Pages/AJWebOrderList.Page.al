@@ -16,57 +16,46 @@ page 37072308 "AJ Web Order List"
             {
                 field("Document Type"; "Document Type")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                     Visible = false;
                 }
                 field("Web Service Code"; "Web Service Code")
                 {
-                    ApplicationArea = All;
                     Visible = false;
                 }
                 field("Acknowlegement Sent"; "Acknowlegement Sent")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Total Amount"; "Total Amount")
                 {
-                    ApplicationArea = All;
                     DecimalPlaces = 0 : 2;
                 }
                 field("Total Quantity"; "Total Quantity")
                 {
-                    ApplicationArea = All;
                 }
                 field(Lines; Lines)
                 {
-                    ApplicationArea = All;
                 }
                 field("Latest Delivery Date"; "Latest Delivery Date")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Web Order No."; "Web Order No.")
                 {
-                    ApplicationArea = All;
                 }
                 field("Web Service Order ID"; "Web Service Order ID")
                 {
-                    ApplicationArea = All;
                 }
                 field("Web Service PO Number"; "Web Service PO Number")
                 {
-                    ApplicationArea = All;
                 }
                 field("NAV Order Status"; "NAV Order Status")
                 {
-                    ApplicationArea = All;
                 }
                 field("NAV Order Count"; "NAV Order Count")
                 {
-                    ApplicationArea = All;
+
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         lr_SH: Record "Sales Header";
@@ -80,7 +69,6 @@ page 37072308 "AJ Web Order List"
                 }
                 field("Posted Orders"; SalesInvoiceHeader.Count)
                 {
-                    ApplicationArea = All;
                     Caption = 'Posted Orders';
                     Editable = false;
 
@@ -93,7 +81,7 @@ page 37072308 "AJ Web Order List"
                 }
                 field("NAV Error Text"; "NAV Error Text")
                 {
-                    ApplicationArea = All;
+
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         // gcd_WebOrderMgt.WOS_GetWebOrderNotDefinedItemList(Rec); // MBS commented
@@ -101,203 +89,179 @@ page 37072308 "AJ Web Order List"
                 }
                 field("Warehouse Wate ID"; "Warehouse Wate ID")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Web Service Code"; "Shipping Web Service Code")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Shipping Web Service Order No."; "Shipping Web Service Order No.")
                 {
-                    ApplicationArea = All;
                     Caption = 'Web Shipping Order No.';
                     Editable = false;
                 }
                 field("Ship-From Warehouse ID"; "Ship-From Warehouse ID")
                 {
-                    ApplicationArea = All;
                 }
                 field("Carier Tracking Number"; "Carier Tracking Number")
                 {
-                    ApplicationArea = All;
                 }
                 field("Carier Shipping Charge"; "Carier Shipping Charge")
                 {
-                    ApplicationArea = All;
                     Visible = false;
                 }
                 field("Carier Insurance Cost"; "Carier Insurance Cost")
                 {
-                    ApplicationArea = All;
                     Visible = false;
                 }
                 field("Labels Created"; "Labels Created")
                 {
-                    ApplicationArea = All;
                 }
                 field("Labels Printed"; "Labels Printed")
                 {
-                    ApplicationArea = All;
                 }
                 field("Packing List Created"; "Packing List Created")
                 {
-                    ApplicationArea = All;
                 }
                 field("Packing List Printed"; "Packing List Printed")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Advice"; "Shipping Advice")
                 {
-                    ApplicationArea = All;
                 }
                 field("Invoice Advice"; "Invoice Advice")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipment Id"; "Shipment Id")
                 {
-                    ApplicationArea = All;
                 }
                 field("Paid Amount"; "Paid Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Tax Amount"; "Tax Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Amount"; "Shipping Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Send Ship Confirmation"; "Send Ship Confirmation")
                 {
-                    ApplicationArea = All;
                     Visible = false;
                 }
                 field("Latest Ship Date"; "Latest Ship Date")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship Date"; "Ship Date")
                 {
-                    ApplicationArea = All;
                 }
                 field("Hold Until Date"; "Hold Until Date")
                 {
-                    ApplicationArea = All;
                 }
                 field("Order DateTime"; "Order DateTime")
                 {
-                    ApplicationArea = All;
                 }
                 field("Created DateTime"; "Created DateTime")
                 {
-                    ApplicationArea = All;
                 }
                 field("Modify DateTime"; "Modify DateTime")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment DateTime"; "Payment DateTime")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Address Verified"; "Ship-To Address Verified")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Name"; "Ship-To Customer Name")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Company"; "Ship-To Company")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Zip"; "Ship-To Customer Zip")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Country"; "Ship-To Customer Country")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer State"; "Ship-To Customer State")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer City"; "Ship-To Customer City")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Address 1"; "Ship-To Customer Address 1")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Address 2"; "Ship-To Customer Address 2")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-To Customer Phone"; "Ship-To Customer Phone")
                 {
-                    ApplicationArea = All;
                 }
                 field("""Shipping Agent Label"".HASVALUE"; "Shipping Agent Label".HasValue)
                 {
-                    ApplicationArea = All;
                     Caption = 'Label Imported';
                     Editable = false;
                 }
                 field("Web Service Customer ID"; "Web Service Customer ID")
                 {
-                    ApplicationArea = All;
                 }
                 field("Web Service Customer ID2"; "Web Service Customer ID2")
                 {
-                    ApplicationArea = All;
                 }
                 field("First SKU"; gc_FirstSKU)
                 {
-                    ApplicationArea = All;
+                }
+                field("Shipping Service Criterion"; "Shipping Service Criterion")
+                {
+
+                    trigger OnDrillDown()
+                    var
+                        WebOH: Record "AJ Web Order Header";
+                    begin
+                        //vadimb 03/06/2018 >
+                        // CarrierForOrderRec.SETRANGE(CarrierForOrderRec."Web Order No.", "Web Order No.");
+                        // CarrierForOrderPage.SETTABLEVIEW(CarrierForOrderRec);
+                        // CarrierForOrderPage.LOOKUPMODE(TRUE);
+                        // IF CarrierForOrderPage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        //  CarrierForOrderPage.GETRECORD(CarrierForOrderRec);
+                        //  WebOH.GET("Web Order No.");
+                        //  WebOH.VALIDATE("Shipping Carrier Code", CarrierForOrderRec."Carrier Name");
+                        //  WebOH.VALIDATE("Shipping Carrier Service", CarrierForOrderRec.ShippingServiceName);
+                        //  WebOH.VALIDATE("Shp. Hts Code", CarrierForOrderRec."Shipping Service Id");
+                        //  WebOH.VALIDATE("Carier Shipping Charge", CarrierForOrderRec."Amount (USD)");
+                        //  WebOH.VALIDATE("Ship Date", CarrierForOrderRec."Ship Date");
+                        //  WebOH.MODIFY;
+                        // END;
+                        //vadimb 03/06/2018 <
+                    end;
                 }
                 field("Shipping Carrier Code"; "Shipping Carrier Code")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Carrier Service"; "Shipping Carrier Service")
                 {
-                    ApplicationArea = All;
                 }
                 field("Cancel Reason"; "Cancel Reason")
                 {
-                    ApplicationArea = All;
                 }
                 field("Authorized Amount"; "Authorized Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Captured Amount"; "Captured Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Id"; "Payment Id")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Gateway"; "Payment Gateway")
                 {
-                    ApplicationArea = All;
                 }
                 field("Card Type"; "Card Type")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Method"; "Payment Method")
                 {
-                    ApplicationArea = All;
                 }
             }
         }
@@ -315,7 +279,6 @@ page 37072308 "AJ Web Order List"
                     Caption = 'Shipping Label';
                     action("Get Shipping Label")
                     {
-                        ApplicationArea = All;
                         Promoted = false;
                         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                         //PromotedCategory = Process;
@@ -326,7 +289,7 @@ page 37072308 "AJ Web Order List"
                         begin
                             CurrPage.SetSelectionFilter(AJWebOrderHeader);
 
-                            //GetShippingLabel(AJWebOrderHeader);
+                            GetShippingLabel(AJWebOrderHeader);
 
                             Message('Done');
                         end;
@@ -364,7 +327,7 @@ page 37072308 "AJ Web Order List"
         SalesInvoiceHeader: Record "Sales Invoice Header";
         SalesFilter: Text;
 
-    procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
+    local procedure GetShipLabels(var AJWebOrderHeader: Record "AJ Web Order Header"; GetLabelLocal: Boolean)
     var
         //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         Wnd: Dialog;

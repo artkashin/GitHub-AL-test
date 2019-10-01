@@ -33,7 +33,10 @@ table 37072306 "AJ Web Marketplace (Mailbox)"
         field(103; "Can Confirm Shipments"; Boolean)
         {
         }
-
+        field(37075080; "Table ID"; Integer)
+        {
+            TableRelation = Object.ID WHERE (Type = CONST (Table));
+        }
     }
 
     keys

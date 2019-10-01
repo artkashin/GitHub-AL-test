@@ -2,7 +2,7 @@ table 37072302 "AJ Web Service"
 {
     DrillDownPageID = "AJ Web Services";
     LookupPageID = "AJ Web Services";
-    Caption = 'Aj Web Services';
+
     fields
     {
         field(1; "Code"; Code[10])
@@ -297,11 +297,17 @@ table 37072302 "AJ Web Service"
 
     local procedure CalcAPIEncodedString()
     var
-        Base64Convert: Codeunit Base64Convert;
+        SystemConvert: DotNet Convert;
+        SystemTextEncoding: DotNet Encoding;
     begin
         if ("API User ID (Key)" = '') or ("API Password (Secret)" = '') then
             exit;
-        "API Encoded String" := Base64Convert.TextToBase64String(StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)"));
+
+        "API Encoded String" := SystemConvert.ToBase64String(
+          SystemTextEncoding.UTF8.GetBytes(
+            StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)")
+          )
+        );
     end;
 }
 

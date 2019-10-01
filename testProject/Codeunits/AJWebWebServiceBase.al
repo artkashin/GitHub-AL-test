@@ -1,59 +1,48 @@
 codeunit 37072301 "AJ Web Service Base"
 {
-    procedure CallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text) Result: Boolean
-    var
-        ErrorTxt: Text;
-    begin
-        if TryCallWebService(AJWebService, URI, Method, ContentType, Body, ErrorTxt) then
-            if ErrorTxt <> '' then
-                Message(Body)
-            else
-                exit(true)
-        else
-            exit(false);
-    end;
-
-    [TryFunction]
-    procedure TryCallWebService(AJWebService: Record "AJ Web Service"; URI: Text; Method: Text; ContentType: Text; var Body: Text; var ErrorTxt: Text)
+    procedure CallWebService(var Parameters: Record "AJ Web Service Parameters" temporary): Boolean
     var
         Client: HttpClient;
+        AuthHeaderValue: HttpHeaders;
         Headers: HttpHeaders;
         ContentHeaders: HttpHeaders;
         RequestMessage: HttpRequestMessage;
         ResponseMessage: HttpResponseMessage;
         Content: HttpContent;
+        AuthText: text;
+        TempBlob: Record TempBlob temporary;
     begin
-        RequestMessage.SetRequestUri(URI);
-        RequestMessage.Method(Method);
+        RequestMessage.Method := Format(Parameters.Method);
+        RequestMessage.SetRequestUri(Parameters.URI);
         RequestMessage.GetHeaders(Headers);
 
-        Headers.Remove('authorization');
-        Headers.Add('Authorization', 'Basic ' + AJWebService."API Encoded String");
+        if Parameters.Accept <> '' then
+            Headers.Add('Accept', Parameters.Accept);
 
-        if Body <> '' then begin
-            Content.GetHeaders(ContentHeaders);
-            Content.WriteFrom(Body);
+        if Parameters.UserName <> '' then begin
+            AuthText := StrSubstNo('%1:%2', Parameters.UserName, Parameters.Password);
+            TempBlob.WriteAsText(AuthText, TextEncoding::Windows);
+            Headers.Add('Authorization', StrSubstNo('Basic %1', TempBlob.ToBase64String()));
+        end;
 
-            if ContentType <> '' then begin
+        if Parameters.HasRequestContent then begin
+            Parameters.GetRequestContent(Content);
+            if Parameters.ContentType <> '' then begin
+                Content.GetHeaders(ContentHeaders);
                 ContentHeaders.Remove('Content-Type');
-                ContentHeaders.Add('Content-Type', ContentType);
+                ContentHeaders.Add('Content-Type', Parameters.ContentType);
             end;
-            RequestMessage.Content(Content);
+            RequestMessage.Content := Content;
         end;
 
         Client.Send(RequestMessage, ResponseMessage);
-        ResponseMessage.Content.ReadAs(Body);
 
+        Headers := ResponseMessage.Headers;
+        Parameters.SetResponseHeaders(Headers);
 
-        if not ResponseMessage.IsSuccessStatusCode then begin
-            ErrorTxt := Body;
-            /*StrSubstNo('The web service returned an error message:\\' +
-                'Status code: %1\' +
-                'Description: %2',
-                ResponseMessage.HttpStatusCode,
-                ResponseMessage.ReasonPhrase);
-            */
-        end;
+        Content := ResponseMessage.Content;
+        Parameters.SetResponseContent(Content);
 
+        EXIT(ResponseMessage.IsSuccessStatusCode);
     end;
 }

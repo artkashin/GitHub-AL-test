@@ -28,7 +28,10 @@ page 37072310 "AJ Web Order Subform"
                 field(Quantity; Quantity)
                 {
                 }
-
+                field("Outstanding Quantitty"; OutstandingQuantity())
+                {
+                    Editable = false;
+                }
                 field("Qty. to Pack"; "Qty. to Pack")
                 {
                 }

@@ -11,23 +11,18 @@ page 37072301 "AJ Web Service Constants"
             {
                 field(Type; Type)
                 {
-                    ApplicationArea = All;
                 }
                 field("Option Value"; "Option Value")
                 {
-                    ApplicationArea = All;
                 }
                 field("Second Value"; "Second Value")
                 {
-                    ApplicationArea = All;
                 }
                 field(Description; Description)
                 {
-                    ApplicationArea = All;
                 }
                 field(Blocked; Blocked)
                 {
-                    ApplicationArea = All;
                 }
             }
         }
