@@ -24,7 +24,7 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        if not JValue.IsNull then
+        if not JValue.IsNull() then
             Value := JValue.AsBoolean();
     end;
 
@@ -34,7 +34,7 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        if not JValue.IsNull then
+        if not JValue.IsNull() then
             Value := JValue.AsText();
     end;
 
