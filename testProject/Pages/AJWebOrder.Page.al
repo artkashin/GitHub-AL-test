@@ -13,49 +13,39 @@ page 37072309 "AJ Web Order"
             {
                 field("Web Order No."; "Web Order No.")
                 {
-                    ApplicationArea = All;
                 }
                 field("Web Service Order ID"; "Web Service Order ID")
                 {
-                    ApplicationArea = All;
                 }
                 field("Order DateTime"; "Order DateTime")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Created DateTime"; "Created DateTime")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Total Amount"; "Total Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Paid Amount"; "Paid Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Tax Amount"; "Tax Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Amount"; "Shipping Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Handling Amount"; "Handling Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Latest Ship Date"; "Latest Ship Date")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship Date"; "Ship Date")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     var
                         dtm: DateTime;
@@ -68,24 +58,19 @@ page 37072309 "AJ Web Order"
                 }
                 field("Hold Until Date"; "Hold Until Date")
                 {
-                    ApplicationArea = All;
                 }
                 field("Invoice No."; "Invoice No.")
                 {
-                    ApplicationArea = All;
                 }
                 field("Ship-to Type"; "Ship-to Type")
                 {
-                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Special Customer Account"; "Special Customer Account")
                 {
-                    ApplicationArea = All;
                 }
                 field("Set Customer No. To"; "Set Customer No. To")
                 {
-                    ApplicationArea = All;
                 }
             }
             part(Control1000000043; "AJ Web Order Subform")
@@ -97,58 +82,46 @@ page 37072309 "AJ Web Order"
             {
                 field("Bill-To Customer Name"; "Bill-To Customer Name")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Company"; "Bill-To Company")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Address 1"; "Bill-To Customer Address 1")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Address 2"; "Bill-To Customer Address 2")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Address 3"; "Bill-To Customer Address 3")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer City"; "Bill-To Customer City")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Zip"; "Bill-To Customer Zip")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer State"; "Bill-To Customer State")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Country"; "Bill-To Customer Country")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Customer Phone"; "Bill-To Customer Phone")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To E-mail"; "Bill-To E-mail")
                 {
-                    ApplicationArea = All;
                 }
                 field("Bill-To Verified"; "Bill-To Verified")
                 {
-                    ApplicationArea = All;
                 }
             }
             group("Ship-To")
             {
                 field("Ship-To Customer Name"; "Ship-To Customer Name")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -156,7 +129,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Company"; "Ship-To Company")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -164,7 +137,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Address 1"; "Ship-To Customer Address 1")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -172,7 +145,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Address 2"; "Ship-To Customer Address 2")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -180,7 +153,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Address 3"; "Ship-To Customer Address 3")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -188,7 +161,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer City"; "Ship-To Customer City")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -196,7 +169,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Zip"; "Ship-To Customer Zip")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -204,7 +177,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer State"; "Ship-To Customer State")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -212,7 +185,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Country"; "Ship-To Customer Country")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -220,7 +193,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Customer Phone"; "Ship-To Customer Phone")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -228,7 +201,7 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To E-mail"; "Ship-To E-mail")
                 {
-                    ApplicationArea = All;
+
                     trigger OnValidate()
                     begin
                         Modify();
@@ -236,66 +209,52 @@ page 37072309 "AJ Web Order"
                 }
                 field("Ship-To Address Verified"; "Ship-To Address Verified")
                 {
-                    ApplicationArea = All;
                 }
             }
             group("Payment Info")
             {
                 field("Authorized Amount"; "Authorized Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Captured Amount"; "Captured Amount")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Id"; "Payment Id")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Gateway"; "Payment Gateway")
                 {
-                    ApplicationArea = All;
                 }
                 field("Card Type"; "Card Type")
                 {
-                    ApplicationArea = All;
                 }
                 field("Payment Method"; "Payment Method")
                 {
-                    ApplicationArea = All;
                 }
             }
             group("Other Info")
             {
                 field(Gift; Gift)
                 {
-                    ApplicationArea = All;
                 }
                 field("Gift Message"; "Gift Message")
                 {
-                    ApplicationArea = All;
                     Visible = false;
                 }
                 field("Custom Field 1"; "Custom Field 1")
                 {
-                    ApplicationArea = All;
                 }
                 field("Custom Field 2"; "Custom Field 2")
                 {
-                    ApplicationArea = All;
                 }
                 field("Custom Field 3"; "Custom Field 3")
                 {
-                    ApplicationArea = All;
                 }
                 field("Enclousure Card Text"; "Enclousure Card Text")
                 {
-                    ApplicationArea = All;
                 }
                 field("Order Instructions"; "Order Instructions")
                 {
-                    ApplicationArea = All;
                 }
             }
             group("Shipping Agent")
@@ -303,35 +262,27 @@ page 37072309 "AJ Web Order"
                 Visible = false;
                 field("Shipping Carrier Code"; "Shipping Carrier Code")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shipping Carrier Service"; "Shipping Carrier Service")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Method"; "Shp. Method")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. 3PL Warehouse"; "Shp. 3PL Warehouse")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. 3PL Name"; "Shp. 3PL Name")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Product Weight"; "Shp. Product Weight")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Product Weight Unit"; "Shp. Product Weight Unit")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Product Width"; "Shp. Product Width")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Product Length"; "Shp. Product Length")
                 {
@@ -339,19 +290,15 @@ page 37072309 "AJ Web Order"
                 }
                 field("Shp. Product Height"; "Shp. Product Height")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Product Dimension Unit"; "Shp. Product Dimension Unit")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Incoterms"; "Shp. Incoterms")
                 {
-                    ApplicationArea = All;
                 }
                 field("Shp. Hts Code"; "Shp. Hts Code")
                 {
-                    ApplicationArea = All;
                 }
             }
             group("AJ Shipping")
@@ -363,12 +310,10 @@ page 37072309 "AJ Web Order"
                     ShowCaption = false;
                     field("Web Service Code"; "Web Service Code")
                     {
-                        ApplicationArea = All;
                         Editable = false;
                     }
                     field(AJWOH_ShpWebServiceCode; "Shipping Web Service Code")
                     {
-                        ApplicationArea = All;
                         Caption = 'Shipping Web Service Code';
                         TableRelation = "AJ Web Service".Code;
 
@@ -383,7 +328,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_SipFromWhseID; "Ship-From Warehouse ID")
                     {
-                        ApplicationArea = All;
                         Caption = 'Ship-From Warehouse ID';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -398,12 +342,10 @@ page 37072309 "AJ Web Order"
                     }
                     field("Latest Delivery Date"; "Latest Delivery Date")
                     {
-                        ApplicationArea = All;
                         Editable = false;
                     }
                     field(AJWOH_ShpCarrierCode; "Shipping Carrier Code")
                     {
-                        ApplicationArea = All;
                         Caption = 'Shipping Carrier Code';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -417,7 +359,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_ShpCarrierService; "Shipping Carrier Service")
                     {
-                        ApplicationArea = All;
                         Caption = 'Shipping Carrier Service';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -433,7 +374,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_ShpPackageType; "Shipping Package Type")
                     {
-                        ApplicationArea = All;
                         Caption = 'Shipping Package Type';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -449,7 +389,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_ShpDeliveryConf; "Shipping Delivery Confirm")
                     {
-                        ApplicationArea = All;
                         Caption = 'Shipping Delivery Confirmation';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -470,7 +409,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdWgt; "Shp. Product Weight")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Weight';
 
                         trigger OnValidate()
@@ -480,7 +418,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdDim; "Shp. Product Weight Unit")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Weight Unit';
                         TableRelation = "AJ Web Service Constants"."Option Value" WHERE(Type = CONST(Weight));
 
@@ -502,7 +439,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdDimUnit; "Shp. Product Dimension Unit")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Dimension Unit';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -523,7 +459,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdW; "Shp. Product Width")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Width';
 
                         trigger OnValidate()
@@ -533,7 +468,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdL; "Shp. Product Length")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Lenght';
 
                         trigger OnValidate()
@@ -543,7 +477,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_PrdH; "Shp. Product Height")
                     {
-                        ApplicationArea = All;
                         Caption = 'Product Height';
 
                         trigger OnValidate()
@@ -559,11 +492,9 @@ page 37072309 "AJ Web Order"
                     ShowCaption = false;
                     field("International Shipment"; "International Shipment")
                     {
-                        ApplicationArea = All;
                     }
                     field(AJWOH_InsureShp; "Insure Shipment")
                     {
-                        ApplicationArea = All;
                         Caption = 'Insure Shipment';
 
                         trigger OnValidate()
@@ -573,7 +504,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_InsuredValue; "Insured Value")
                     {
-                        ApplicationArea = All;
                         Caption = 'Insured Value';
 
                         trigger OnValidate()
@@ -583,7 +513,6 @@ page 37072309 "AJ Web Order"
                     }
                     field(AJWOH_AddInsValue; "Additional Insurance Value")
                     {
-                        ApplicationArea = All;
                         Caption = 'Additional Insurance Value';
 
                         trigger OnValidate()
@@ -591,55 +520,83 @@ page 37072309 "AJ Web Order"
                             TestField("Shipping Web Service Code");
                         end;
                     }
+                    field(AJWOH_CarrierShpCharge; "Carier Shipping Charge")
+                    {
+                        Caption = 'Carrier Shipping Charge';
+                        Editable = false;
 
+                        trigger OnAssistEdit()
+                        begin
+                            AJWebOrderList.GetShippingLabel(Rec);
+                        end;
+                    }
                     field(AJWOH_CarrierTrackingNumber; "Carier Tracking Number")
                     {
-                        ApplicationArea = All;
                         Caption = 'Carrier Tracking#';
                         Editable = vCarrierTrackingEditable;
                     }
                     field(AJWOH_CarrierInsuranceCost; "Carier Insurance Cost")
                     {
-                        ApplicationArea = All;
                         Caption = 'Carrier Insurance Cost';
                         Editable = false;
                     }
                     field("Bill-to Type"; "Bill-to Type")
                     {
-                        ApplicationArea = All;
                     }
                     field("Bill-To Account"; "Bill-To Account")
                     {
-                        ApplicationArea = All;
                     }
                     field("Bill-To Postal Code"; "Bill-To Postal Code")
                     {
-                        ApplicationArea = All;
                     }
                     field("Bill-To Country Code"; "Bill-To Country Code")
                     {
-                        ApplicationArea = All;
                     }
                     field("Shipping Web Service Order No."; "Shipping Web Service Order No.")
                     {
-                        ApplicationArea = All;
                         Editable = false;
                     }
                     field("COD Amount"; "COD Amount")
                     {
-                        ApplicationArea = All;
                     }
                     field("Shipping Service Criterion"; "Shipping Service Criterion")
                     {
-                        ApplicationArea = All;
+
+                        trigger OnDrillDown()
+                        var
+                            WebOH: Record "AJ Web Order Header";
+                        begin
+                            /*//vadimb 03/12/2018 Amazon>
+                            CarrierForOrderRec.SETRANGE(CarrierForOrderRec."Web Order No.", "Web Order No.");
+                            CarrierForOrderPage.SETTABLEVIEW(CarrierForOrderRec);
+                            CarrierForOrderPage.LOOKUPMODE(TRUE);
+                            IF CarrierForOrderPage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                              CarrierForOrderPage.GETRECORD(CarrierForOrderRec);
+                              WebOH.GET("Web Order No.");
+                              WebOH.VALIDATE("Shipping Carrier Code", CarrierForOrderRec."Carrier Name");
+                              WebOH.VALIDATE("Shipping Carrier Service", CarrierForOrderRec.ShippingServiceName);
+                              WebOH.VALIDATE("Shp. Hts Code", CarrierForOrderRec."Shipping Service Id");
+                              WebOH.VALIDATE("Carier Shipping Charge", CarrierForOrderRec."Amount (USD)");
+                              WebOH.VALIDATE("Ship Date", CarrierForOrderRec."Ship Date");
+                              WebOH.MODIFY;
+                            END;
+                            //vadimb 03/12/2018 <
+                            */
+
+                        end;
                     }
                 }
             }
             part(Control1000000078; "AJ Web Package Part")
             {
+<<<<<<< HEAD
                 ApplicationArea = All;
                 SubPageLink = "Source Type" = CONST(37074833),
                               "Source No." = FIELD("Web Order No.");
+=======
+                SubPageLink = "Source Type" = CONST (37074833),
+                              "Source No." = FIELD ("Web Order No.");
+>>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
                 UpdatePropagation = Both;
             }
         }
@@ -649,9 +606,12 @@ page 37072309 "AJ Web Order"
     {
         area(processing)
         {
+            group("Send Ship Confirmation")
+            {
+            }
             action("Unlock Tracking#")
             {
-                ApplicationArea = All;
+
                 trigger OnAction()
                 begin
                     PageUnlockTracking(true);
@@ -659,34 +619,50 @@ page 37072309 "AJ Web Order"
             }
             group("Shipping Label")
             {
-                Caption = 'Get Shipping Label';
+                Caption = 'Shipping Label';
                 action("Get Shipping Label")
                 {
-                    ApplicationArea = All;
                     Promoted = false;
+                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
+                    //PromotedCategory = Process;
 
                     trigger OnAction()
                     var
                         AJWebOrderHeader: Record "AJ Web Order Header";
-                        AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AJWebOrderHeader);
+<<<<<<< HEAD
                         AJWebOrderHeader.FindFirst();
                         AJWebShipstationMgmt.GetOrderLabel(AJWebOrderHeader);
+=======
+
+                        AJWebOrderList.GetShippingLabel(AJWebOrderHeader);
+
+>>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
                         Message('Done');
                     end;
                 }
                 action("Save Shipping Label")
                 {
-                    ApplicationArea = All;
+
                     trigger OnAction()
                     var
                         AJWebOrderHeader: Record "AJ Web Order Header";
-                        AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
+                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
                     begin
+<<<<<<< HEAD
                         CurrPage.SETSELECTIONFILTER(AJWebOrderHeader);
                         AJWebOrderHeader.FindFirst();
                         AJWebShipstationMgmt.SaveLabel(AJWebOrderHeader);
+=======
+                        // CurrPage.SETSELECTIONFILTER(AJWebOrderHeader);
+                        // AJWebOrderHeader.FINDFIRST;
+                        // AJWebOrderServiceMgmt.WOS_MergeSaveLabel(AJWebOrderHeader);
+                        if AJWebOrderHeader.FindFirst then
+                            repeat
+                            //AJWebOrderServiceMgmt.WOS_SaveLabel(AJWebOrderHeader);
+                            until AJWebOrderHeader.Next = 0;
+>>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
                     end;
                 }
             }
@@ -694,7 +670,7 @@ page 37072309 "AJ Web Order"
             {
                 action("Export Order Text")
                 {
-                    ApplicationArea = All;
+
                     trigger OnAction()
                     var
                         TempBlob: Record TempBlob temporary;
