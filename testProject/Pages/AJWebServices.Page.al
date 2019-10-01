@@ -206,7 +206,7 @@ page 37072302 "AJ Web Services"
                             // MESSAGE('Done');
                         end;
                     }
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
                     action("Web Orders")
                     {
                         RunObject = Page "AJ Web Order List";
@@ -246,7 +246,7 @@ page 37072302 "AJ Web Services"
                             // AJWebOrderHeader.SETRANGE("Web Service Code",Code);
                             // AJWebOrderServiceMgmt.WOS_CreateOrders(AJWebOrderHeader);
                         end;
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
                     }
                 }
             }

@@ -204,7 +204,7 @@ page 37072308 "AJ Web Order List"
                     Caption = 'Label Imported';
                     Editable = false;
                 }
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
                 field("Web Service Customer ID"; "Web Service Customer ID")
                 {
                 }

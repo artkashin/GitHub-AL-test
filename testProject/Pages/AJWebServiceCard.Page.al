@@ -244,6 +244,6 @@ page 37072303 "AJ Web Service Card"
     var
         // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
         AJWebService: Record "AJ Web Service";
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
 }
 

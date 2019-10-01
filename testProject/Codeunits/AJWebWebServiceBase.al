@@ -39,7 +39,7 @@ codeunit 37072301 "AJ Web Service Base"
 <<<<<<< HEAD
         ResponseMessage.Content().ReadAs(Body);
 =======
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
 
         Headers := ResponseMessage.Headers;
         Parameters.SetResponseHeaders(Headers);
@@ -55,7 +55,7 @@ codeunit 37072301 "AJ Web Service Base"
 =======
         Content := ResponseMessage.Content;
         Parameters.SetResponseContent(Content);
->>>>>>> 6e91b92a1581846d2b492fa0c0622688712c68a3
+>>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
 
         EXIT(ResponseMessage.IsSuccessStatusCode);
     end;
