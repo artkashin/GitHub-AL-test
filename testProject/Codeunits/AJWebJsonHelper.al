@@ -1,5 +1,8 @@
 codeunit 37072300 "AJ Web Json Helper"
 {
+    var
+        ReplaceNULL: Boolean;
+
     procedure GetJsonToken(JObject: JsonObject; TokenKey: text) JToken: JsonToken;
     begin
         if not JObject.Get(TokenKey, JToken) then
@@ -21,7 +24,8 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        Value := JValue.AsBoolean();
+        if not JValue.IsNull() then
+            Value := JValue.AsBoolean();
     end;
 
     procedure GetJsonValueAsText(var JObject: JsonObject; Property: Text) Value: text
@@ -30,7 +34,8 @@ codeunit 37072300 "AJ Web Json Helper"
     begin
         if not GetJsonValue(JObject, Property, JValue) then
             exit;
-        Value := JValue.AsText;
+        if not JValue.IsNull() then
+            Value := JValue.AsText();
     end;
 
     procedure GetJsonValue(var JObject: JsonObject; Property: Text; var JValue: JsonValue): Boolean
@@ -41,11 +46,6 @@ codeunit 37072300 "AJ Web Json Helper"
             exit;
         JValue := JToken.AsValue();
         exit(true);
-    end;
-
-    procedure JSONAddArray(var JObject: JsonObject; PropertyName: Text; var JArray: JsonArray)
-    begin
-        JObject.Add(PropertyName, JArray.AsToken());
     end;
 
     procedure GetJsonObjFromArray(var JArray: JsonArray; i: Integer) JObject: JsonObject
@@ -62,44 +62,74 @@ codeunit 37072300 "AJ Web Json Helper"
             Error('Bad response');
     end;
 
-    procedure JSONAddDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Decimal)
-    var
-        JToken: JsonToken;
+    procedure JSONAddArray(var JObject: JsonObject; PropertyName: Text; var JArray: JsonArray)
     begin
-        JObject.Add(PropertyName, JToken.ReadFrom(Format(PropertyValue, 20, '<Sign><Integer><Decimals>')));
+        JObject.Add(PropertyName, JArray.AsToken());
+    end;
+
+    procedure JSONAddObject(var JObject: JsonObject; PropertyName: Text; AddJObject: JsonObject)
+    begin
+        JObject.Add(PropertyName, AddJObject.AsToken());
+    end;
+
+    procedure JSONAddDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Decimal)
+    begin
+        JObject.Add(PropertyName, Format(PropertyValue, 20, '<Sign><Integer><Decimals>'));
     end;
 
     procedure JSONAddBigInt(var JObject: JsonObject; PropertyName: Text; PropertyValue: BigInteger)
     var
         JToken: JsonToken;
     begin
-        JObject.Add(PropertyName, JToken.ReadFrom(Format(PropertyValue)));
-    end;
-
-    procedure JSONAddObject(var JObject: JsonObject; PropertyName: Text; AddJObject: JsonObject)
-    var
-        JToken: JsonToken;
-    begin
-        JObject.Add(PropertyName, JObject.AsToken());
+        JToken.ReadFrom(Format(PropertyValue));
+        JObject.Add(PropertyName, JToken.AsValue());
     end;
 
     procedure JSONAddBool(var JObject: JsonObject; PropertyName: Text; PropertyValue: Boolean)
-    var
-        JToken: JsonToken;
     begin
         if PropertyValue then
-            JObject.Add(PropertyName, JToken.ReadFrom('true'))
+            JObject.Add(PropertyName, 'true')
         else
-            JObject.Add(PropertyName, JToken.ReadFrom('false'));
+            JObject.Add(PropertyName, 'false');
+    end;
+
+    procedure JSONAddTxt(var JObject: JsonObject; PropertyName: Text; PropertyValue: Text)
+        jvalue: JsonValue
+    begin
+        if PropertyValue = '' then begin
+            jvalue.SetValueToNull();
+            if ReplaceNULL then
+                JObject.Add(PropertyName, '""')
+            else
+                JObject.Add(PropertyName, jvalue.AsToken())
+        end else
+            JObject.Add(PropertyName, PropertyValue);
     end;
 
     procedure JSONAddTxtasDec(var JObject: JsonObject; PropertyName: Text; PropertyValue: Text)
     var
-        JToken: JsonToken;
+        DecValue: Decimal;
+        jvalue: JsonValue;
+
     begin
-        if PropertyValue = '' then
-            JObject.Add(PropertyName, JToken.ReadFrom('null'))
-        else
-            JObject.Add(PropertyName, JToken.ReadFrom(PropertyValue));
+        if PropertyValue = '' then begin
+            jvalue.SetValueToNull();
+            JObject.Add(PropertyName, jvalue.AsToken())
+        end else
+            if Evaluate(DecValue, PropertyValue) then
+                JObject.Add(PropertyName, Format(DecValue, 20, '<Sign><Integer><Decimals>'));
+    end;
+
+    procedure JSONSetReplaceNULL(NewReplaceNULL: Boolean)
+    begin
+        ReplaceNULL := NewReplaceNULL;
+    end;
+
+    procedure JSONAddNULL(var JObject: JsonObject; PropertyName: Text)
+    var
+        jvalue: JsonValue;
+    begin
+        jvalue.SetValueToNull();
+        JObject.Add(PropertyName, jvalue.AsToken());
     end;
 }

@@ -2,7 +2,7 @@ table 37072302 "AJ Web Service"
 {
     DrillDownPageID = "AJ Web Services";
     LookupPageID = "AJ Web Services";
-
+    Caption = 'Aj Web Services';
     fields
     {
         field(1; "Code"; Code[10])
@@ -291,24 +291,14 @@ table 37072302 "AJ Web Service"
 
     local procedure CalcAPIEncodedString()
     var
-        SystemConvert: DotNet Convert;
-        SystemTextEncoding: DotNet Encoding;
+        Base64Convert: Codeunit Base64Convert;
     begin
         if ("API User ID (Key)" = '') or ("API Password (Secret)" = '') then
             exit;
-<<<<<<< HEAD
         "API Encoded String" := CopyStr(
                                 Base64Convert.TextToBase64String(StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)")),
                                 1,
                                 MaxStrLen("API Encoded String"));
-=======
-
-        "API Encoded String" := SystemConvert.ToBase64String(
-          SystemTextEncoding.UTF8.GetBytes(
-            StrSubstNo('%1:%2', "API User ID (Key)", "API Password (Secret)")
-          )
-        );
->>>>>>> parent of 7df33c2... Merge branch 'master' of https://github.com/artkashin/GitHub
     end;
 }
 

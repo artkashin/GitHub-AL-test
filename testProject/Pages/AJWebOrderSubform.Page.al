@@ -33,10 +33,7 @@ page 37072310 "AJ Web Order Subform"
                 {
                     ApplicationArea = All;
                 }
-                field("Outstanding Quantitty"; OutstandingQuantity())
-                {
-                    Editable = false;
-                }
+
                 field("Qty. to Pack"; "Qty. to Pack")
                 {
                     ApplicationArea = All;
