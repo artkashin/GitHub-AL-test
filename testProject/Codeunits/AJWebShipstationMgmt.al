@@ -1325,7 +1325,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebOrderHeader."Bill-To Company");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJWebOrderHeader."Bill-To Customer Address 1");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJWebOrderHeader."Bill-To Customer Address 2");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebOrderHeader."Bill-To Customer Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebOrderHeader."Bill-To Customer Address 3"); //sdf check
 
         AJWebCarrier.Get(AJWebService.Code, AJWebOrderHeader."Shipping Carrier Code");
 
