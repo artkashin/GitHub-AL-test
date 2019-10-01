@@ -12,21 +12,23 @@ page 37072307 "AJ Web Marketplaces"
             {
                 field("Web Service Code"; "Web Service Code")
                 {
+                    ApplicationArea = All;
                 }
                 field("Code"; Code)
                 {
+                    ApplicationArea = All;
                 }
                 field(Description; Description)
                 {
+                    ApplicationArea = All;
                 }
                 field("Marketplace Option"; "Marketplace Option")
                 {
+                    ApplicationArea = All;
                 }
                 field("Item ID Type"; "Item ID Type")
                 {
-                }
-                field("Table ID"; "Table ID")
-                {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -58,7 +60,7 @@ page 37072307 "AJ Web Marketplaces"
             }
             action("Delete Line")
             {
-
+                ApplicationArea = All;
                 trigger OnAction()
                 var
                     MarketplaceL: Record "AJ Web Marketplace (Mailbox)";
@@ -72,7 +74,6 @@ page 37072307 "AJ Web Marketplaces"
         }
     }
 
-    var
-    //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+
 }
 

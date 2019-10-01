@@ -1,4 +1,4 @@
-table 37072307 "AJ Web Order Header"
+table 37072313 "AJ Web Order Header"
 {
     DrillDownPageID = "AJ Web Order List";
     LookupPageID = "AJ Web Order List";
@@ -806,7 +806,6 @@ table 37072307 "AJ Web Order Header"
         SalesReceivablesSetup: Record "Sales & Receivables Setup";
         AJWebService: Record "AJ Web Service";
 
-    [Scope('Internal')]
     procedure InitRecord(ShippingAgentCode: Code[10])
     var
         ShippingAgent: Record "Shipping Agent";
@@ -836,9 +835,6 @@ table 37072307 "AJ Web Order Header"
         end;
         AJWebOrderHeader.Validate("Shipping Web Service Code", AJWebService.Code);
 
-        //??AJWebService.SETRANGE(AJWebService."Web Service Type",AJWebService."Web Service Type"::Oasis);
-        //??  IF AJWebService.FINDFIRST
-        //??    THEN AJWebOrderHeader.VALIDATE("Web Service Code", AJWebService.Code);
         if AJWebOrderHeader."Web Service Code" = '' then
             AJWebOrderHeader.Validate("Web Service Code", AJWebService.Code);
 
@@ -911,6 +907,19 @@ table 37072307 "AJ Web Order Header"
         AJWebOrderHeader.Modify;
 
         Rec := AJWebOrderHeader;
+    end;
+
+    procedure SetResponseContent(var value: HttpContent)
+    var
+        InStr: InStream;
+        OutStr: OutStream;
+    begin
+        "Shipping Agent Label".CreateInStream(InStr);
+        value.ReadAs(InStr);
+
+        "Shipping Agent Label".CreateOutStream(OutStr);
+        CopyStream(OutStr, InStr);
+
     end;
 }
 

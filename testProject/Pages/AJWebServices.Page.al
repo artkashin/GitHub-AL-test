@@ -7,7 +7,8 @@ page 37072302 "AJ Web Services"
     ShowFilter = false;
     SourceTable = "AJ Web Service";
     UsageCategory = Lists;
-
+    Caption = 'Aj Web Services';
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -16,48 +17,62 @@ page 37072302 "AJ Web Services"
             {
                 field("Code"; Code)
                 {
+                    ApplicationArea = All;
                 }
                 field(Description; Description)
                 {
+                    ApplicationArea = All;
                 }
                 field("Web Service Type"; "Web Service Type")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error and New Web Orders"; "# Error and New Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# New Web Orders"; "# New Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error Web Orders"; "# Error Web Orders")
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Style = Unfavorable;
                     StyleExpr = TRUE;
                 }
                 field("# Pending Web Orders"; "# Pending Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# New Web Returns"; "# New Web Returns")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Error Web Returns"; "# Error Web Returns")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Shipped Web Orders"; "# Shipped Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Completed Web Orders"; "# Completed Web Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("# Open NAV Orders"; "# Open NAV Orders")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 60 Days Orders"; "Last60dyyOrd Qnt")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 30 Days Orders"; QtyOrders30Day)
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -72,43 +87,49 @@ page 37072302 "AJ Web Services"
                 Image = Setup;
                 group(Import)
                 {
-                    action("Import Marketplaces")
+                    action("Init Tables")
                     {
+                        ApplicationArea = All;
                         Image = ImportDatabase;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetMarketlaces(Rec);
+                            AJWebShipstationMgmt.InitRecords();
+                        end;
+                    }
+
+                    action("Import Marketplaces")
+                    {
+                        ApplicationArea = All;
+                        Image = ImportDatabase;
+                        trigger OnAction()
+                        var
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
+                        begin
+                            AJWebShipstationMgmt.GetMarketlaces(Rec);
                         end;
                     }
                     action("Import Warehouses")
                     {
+                        ApplicationArea = All;
                         Image = ImportDatabase;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetWarehouses(Rec);
+                            AJWebShipstationMgmt.GetWarehouses(Rec);
                         end;
                     }
                     action("Import Carriers")
                     {
+                        ApplicationArea = All;
                         Image = ExportShipment;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Process;
-
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
-                            //AJWebOrderServiceMgmt.WOS_GetShipAgentInfo(Rec);
+                            AJWebShipstationMgmt.GetShipAgentInfo(Rec);
                         end;
                     }
                 }
@@ -116,35 +137,34 @@ page 37072302 "AJ Web Services"
                 {
                     action(Marketplaces)
                     {
+                        ApplicationArea = All;
                         Image = Relationship;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
                         RunObject = Page "AJ Web Marketplaces";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action(Warehouses)
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Service Warehouse Setup";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action("Shipping Carriers")
                     {
+                        ApplicationArea = All;
                         Image = Delivery;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
                         RunObject = Page "AJ Web Carriers";
                         RunPageLink = "Web Service Code" = FIELD ("Shipping Service Code");
                     }
                     action("Carrier services")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Carrier Services";
                         RunPageLink = "Web Service Code" = FIELD (Code);
                     }
                     action("Shipping Constants")
                     {
+                        ApplicationArea = All;
                         Image = VariableList;
-                        //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                        //PromotedCategory = Category4;
                         RunObject = Page "AJ Web Service Constants";
                         RunPageLink = "Web Order Service Code" = FIELD ("Shipping Service Code");
                         RunPageView = SORTING ("Web Order Service Code", Type, "Option Value");
@@ -153,7 +173,7 @@ page 37072302 "AJ Web Services"
                     {
                         action("Delete Curr Record")
                         {
-
+                            ApplicationArea = All;
                             trigger OnAction()
                             var
                                 WebService: Record "AJ Web Service";
@@ -168,36 +188,25 @@ page 37072302 "AJ Web Services"
                 }
                 group("Web Operations")
                 {
-                    action("Check Connection")
-                    {
-                        Visible = false;
-
-                        trigger OnAction()
-                        var
-                        // AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
-                        begin
-                            //AJWebOrderServiceMgmt.WOS_CheckConnection(Rec);
-                        end;
-                    }
                     action("Get Orders")
                     {
+                        ApplicationArea = All;
                         Image = Import;
                         Promoted = true;
                         PromotedCategory = Process;
                         PromotedIsBig = true;
-
                         trigger OnAction()
                         var
                             AJWebService: Record "AJ Web Service";
-                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
                             // IF NOT CONFIRM('Get Web Orders?') THEN
                             //  ERROR('Cancelled');
                             //
                             // CurrPage.SETSELECTIONFILTER(AJWebService);
                             // IF AJWebService.FINDFIRST THEN REPEAT
-                            //  CLEAR(AJWebOrderServiceMgmt);
-                            //  AJWebOrderServiceMgmt.WOS_GetOrders(AJWebService);
+                            //  CLEAR(AJWebShipstationMgmt);
+                            //  AJWebShipstationMgmt.WOS_GetOrders(AJWebService);
                             //  COMMIT;
                             // UNTIL AJWebService.NEXT = 0;
                             //
@@ -206,18 +215,20 @@ page 37072302 "AJ Web Services"
                     }
                     action("Web Orders")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Order List";
                         RunPageLink = "Web Service Code" = FIELD (Code),
                                   "Document Type" = CONST (Order);
 
                         trigger OnAction()
                         var
-                        //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                        //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                         begin
                         end;
                     }
                     action("Web Returns")
                     {
+                        ApplicationArea = All;
                         RunObject = Page "AJ Web Return List";
                         RunPageLink = "Web Service Code" = FIELD (Code),
                                   "Document Type" = CONST (Return);
@@ -227,17 +238,17 @@ page 37072302 "AJ Web Services"
                 {
                     action("Create Orders")
                     {
+                        ApplicationArea = All;
                         Image = CreateDocument;
                         Promoted = true;
                         PromotedIsBig = true;
-
                         trigger OnAction()
                         var
-                            //AJWebOrderServiceMgmt: Codeunit "AJ Web Order Service Mgmt";
+                            //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
                             AJWebOrderHeader: Record "AJ Web Order Header";
                         begin
                             // AJWebOrderHeader.SETRANGE("Web Service Code",Code);
-                            // AJWebOrderServiceMgmt.WOS_CreateOrders(AJWebOrderHeader);
+                            // AJWebShipstationMgmt.WOS_CreateOrders(AJWebOrderHeader);
                         end;
                     }
                 }
@@ -248,12 +259,16 @@ page 37072302 "AJ Web Services"
     var
         dt: Date;
         tm: Time;
+        ShipMgt: Codeunit "AJ Web Shipstation Mgmt.";
+        TestMgt: codeunit "AJ Web Order Service Mgmt New";
     begin
         dt := Today;
         dt30 := CalcDate('-30D', dt);
         dt60 := CalcDate('-60D', dt);
         tm := 000000T;
         dtm60 := CreateDateTime(dt60, tm);
+        //TestMgt.Run();
+        //ShipMgt.Run();
     end;
 
     var
