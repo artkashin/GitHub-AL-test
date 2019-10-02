@@ -186,29 +186,6 @@ page 37072302 "AJ Web Services"
                         }
                     }
                 }
-                group("Web Operations")
-                {
-                    action("Web Orders")
-                    {
-                        ApplicationArea = All;
-                        RunObject = Page "AJ Web Order List";
-                        RunPageLink = "Web Service Code" = FIELD(Code),
-                                  "Document Type" = CONST(Order);
-
-                        trigger OnAction()
-                        var
-                        //AJWebShipstationMgmt: Codeunit "AJ Web Shipstation Mgmt.";
-                        begin
-                        end;
-                    }
-                    action("Web Returns")
-                    {
-                        ApplicationArea = All;
-                        RunObject = Page "AJ Web Return List";
-                        RunPageLink = "Web Service Code" = FIELD(Code),
-                                  "Document Type" = CONST(Return);
-                    }
-                }
             }
         }
     }

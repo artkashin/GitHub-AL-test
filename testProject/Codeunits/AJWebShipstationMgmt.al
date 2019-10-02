@@ -238,8 +238,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
             Error('Bad response');
 
         for i := 1 to JArray.Count() do begin
-            JArray.Get(i - 1, JToken); //asd
-            Clear(JObject);
+            JArray.Get(i - 1, JToken);
+            JObject := JToken.AsObject();
 
             if JObject.Contains('code') then begin
                 AJWebCarrier."Web Service Code" := AJWebService.Code;
@@ -271,7 +271,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
                 for i := 1 to JArray.Count() do begin
                     JArray.Get(i - 1, JToken);
-                    Clear(JObject);
+                    JObject := JToken.AsObject();
 
                     if JObject.Contains('code') then begin
                         AJWebCarrierPackageType."Web Service Code" := AJWebService.Code;
@@ -300,7 +300,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
                 for i := 1 to JArray.Count() do begin
                     JArray.Get(i - 1, JToken);
-                    Clear(JObject);
+                    JObject := JToken.AsObject();
 
                     if JObject.Contains('code') then begin
                         AJWebCarrierService."Web Service Code" := AJWebService.Code;
@@ -346,7 +346,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         for i := 1 to JArray.Count() do begin
             JArray.Get(i - 1, JToken);
-            Clear(JObject);
+            JObject := JToken.AsObject();
+
             if JObject.Contains('marketplaceId') then begin
                 AJWebMarketplace."Web Service Code" := AJWebService.Code;
                 with AJWebJsonHelper do begin
@@ -412,7 +413,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
 
         for i := 1 to JArray.Count() do begin
             JArray.Get(i - 1, JToken);
-            Clear(JObject);
+            JObject := JToken.AsObject();
 
             with AJWebJsonHelper do begin
                 if JObject.Get('warehouseId', ValueJToken) then begin
@@ -998,7 +999,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJWebOrderHeader."Bill-To Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'billTo', AddJObject);
 
-        //sdf
+
         Clear(AddJObject);
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJWebOrderHeader."Ship-To Customer Name");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebOrderHeader."Ship-To Company");
@@ -1147,7 +1148,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         Uri := AJWebService."API Endpoint Domain" + 'orders/createorder';
 
         Clear(JObject);
-        //sdf
+
         AJWebJsonHelper.JSONAddTxt(JObject, 'orderNumber', AJWebOrderHeader."Web Order No.");
         AJWebJsonHelper.JSONAddTxt(JObject, 'orderKey', AJWebOrderHeader."Web Order No.");
         AJWebJsonHelper.JSONAddTxt(JObject, 'orderDate', Format(DT2Date(AJWebOrderHeader."Order DateTime"), 0, '<Standard Format,9>'));
@@ -1272,7 +1273,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebOrderHeader."Bill-To Company");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJWebOrderHeader."Bill-To Customer Address 1");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJWebOrderHeader."Bill-To Customer Address 2");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebOrderHeader."Bill-To Customer Address 3"); //sdf check
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebOrderHeader."Bill-To Customer Address 3");
 
         AJWebCarrier.Get(AJWebService.Code, AJWebOrderHeader."Shipping Carrier Code");
 
