@@ -61,7 +61,15 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebService: Record "AJ Web Service";
         AJWebOrderHeader: Record "AJ Web Order Header";
         AJWebContans: Record "AJ Web Service Constants";
+        AjWebShippingSetup: Record "AJ Shipping Setup";
     begin
+        if not AjWebShippingSetup.get() then begin
+            AjWebShippingSetup.Init();
+            AjWebShippingSetup.ID := '';
+            AjWebShippingSetup."Shipping No. Series" := 'TS';
+            AjWebShippingSetup."B2C Shipping" := true;
+            AjWebShippingSetup.Insert();
+        end;
         if not AjWebSetup.FindFirst() then begin
             AjWebSetup.Init();
             AjWebSetup."Web Order No. Series" := 'TS';
@@ -427,35 +435,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                         JObject.SelectToken('originAddress', JToken);
                         JObject2 := JToken.AsObject();
 
-                        /*
-                        my old code
-                        if JObject2.Get('name', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Name" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
-                        if JObject2.Get('company', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Company" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Company"));
-                        if JObject2.Get('street1', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 1" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 1"));
-                        if JObject2.Get('street2', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 2" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 2"));
-                        if JObject2.Get('street3', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Address 3" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address 3"));
-                        if JObject2.Get('city', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From City" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From City"));
-                        if JObject2.Get('state', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From State" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From State"));
-                        if JObject2.Get('postalCode', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Zip" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Zip"));
-                        if JObject2.Get('country', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Country" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Country"));
-                        if JObject2.Get('phone', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Phone" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Phone"));
-                        if JObject2.Get('residential', ValueJToken) then
-                            AJWebServiceWarehouse."Ship-From Residential" := ValueJToken.AsValue().AsBoolean();
-                        if JObject2.Get('addressVerified', ValueJToken) then
-                            // problem MBS
-                            AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(GetJsonValueAsText(JObject2, 'addressVerified'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
-                        //AJWebServiceWarehouse."Ship-From Address Verified" := CopyStr(ValueJToken.AsValue().AsText(), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Address Verified"));
-                        */
                         if JObject2.Contains('name') then
                             AJWebServiceWarehouse."Ship-From Name" := CopyStr(GetJsonValueAsText(JObject2, 'name'), 1, MaxStrLen(AJWebServiceWarehouse."Ship-From Name"));
                         if JObject2.Contains('company') then
@@ -679,6 +658,181 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         end;
 
         CreateOrder(AJWebOrderHeader);
+    end;
+
+    procedure GetLabel(var AJWebOrderHeader: Record "AJ Web Order Header")
+    var
+        AJWebService: Record "AJ Web Service";
+        AJWebOrderLine: Record "AJ Web Order Line";
+        AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
+        AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
+        AJWebJsonHelper: Codeunit "AJ Web Json Helper";
+        AJWebServiceBase: Codeunit "AJ Web Service Base";
+        Base64Convert: Codeunit Base64Convert;
+        ValueJToken: JsonToken;
+        JObject: JsonObject;
+        AddJObject: JsonObject;
+        OutStr: OutStream;
+        Uri: Text;
+        Txt: Text;
+        LabelPdf: Text;
+    begin
+        AJWebService.GET(AJWebOrderHeader."Shipping Web Service Code");
+        AJWebService.TESTFIELD("Web Service Type", AJWebService."Web Service Type"::ShipStation);
+        AJWebService.TESTFIELD("API Endpoint Domain");
+        AJWebService.TESTFIELD("API Encoded String");
+
+        AJWebServiceWarehouse.GET(AJWebOrderHeader."Shipping Web Service Code", AJWebOrderHeader."Ship-From Warehouse ID");
+        IF AJWebServiceWarehouse."Ship-From Country" = '' THEN
+            AJWebServiceWarehouse."Ship-From Country" := 'US';
+        IF AJWebOrderHeader."Shipping Carrier Code" = '' THEN
+            AJWebOrderHeader."Shipping Carrier Code" := AJWebServiceWarehouse."Def. Shipping Carrier Code";
+        IF AJWebOrderHeader."Shipping Carrier Service" = '' THEN
+            AJWebOrderHeader."Shipping Carrier Service" := AJWebServiceWarehouse."Def. Shipping Carrier Service";
+        if AJWebOrderHeader."Shipping Package Type" = '' then
+            AJWebOrderHeader."Shipping Package Type" := CopyStr(AJWebServiceWarehouse."Def. Shipping Package Type", 1, MaxStrLen(AJWebOrderHeader."Shipping Package Type"));
+        if AJWebOrderHeader."Shipping Delivery Confirm" = '' then
+            AJWebOrderHeader."Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen(AJWebOrderHeader."Shipping Delivery Confirm"));
+        if AJWebOrderHeader."Shipping Insutance Provider" = '' then
+            AJWebOrderHeader."Shipping Insutance Provider" := CopyStr(AJWebServiceWarehouse."Def. Shipping Insutance Provd", 1, MaxStrLen(AJWebOrderHeader."Shipping Insutance Provider"));
+        IF (AJWebOrderHeader."Ship Date" = 0D) OR (AJWebOrderHeader."Ship Date" < WorkDate()) THEN
+            AJWebOrderHeader."Ship Date" := WorkDate();
+        IF AJWebOrderHeader."Ship-To Customer Country" = '' THEN
+            AJWebOrderHeader."Ship-To Customer Country" := 'US';
+
+        AJWebOrderHeader.TESTFIELD("Web Service Order ID");
+        AJWebOrderHeader.TESTFIELD("Ship-From Warehouse ID");
+        AJWebOrderHeader.TESTFIELD("Shipping Carrier Code");
+        AJWebOrderHeader.TESTFIELD("Shipping Carrier Service");
+        AJWebOrderHeader.TESTFIELD("Shipping Package Type");
+        AJWebOrderHeader.TESTFIELD("Shipping Delivery Confirm");
+
+        Uri := AJWebService."API Endpoint Domain" + 'shipments/createlabel';
+
+        Clear(JObject);
+        AJWebJsonHelper.JSONAddTxt(JObject, 'carrierCode', AJWebOrderHeader."Shipping Carrier Code");
+        AJWebJsonHelper.JSONAddTxt(JObject, 'serviceCode', AJWebOrderHeader."Shipping Carrier Service");
+        AJWebJsonHelper.JSONAddTxt(JObject, 'packageCode', AJWebOrderHeader."Shipping Package Type");
+        AJWebJsonHelper.JSONAddTxt(JObject, 'confirmation', AJWebOrderHeader."Shipping Delivery Confirm");
+        AJWebJsonHelper.JSONAddTxt(JObject, 'shipDate', FORMAT(AJWebOrderHeader."Ship Date", 0, '<Standard Format,9>'));
+
+        Clear(AddJObject);
+        IF AJWebOrderHeader."Shp. Product Weight" = 0 THEN BEGIN
+            AJWebOrderLine.SETRANGE("Web Order No.", AJWebOrderHeader."Web Order No.");
+            IF AJWebOrderLine.FINDFIRST() THEN
+                REPEAT
+                    IF AJWebOrderLine.Weight = 0 THEN BEGIN
+                        AJWebCarrierPackageType.GET(AJWebOrderHeader."Shipping Web Service Code", AJWebOrderHeader."Shipping Carrier Code", AJWebOrderHeader."Shipping Package Type");
+                        AJWebOrderHeader."Shp. Product Weight" := AJWebCarrierPackageType."Def. Weight";
+                        AJWebOrderHeader."Shp. Product Weight Unit" := AJWebCarrierPackageType."Def. Weight Unit";
+                    END ELSE
+                        IF (AJWebOrderHeader."Shp. Product Weight Unit" = '') THEN BEGIN
+                            AJWebOrderLine.TESTFIELD("Weigh Unit");
+                            AJWebOrderHeader."Shp. Product Weight" := AJWebOrderLine.Weight;
+                            AJWebOrderHeader."Shp. Product Weight Unit" := AJWebOrderLine."Weigh Unit";
+                        END ELSE
+                            IF AJWebOrderHeader."Shp. Product Weight Unit" = AJWebOrderLine."Weigh Unit" THEN
+                                AJWebOrderHeader."Shp. Product Weight" += AJWebOrderLine.Weight
+                            ELSE
+                                AJWebOrderHeader.TESTFIELD("Shp. Product Weight");
+                UNTIL AJWebOrderLine.NEXT() = 0;
+        END;
+        AJWebOrderHeader.TESTFIELD("Shp. Product Weight");
+        AJWebJsonHelper.JSONAddDec(AddJObject, 'value', AJWebOrderHeader."Shp. Product Weight");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'units', AJWebOrderHeader."Shp. Product Weight Unit");
+        AJWebJsonHelper.JSONAddObject(JObject, 'weight', AddJObject);
+
+        IF AJWebOrderHeader."Shp. Product Dimension Unit" = '' THEN BEGIN
+            AJWebCarrierPackageType.GET(AJWebOrderHeader."Shipping Web Service Code", AJWebOrderHeader."Shipping Carrier Code", AJWebOrderHeader."Shipping Package Type");
+            AJWebOrderHeader."Shp. Product Dimension Unit" := AJWebCarrierPackageType."Def. Dimension Unit";
+            AJWebOrderHeader."Shp. Product Width" := AJWebCarrierPackageType."Def. Width";
+            AJWebOrderHeader."Shp. Product Length" := AJWebCarrierPackageType."Def. Length";
+            AJWebOrderHeader."Shp. Product Height" := AJWebCarrierPackageType."Def. Height";
+        END;
+
+        Clear(AddJObject);
+        IF AJWebOrderHeader."Shp. Product Dimension Unit" <> '' THEN BEGIN
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'units', AJWebOrderHeader."Shp. Product Dimension Unit");
+            AJWebJsonHelper.JSONAddDec(AddJObject, 'length', AJWebOrderHeader."Shp. Product Length");
+            AJWebJsonHelper.JSONAddDec(AddJObject, 'width', AJWebOrderHeader."Shp. Product Width");
+            AJWebJsonHelper.JSONAddDec(AddJObject, 'height', AJWebOrderHeader."Shp. Product Height");
+            AJWebJsonHelper.JSONAddObject(JObject, 'dimensions', AddJObject);
+        END ELSE
+            AJWebJsonHelper.JSONAddNULL(JObject, 'dimensions');
+
+        Clear(AddJObject);
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJWebServiceWarehouse."Ship-From Name");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebServiceWarehouse."Ship-From Company");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJWebServiceWarehouse."Ship-From Address 1");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJWebServiceWarehouse."Ship-From Address 2");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebServiceWarehouse."Ship-From Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJWebServiceWarehouse."Ship-From City");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJWebServiceWarehouse."Ship-From State");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJWebServiceWarehouse."Ship-From Zip");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(CopyStr(AJWebServiceWarehouse."Ship-From Country", 1, 10)));
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJWebServiceWarehouse."Ship-From Phone");
+        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJWebServiceWarehouse."Ship-From Residential");
+        AJWebJsonHelper.JSONAddObject(JObject, 'shipFrom', AddJObject);
+
+        Clear(AddJObject);
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJWebOrderHeader."Ship-To Customer Name");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebOrderHeader."Ship-To Company");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJWebOrderHeader."Ship-To Customer Address 1");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJWebOrderHeader."Ship-To Customer Address 2");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebOrderHeader."Ship-To Customer Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJWebOrderHeader."Ship-To Customer City");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJWebOrderHeader."Ship-To Customer State");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJWebOrderHeader."Ship-To Customer Zip");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJWebOrderHeader."Ship-To Customer Country"));
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJWebOrderHeader."Ship-To Customer Phone");
+        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJWebOrderHeader."Ship-To Residential");
+        AJWebJsonHelper.JSONAddObject(JObject, 'shipTo', AddJObject);
+
+        IF AJWebOrderHeader."Insure Shipment" THEN
+            ERROR('Insurance Not Supported.')
+        else
+            AJWebJsonHelper.JSONAddNULL(JObject, 'insuranceOptions');
+
+        IF AJWebOrderHeader."International Shipment" THEN
+            ERROR('International Not Supported.')
+        ELSE
+            AJWebJsonHelper.JSONAddNULL(JObject, 'internationalOptions');
+
+        AJWebJsonHelper.JSONAddNULL(JObject, 'advancedOptions');
+        AJWebJsonHelper.JSONAddBool(JObject, 'testLabel', FALSE);
+
+        JObject.WriteTo(Txt);
+
+        if not AJWebServiceBase.CallWebService(AJWebService, Uri, 'POST', 'application/json', Txt) then begin
+            JObject.ReadFrom(Txt);
+            if JObject.Get('ExceptionMessage', ValueJToken) then
+                Error('Web service error:\%1', ValueJToken.AsValue().AsText())
+            else
+                Error('Web service error:\%1', Txt);
+        end;
+
+        JObject.ReadFrom(Txt);
+
+        IF JObject.Contains('labelData') THEN BEGIN
+            LabelPdf := AJWebJsonHelper.GetJsonValueAsText(JObject, 'labelData');
+
+            AJWebOrderHeader."Shipping Agent Label".CreateOutStream(OutStr);
+            Base64Convert.FromBase64StringToStream(LabelPdf, OutStr);
+
+            AJWebOrderHeader."Carier Shipping Charge" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'shipmentCost');
+            AJWebOrderHeader."Carier Tracking Number" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber'), 1, MaxStrLen(AJWebOrderHeader."Carier Tracking Number"));
+            AJWebOrderHeader."Carier Insurance Cost" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'insuranceCost');
+
+            AJWebOrderHeader."Carier Shipping Charge" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'shipmentCost');
+            AJWebOrderHeader."Carier Tracking Number" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'trackingNumber'), 1, MAXSTRLEN(AJWebOrderHeader."Carier Tracking Number"));
+            AJWebOrderHeader."Carier Insurance Cost" := AJWebJsonHelper.GetJsonValueAsDec(JObject, 'insuranceCost');
+        END;
+
+        AJWebOrderHeader."Web Service Shipment ID" := CopyStr(AJWebJsonHelper.GetJsonValueAsText(JObject, 'shipmentId'), 1, MAXSTRLEN(AJWebOrderHeader."Web Service Shipment ID"));
+        AJWebOrderHeader."Labels Created" := TRUE;
+        AJWebOrderHeader."Labels Printed" := FALSE;
+
+        AJWebOrderHeader.MODIFY();
     end;
 
     procedure GetOrderLabel(var AJWebOrderHeader: Record "AJ Web Order Header")
@@ -939,7 +1093,6 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
     local procedure CreateOrderForWeb(var AJWebOrderHeader: Record "AJ Web Order Header")
     var
         AJWebCarrier: Record "AJ Web Carrier";
-
         AJWebService: Record "AJ Web Service";
         AJWebService2: Record "AJ Web Service";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";

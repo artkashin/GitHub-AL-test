@@ -1,8 +1,8 @@
-page 37072310 "AJ Web Order Subform"
+page 37072323 "AJ Shipping Subform"
 {
     DeleteAllowed = true;
     PageType = ListPart;
-    SourceTable = "AJ Web Order Line";
+    SourceTable = "AJ Shipping Line";
 
     layout
     {
@@ -10,6 +10,14 @@ page 37072310 "AJ Web Order Subform"
         {
             repeater(Group)
             {
+                field("Source Type"; "Source Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Source ID"; "Source ID")
+                {
+                    ApplicationArea = All;
+                }
                 field(SKU; SKU)
                 {
                     ApplicationArea = All;
@@ -23,7 +31,7 @@ page 37072310 "AJ Web Order Subform"
                 {
                     ApplicationArea = All;
                 }
-                field(Name; Name)
+                field(Description; Description)
                 {
                     ApplicationArea = All;
                 }

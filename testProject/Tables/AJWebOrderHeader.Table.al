@@ -1,4 +1,4 @@
-table 37072313 "AJ Web Order Header"
+table 37072307 "AJ Web Order Header"
 
 {
     DrillDownPageID = "AJ Web Order List";

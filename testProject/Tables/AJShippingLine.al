@@ -3,24 +3,27 @@ table 37072314 "AJ Shipping Line"
 
     fields
     {
-        field(1; "Log No."; Code[20])
+        field(1; "Shipping No."; Code[20])
         {
         }
         field(2; "Line No."; Integer)
         {
         }
-        field(3; "Order Item ID"; Text[32])
+        field(3; "Source Type"; Option)
         {
-            Editable = false;
+            OptionMembers = " ",Document,Item;
+
         }
-        field(4; "Line Item Key"; Text[30])
+        field(4; "Source ID"; Text[32])
         {
-            Editable = false;
         }
         field(5; "Web Service Code"; Code[10])
         {
         }
         field(6; "Web Service Store ID"; Code[10])
+        {
+        }
+        field(7; "Source Type Table ID"; Integer)
         {
         }
         field(10; SKU; Text[30])
@@ -35,9 +38,8 @@ table 37072314 "AJ Shipping Line"
         {
             Editable = false;
         }
-        field(13; Name; Text[250])
+        field(13; Description; Text[250])
         {
-            Editable = false;
         }
         field(14; Weight; Decimal)
         {
@@ -191,7 +193,7 @@ table 37072314 "AJ Shipping Line"
         field(1200; "Package No."; Code[20])
         {
             CalcFormula = Lookup ("AJ Web Package Line"."Package No." WHERE("Source Type" = CONST(37074834),
-                                                                            "Source No." = FIELD("Log No."),
+                                                                            "Source No." = FIELD("Shipping No."),
                                                                             "Source Line No." = FIELD("Line No.")));
             Editable = false;
             FieldClass = FlowField;
@@ -199,7 +201,7 @@ table 37072314 "AJ Shipping Line"
         field(1201; "Package Quantity"; Decimal)
         {
             CalcFormula = Sum ("AJ Web Package Line".Quantity WHERE("Source Type" = CONST(37074834),
-                                                                    "Source No." = FIELD("Log No."),
+                                                                    "Source No." = FIELD("Shipping No."),
                                                                     "Source Line No." = FIELD("Line No.")));
             Editable = false;
             FieldClass = FlowField;
@@ -236,7 +238,7 @@ table 37072314 "AJ Shipping Line"
 
     keys
     {
-        key(Key1; "Log No.", "Line No.", "Order Item ID")
+        key(Key1; "Shipping No.", "Line No.", "Source ID")
         {
             Clustered = true;
         }

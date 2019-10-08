@@ -1,8 +1,8 @@
-table 37072307 "AJ Shipping Header"
+table 37072313 "AJ Shipping Header"
 {
     fields
     {
-        field(1; "Log No."; Code[20])
+        field(1; "Shipping No."; Code[20])
         {
         }
         field(2; "Web Service Order ID"; Code[50])
@@ -540,14 +540,14 @@ table 37072307 "AJ Shipping Header"
 
             trigger OnValidate()
             var
-                AJShippingHeader: Record "AJ Shipping Line";
+                AJShippingLine: Record "AJ Shipping Line";
             begin
-                AJShippingHeader.SetRange("Log No.", "Log No.");
-                if AJShippingHeader.FindFirst() then
+                AJShippingLine.SetRange("Shipping No.", "Shipping No.");
+                if AJShippingLine.FindFirst() then
                     repeat
-                        AJShippingHeader."NAV Order Status" := "NAV Order Status";
-                        AJShippingHeader.Modify();
-                    until AJShippingHeader.Next() = 0;
+                        AJShippingLine."NAV Order Status" := "NAV Order Status";
+                        AJShippingLine.Modify();
+                    until AJShippingLine.Next() = 0;
             end;
         }
         field(1002; "Created Order Text"; BLOB)
@@ -567,7 +567,7 @@ table 37072307 "AJ Shipping Header"
         }
         field(1007; "NAV Order Count"; Integer)
         {
-            CalcFormula = Count ("Sales Header" WHERE("Web Order No." = FIELD("Log No."),
+            CalcFormula = Count ("Sales Header" WHERE("Web Order No." = FIELD("Shipping No."),
                                                       "Document Type" = CONST(Order)));
             Editable = false;
             FieldClass = FlowField;
@@ -612,21 +612,21 @@ table 37072307 "AJ Shipping Header"
         field(1200; Packages; Boolean)
         {
             CalcFormula = Exist ("AJ Web Package" WHERE("Source Type" = CONST(37074833),
-                                                        "Source No." = FIELD("Log No.")));
+                                                        "Source No." = FIELD("Shipping No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(1201; "Packages Ship. & Hand. Amount"; Decimal)
         {
             CalcFormula = Sum ("AJ Web Package"."Shipping & Handling Amount" WHERE("Source Type" = CONST(37074833),
-                                                                                   "Source No." = FIELD("Log No.")));
+                                                                                   "Source No." = FIELD("Shipping No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(1202; "Packages Count"; Integer)
         {
             CalcFormula = Count ("AJ Web Package" WHERE("Source Type" = CONST(37074833),
-                                                        "Source No." = FIELD("Log No.")));
+                                                        "Source No." = FIELD("Shipping No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -701,14 +701,14 @@ table 37072307 "AJ Shipping Header"
         }
         field(5008; "Total Quantity"; Decimal)
         {
-            CalcFormula = Sum ("AJ Shipping Line".Quantity WHERE("Log No." = FIELD("Log No.")));
+            CalcFormula = Sum ("AJ Shipping Line".Quantity WHERE("Shipping No." = FIELD("Shipping No.")));
             DecimalPlaces = 0 : 2;
             Editable = false;
             FieldClass = FlowField;
         }
         field(5009; Lines; Integer)
         {
-            CalcFormula = Count ("AJ Shipping Line" WHERE("Log No." = FIELD("Log No."),
+            CalcFormula = Count ("AJ Shipping Line" WHERE("Shipping No." = FIELD("Shipping No."),
                                                            Quantity = FILTER(<> 0)));
             Editable = false;
             FieldClass = FlowField;
@@ -733,7 +733,7 @@ table 37072307 "AJ Shipping Header"
 
     keys
     {
-        key(Key1; "Log No.")
+        key(Key1; "Shipping No.")
         {
             Clustered = true;
         }
@@ -755,7 +755,7 @@ table 37072307 "AJ Shipping Header"
                     Error('You cannot delete Web Order!');
 
         SalesHeader.Reset();
-        SalesHeader.SetRange("Web Order No.", "Log No.");
+        SalesHeader.SetRange("Web Order No.", "Shipping No.");
         SalesHeader.SetFilter("Document Type", '%1|%2', SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice);
         if SalesHeader.FindFirst() then
             if not "Created From Sales Order" then
@@ -766,11 +766,11 @@ table 37072307 "AJ Shipping Header"
             end;
 
         AJWebPackage.SetRange("Source Type", DATABASE::"AJ Web Order Header");
-        AJWebPackage.SetRange("Source No.", "Log No.");
+        AJWebPackage.SetRange("Source No.", "Shipping No.");
         if not AJWebPackage.IsEmpty() then
             AJWebPackage.DeleteAll(true);
 
-        AJShippingHeader.SetRange("Log No.", "Log No.");
+        AJShippingHeader.SetRange("Shipping No.", "Shipping No.");
         if not AJShippingHeader.IsEmpty() then
             AJShippingHeader.DeleteAll(true);
     end;
@@ -780,10 +780,10 @@ table 37072307 "AJ Shipping Header"
         AJWebSetup: Record "AJ Web Setup";
         NoSeriesManagement: Codeunit NoSeriesManagement;
     begin
-        if "Log No." = '' then begin
+        if "Shipping No." = '' then begin
             AJWebSetup.Get();
             AJWebSetup.TestField("Web Order No. Series");
-            "Log No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Order No. Series", WorkDate(), true);
+            "Shipping No." := NoSeriesManagement.GetNextNo(AJWebSetup."Web Order No. Series", WorkDate(), true);
         end;
     end;
 
@@ -803,7 +803,7 @@ table 37072307 "AJ Shipping Header"
         AJShippingHeader := Rec;
 
         AJShippingHeader.Init();
-        AJShippingHeader."Log No." := '';
+        AJShippingHeader."Shipping No." := '';
         AJShippingHeader."Created From Sales Order" := true;
         AJShippingHeader."Created DateTime" := CurrentDateTime();
         AJShippingHeader."Order DateTime" := CurrentDateTime();
@@ -858,7 +858,7 @@ table 37072307 "AJ Shipping Header"
         AJShippingHeader := Rec;
 
         AJShippingHeader.Init();
-        AJShippingHeader."Log No." := '';
+        AJShippingHeader."Shipping No." := '';
         AJShippingHeader."Created From Sales Order" := true;
         AJShippingHeader."Created DateTime" := CurrentDateTime();
         AJShippingHeader."Order DateTime" := CurrentDateTime();
