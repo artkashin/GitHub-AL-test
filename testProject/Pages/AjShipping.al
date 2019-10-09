@@ -649,6 +649,28 @@ page 37072322 "AJ Shipping"
     {
         area(processing)
         {
+            group("Filling")
+            {
+                action("Get Sales Header")
+                {
+                    ApplicationArea = All;
+                    Promoted = false;
+                    Caption = 'Fill From Sales Hader';
+                    trigger OnAction()
+                    var
+                        //AjShippingHeader: Record "AJ Shipping Header";
+                        //SalesHaeder: Record "Sales Header";
+                        AJShippingLine: Record "AJ Shipping Line";
+                        SalesList: Page "Sales List";
+                    begin
+                        AJShippingLine."Shipping No." := Rec."Shipping No.";
+                        SalesList.SetLookupForAJShipping(AJShippingLine);
+                        SalesList.LookupMode(true);
+                        SalesList.RunModal();
+                        Message('Done');
+                    end;
+                }
+            }
             group("Shipping Label")
             {
                 Caption = 'Shipping Label';
