@@ -6,7 +6,6 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
         {
             group("AJ Shipping")
             {
-                Visible = AJShippingVisible;
                 field("Web Order No."; "Web Order No.")
                 {
                     ApplicationArea = All;
@@ -26,7 +25,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     QuickEntry = false;
                     TableRelation = "AJ Shipping Header";
 
-                    trigger OnAssistEdit()
+                    /*trigger OnAssistEdit()
                     var
                         lr_Customer: Record Customer;
                         AJWebPackage: Record "AJ Web Package";
@@ -98,6 +97,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                             Rec.Modify();
                         end;
                     end;
+                    */
                 }
                 field(AJWOH_WebServiceCode; AJShippingHeader."Web Service Code")
                 {
@@ -435,7 +435,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJShippingHeader.Modify();
                     end;
                 }
-                field(AJWOH_InsureShp; AJShippingHeader."Insure Shipment")
+                /*field(AJWOH_InsureShp; AJShippingHeader."Insure Shipment")
                 {
                     ApplicationArea = All;
                     Caption = 'Insure Shipment';
@@ -459,6 +459,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                         AJShippingHeader.Modify();
                     end;
                 }
+                */
                 field(AJWOH_AddInsValue; AJShippingHeader."Additional Insurance Value")
                 {
                     ApplicationArea = All;
@@ -491,11 +492,6 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
                     Caption = 'Carrier Shipping Charge';
                     Editable = false;
                     QuickEntry = false;
-
-                    trigger OnAssistEdit()
-                    begin
-                        GetShipLabels();
-                    end;
                 }
                 field(AJWOH_CarrierTrackingNumber; AJShippingHeader."Carier Tracking Number")
                 {
@@ -557,7 +553,7 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
     var
         AJShippingHeader: Record "AJ Shipping Header";
 
-    local procedure GetShipLabels()
+    /*local procedure GetShipLabels()
     var
         Customer: Record Customer;
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
@@ -613,5 +609,6 @@ pageextension 37072300 PageExtansion42 extends "Sales Order"
         AJShippingSetup.Get();
         AJShippingVisible := AJShippingSetup."B2C Shipping";
     end;
+    */
 }
 

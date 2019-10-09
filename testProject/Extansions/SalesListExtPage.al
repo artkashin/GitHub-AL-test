@@ -14,7 +14,7 @@ pageextension 37072301 PageExtansion45 extends "Sales List"
     var
         FromSalesHeader: Record "Sales Header";
         AJShippingHeader: Record "AJ Shipping Header";
-        AJFillShippingLine: Codeunit "AJ Fill Shipping Line";
+        AJFillShippingLine: Codeunit "AJ Fill Shipping Process";
     begin
         if LookupforAJShipping and (CloseAction = Action::LookupOK) then begin
             AJShippingHeader.Get(AJShippingLine."Shipping No.");

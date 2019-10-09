@@ -19,40 +19,6 @@ page 37072322 "AJ Shipping"
                 {
                     ApplicationArea = All;
                 }
-                field("Order DateTime"; "Order DateTime")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Created DateTime"; "Created DateTime")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Total Amount"; "Total Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Paid Amount"; "Paid Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Tax Amount"; "Tax Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shipping Amount"; "Shipping Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Handling Amount"; "Handling Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Latest Ship Date"; "Latest Ship Date")
-                {
-                    ApplicationArea = All;
-                }
                 field("Ship Date"; "Ship Date")
                 {
                     ApplicationArea = All;
@@ -66,80 +32,58 @@ page 37072322 "AJ Shipping"
                             Message('Latest Ship date is ' + Format(DT2Date(dtm)));
                     end;
                 }
-                field("Hold Until Date"; "Hold Until Date")
-                {
-                    ApplicationArea = All;
-                }
-                field("Invoice No."; "Invoice No.")
-                {
-                    ApplicationArea = All;
-                }
-                field("Ship-to Type"; "Ship-to Type")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Special Customer Account"; "Special Customer Account")
-                {
-                    ApplicationArea = All;
-                }
-                field("Set Customer No. To"; "Set Customer No. To")
-                {
-                    ApplicationArea = All;
-                }
             }
-            part(Control1000000043; "AJ Shipping Subform")
+            group("Ship-from")
             {
-                ApplicationArea = All;
-                SubPageLink = "Shipping No." = field("Shipping No.");
-            }
-            group("Bill-to")
-            {
-                field("Bill-To Customer Name"; "Bill-To Customer Name")
+                field("Ship-from Location Code"; "Ship-from Location Code")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Company"; "Bill-To Company")
+                field("Ship-from Customer Name"; "Ship-from Customer Name")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Address 1"; "Bill-To Customer Address 1")
+                field("Ship-from Company"; "Ship-from Company")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Address 2"; "Bill-To Customer Address 2")
+                field("Ship-from Customer Address 1"; "Ship-from Customer Address 1")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Address 3"; "Bill-To Customer Address 3")
+                field("Ship-from Customer Address 2"; "Ship-from Customer Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer City"; "Bill-To Customer City")
+                field("Ship-from Customer Address 3"; "Ship-from Customer Address 3")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Zip"; "Bill-To Customer Zip")
+                field("Ship-from Customer City"; "Ship-from Customer City")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer State"; "Bill-To Customer State")
+                field("Ship-from Customer Zip"; "Ship-from Customer Zip")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Country"; "Bill-To Customer Country")
+                field("Ship-from Customer State"; "Ship-from Customer State")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Customer Phone"; "Bill-To Customer Phone")
+                field("Ship-from Customer Country"; "Ship-from Customer Country")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To E-mail"; "Bill-To E-mail")
+                field("Ship-from Customer Phone"; "Ship-from Customer Phone")
                 {
                     ApplicationArea = All;
                 }
-                field("Bill-To Verified"; "Bill-To Verified")
+                field("Ship-from E-mail"; "Ship-from E-mail")
+                {
+                    ApplicationArea = All;
+                }
+                field("Ship-from Verified"; "Ship-from Verified")
                 {
                     ApplicationArea = All;
                 }
@@ -239,35 +183,16 @@ page 37072322 "AJ Shipping"
                     ApplicationArea = All;
                 }
             }
-            group("Payment Info")
+
+            part(Control1000000043; "AJ Shipping Subform")
             {
-                field("Authorized Amount"; "Authorized Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Captured Amount"; "Captured Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Id"; "Payment Id")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Gateway"; "Payment Gateway")
-                {
-                    ApplicationArea = All;
-                }
-                field("Card Type"; "Card Type")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Method"; "Payment Method")
-                {
-                    ApplicationArea = All;
-                }
+                ApplicationArea = All;
+                SubPageLink = "Shipping No." = field("Shipping No.");
             }
+
             group("Other Info")
             {
+                Visible = false;
                 field(Gift; Gift)
                 {
                     ApplicationArea = All;
@@ -293,66 +218,6 @@ page 37072322 "AJ Shipping"
                 {
                     ApplicationArea = All;
                 }
-                field("Order Instructions"; "Order Instructions")
-                {
-                    ApplicationArea = All;
-                }
-            }
-            group("Shipping Agent")
-            {
-                Visible = false;
-                field("Shipping Carrier Code"; "Shipping Carrier Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shipping Carrier Service"; "Shipping Carrier Service")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Method"; "Shp. Method")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. 3PL Warehouse"; "Shp. 3PL Warehouse")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. 3PL Name"; "Shp. 3PL Name")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Weight"; "Shp. Product Weight")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Weight Unit"; "Shp. Product Weight Unit")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Width"; "Shp. Product Width")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Length"; "Shp. Product Length")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Height"; "Shp. Product Height")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Product Dimension Unit"; "Shp. Product Dimension Unit")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Incoterms"; "Shp. Incoterms")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shp. Hts Code"; "Shp. Hts Code")
-                {
-                    ApplicationArea = All;
-                }
             }
             group("AJ Shipping")
             {
@@ -364,7 +229,6 @@ page 37072322 "AJ Shipping"
                     field("Web Service Code"; "Web Service Code")
                     {
                         ApplicationArea = All;
-                        Editable = false;
                     }
                     field(AJWOH_ShpWebServiceCode; "Shipping Web Service Code")
                     {
@@ -561,26 +425,6 @@ page 37072322 "AJ Shipping"
                     {
                         ApplicationArea = All;
                     }
-                    field(AJWOH_InsureShp; "Insure Shipment")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Insure Shipment';
-
-                        trigger OnValidate()
-                        begin
-                            TestField("Shipping Web Service Code");
-                        end;
-                    }
-                    field(AJWOH_InsuredValue; "Insured Value")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Insured Value';
-
-                        trigger OnValidate()
-                        begin
-                            TestField("Shipping Web Service Code");
-                        end;
-                    }
                     field(AJWOH_AddInsValue; "Additional Insurance Value")
                     {
                         ApplicationArea = All;
@@ -604,19 +448,19 @@ page 37072322 "AJ Shipping"
                         Caption = 'Carrier Insurance Cost';
                         Editable = false;
                     }
-                    field("Bill-to Type"; "Bill-to Type")
+                    field("Ship-from Type"; "Ship-from Type")
                     {
                         ApplicationArea = All;
                     }
-                    field("Bill-To Account"; "Bill-To Account")
+                    field("Ship-from Account"; "Ship-from Account")
                     {
                         ApplicationArea = All;
                     }
-                    field("Bill-To Postal Code"; "Bill-To Postal Code")
+                    field("Ship-from Postal Code"; "Ship-from Postal Code")
                     {
                         ApplicationArea = All;
                     }
-                    field("Bill-To Country Code"; "Bill-To Country Code")
+                    field("Ship-from Country Code"; "Ship-from Country Code")
                     {
                         ApplicationArea = All;
                     }
@@ -635,13 +479,6 @@ page 37072322 "AJ Shipping"
                     }
                 }
             }
-            part(Control1000000078; "AJ Web Package Part")
-            {
-                ApplicationArea = All;
-                SubPageLink = "Source Type" = CONST(37074833),
-                              "Source No." = FIELD("Shipping No.");
-                UpdatePropagation = Both;
-            }
         }
     }
 
@@ -655,7 +492,7 @@ page 37072322 "AJ Shipping"
                 {
                     ApplicationArea = All;
                     Promoted = false;
-                    Caption = 'Fill From Sales Hader';
+                    Caption = 'Get Lines From Sales Hader';
                     trigger OnAction()
                     var
                         //AjShippingHeader: Record "AJ Shipping Header";
@@ -682,11 +519,11 @@ page 37072322 "AJ Shipping"
                     trigger OnAction()
                     var
                         AjShippingHeader: Record "AJ Shipping Header";
-                        AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
+                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AjShippingHeader);
-                        AjShippingHeader.FindFirst();
-                        AJShippingMgmt.GetOrderLabel(AjShippingHeader);
+                        //AjShippingHeader.FindFirst();
+                        //AJShippingMgmt.GetOrderLabel(AjShippingHeader);
                         Message('Done');
                     end;
                 }
@@ -698,11 +535,11 @@ page 37072322 "AJ Shipping"
                     trigger OnAction()
                     var
                         AjShippingHeader: Record "AJ Shipping Header";
-                        AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
+                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AjShippingHeader);
-                        AjShippingHeader.FindFirst();
-                        AJShippingMgmt.GetLabel(AjShippingHeader);
+                        //AjShippingHeader.FindFirst();
+                        //AJShippingMgmt.GetLabel(AjShippingHeader);
                         Message('Done');
                     end;
                 }
@@ -712,11 +549,11 @@ page 37072322 "AJ Shipping"
                     trigger OnAction()
                     var
                         AjShippingHeader: Record "AJ Shipping Header";
-                        AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
+                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
                     begin
                         CurrPage.SETSELECTIONFILTER(AjShippingHeader);
-                        AjShippingHeader.FindFirst();
-                        AJShippingMgmt.SaveLabel(AjShippingHeader);
+                        //AjShippingHeader.FindFirst();
+                        //AJShippingMgmt.SaveLabel(AjShippingHeader);
                     end;
                 }
             }

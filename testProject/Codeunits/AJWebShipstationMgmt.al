@@ -79,6 +79,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if not AJWebService.FindFirst() then begin
             AJWebService.Init();
             AJWebService.Code := 'TEST MBS';
+            AJWebService."Shipping Service Code" := 'TEST MBS';
             AJWebService.Description := 'Shipstation';
             AJWebService."API Endpoint Domain" := 'https://ssapi.shipstation.com/';
             AJWebService.Validate("API User ID (Key)", 'ccb2a0af002b4cb7affc046461a4334d');
@@ -253,7 +254,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 AJWebCarrier."Web Service Code" := AJWebService.Code;
                 with AJWebJsonHelper do begin
                     AJWebCarrier.Code := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrier.Code));
-                    if AJWebCarrier.FindFirst() then;
+                    if AJWebCarrier.Find() then;
                     if JObject.Contains('name') then
                         AJWebCarrier.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrier.Name));
                     if JObject.Contains('accountNumber') then
@@ -271,9 +272,10 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         AJWebCarrier.SetRange("Web Service Code", AJWebService.Code);
         if AJWebCarrier.FindFirst() then
             repeat
+                Clear(AJWebServiceBase);
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listpackages?carrierCode=' + AJWebCarrier.Code;
                 AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', Txt);
-
+                message(GetLastErrorText);
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
 
@@ -287,7 +289,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                             AJWebCarrierPackageType."Package Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierPackageType."Package Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierPackageType."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierPackageType."Web Carrier Code"));
-                            if AJWebCarrierPackageType.FindFirst() then;
+                            if AJWebCarrierPackageType.Find() then;
                             if JObject.Contains('name') then
                                 AJWebCarrierPackageType."Package Name" := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierPackageType."Package Name"));
                             if JObject.Contains('domestic') then
@@ -301,6 +303,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 end;
 
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listservices?carrierCode=' + AJWebCarrier.Code;
+
+                Clear(AJWebServiceBase);
                 AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', Txt);
 
                 if not JArray.ReadFrom(Txt) then
@@ -316,7 +320,8 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                             AJWebCarrierService."Service  Code" := CopyStr(GetJsonValueAsText(JObject, 'code'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
                             if JObject.Contains('carrierCode') then
                                 AJWebCarrierService."Web Carrier Code" := CopyStr(GetJsonValueAsText(JObject, 'carrierCode'), 1, MaxStrLen(AJWebCarrierService."Web Carrier Code"));
-                            if AJWebCarrierService.FindFirst() then;
+
+                            if AJWebCarrierService.Find() then;
                             if JObject.Contains('name') then
                                 AJWebCarrierService.Name := CopyStr(GetJsonValueAsText(JObject, 'name'), 1, MaxStrLen(AJWebCarrierService.Name));
                             if JObject.Contains('domestic') then

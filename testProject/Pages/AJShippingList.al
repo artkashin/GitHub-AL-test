@@ -6,7 +6,7 @@ page 37072324 "AJ Shipping List"
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = All;
-    SourceTable = "AJ Web Order Header";
+    SourceTable = "AJ Shipping Header";
     SourceTableView = ORDER(Descending)
                       WHERE("Document Type" = CONST(Order));
 
@@ -32,11 +32,6 @@ page 37072324 "AJ Shipping List"
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field("Total Amount"; "Total Amount")
-                {
-                    ApplicationArea = All;
-                    DecimalPlaces = 0 : 2;
-                }
                 field("Total Quantity"; "Total Quantity")
                 {
                     ApplicationArea = All;
@@ -50,7 +45,7 @@ page 37072324 "AJ Shipping List"
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field("Web Order No."; "Web Order No.")
+                field("Shipping No."; "Shipping No.")
                 {
                     ApplicationArea = All;
                 }
@@ -73,7 +68,7 @@ page 37072324 "AJ Shipping List"
                     var
                         lr_SH: Record "Sales Header";
                     begin
-                        lr_SH.SetRange("Web Order No.", "Web Order No.");
+                        lr_SH.SetRange("Web Order No.", "Shipping No.");
                         lr_SH.SetRange("Document Type", lr_SH."Document Type"::Order);
                         if lr_SH.FindFirst() then
                             PAGE.RunModal(42, lr_SH);
@@ -87,7 +82,7 @@ page 37072324 "AJ Shipping List"
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        SalesInvoiceHeader.SetRange(SalesInvoiceHeader."Web Order No.", "Web Order No.");
+                        SalesInvoiceHeader.SetRange("Web Order No.", "Shipping No.");
                         if SalesInvoiceHeader.FindFirst() then
                             PAGE.RunModal(132, SalesInvoiceHeader);
                     end;
@@ -161,18 +156,6 @@ page 37072324 "AJ Shipping List"
                 {
                     ApplicationArea = All;
                 }
-                field("Paid Amount"; "Paid Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Tax Amount"; "Tax Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Shipping Amount"; "Shipping Amount")
-                {
-                    ApplicationArea = All;
-                }
                 field("Send Ship Confirmation"; "Send Ship Confirmation")
                 {
                     ApplicationArea = All;
@@ -195,14 +178,6 @@ page 37072324 "AJ Shipping List"
                     ApplicationArea = All;
                 }
                 field("Created DateTime"; "Created DateTime")
-                {
-                    ApplicationArea = All;
-                }
-                field("Modify DateTime"; "Modify DateTime")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment DateTime"; "Payment DateTime")
                 {
                     ApplicationArea = All;
                 }
@@ -270,30 +245,6 @@ page 37072324 "AJ Shipping List"
                 {
                     ApplicationArea = All;
                 }
-                field("Authorized Amount"; "Authorized Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Captured Amount"; "Captured Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Id"; "Payment Id")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Gateway"; "Payment Gateway")
-                {
-                    ApplicationArea = All;
-                }
-                field("Card Type"; "Card Type")
-                {
-                    ApplicationArea = All;
-                }
-                field("Payment Method"; "Payment Method")
-                {
-                    ApplicationArea = All;
-                }
             }
         }
     }
@@ -335,7 +286,7 @@ page 37072324 "AJ Shipping List"
     var
         lr_WOL: Record "AJ Web Order Line";
     begin
-        lr_WOL.SetRange("Web Order No.", "Web Order No.");
+        lr_WOL.SetRange("Web Order No.", "Shipping No.");
         if lr_WOL.FindFirst() then
             gc_FirstSKU := lr_WOL.SKU
         else

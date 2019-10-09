@@ -1,9 +1,10 @@
 codeunit 37072304 "AJ Shipping Mgmt."
 {
-    var
-        AddressErr: Label 'Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.';
-        DoNotSendOrder: Boolean;
 
+    var
+    //AddressErr: Label 'Carrier %1 does not allow to ship with 3 address lines, \please change it to 2 lines.';
+    //DoNotSendOrder: Boolean;
+    /*
     local procedure CreateOrderForWeb(var AJShippingHeader: Record "AJ Shipping Header")
     var
         AJWebCarrier: Record "AJ Web Carrier";
@@ -29,11 +30,11 @@ codeunit 37072304 "AJ Shipping Mgmt."
         //>> Additional Check
         if AJShippingHeader."Ship-To Customer Country" in ['USA', ''] then
             AJShippingHeader."Ship-To Customer Country" := 'US';
-        if AJShippingHeader."Bill-To Customer Country" in ['USA', ''] then
-            AJShippingHeader."Bill-To Customer Country" := 'US';
+        if AJShippingHeader."Ship-From Customer Country" in ['USA', ''] then
+            AJShippingHeader."Ship-From Customer Country" := 'US';
 
         AJWebCarrier.Get(AJWebService.Code, AJShippingHeader."Shipping Carrier Code");
-        if AJWebCarrier."2 Lines Address only" and ((AJShippingHeader."Bill-To Customer Address 3" <> '')
+        if AJWebCarrier."2 Lines Address only" and ((AJShippingHeader."Ship-From Customer Address 3" <> '')
           or (AJShippingHeader."Ship-To Customer Address 3" <> ''))
         then
             Error(StrSubstNo(AddressErr, AJWebCarrier.Code));
@@ -53,17 +54,17 @@ codeunit 37072304 "AJ Shipping Mgmt."
 
         Clear(AddJObject);
 
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJShippingHeader."Bill-To Customer Name");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJShippingHeader."Bill-To Company");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJShippingHeader."Bill-To Customer Address 1");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJShippingHeader."Bill-To Customer Address 2");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJShippingHeader."Bill-To Customer Address 3");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJShippingHeader."Bill-To Customer City");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJShippingHeader."Bill-To Customer State");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJShippingHeader."Bill-To Customer Zip");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJShippingHeader."Bill-To Customer Country"));
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJShippingHeader."Bill-To Customer Phone");
-        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Bill-To Residential");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJShippingHeader."Ship-From Customer Name");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJShippingHeader."Ship-From Company");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJShippingHeader."Ship-From Customer Address 1");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJShippingHeader."Ship-From Customer Address 2");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJShippingHeader."Ship-From Customer Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJShippingHeader."Ship-From Customer City");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJShippingHeader."Ship-From Customer State");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJShippingHeader."Ship-From Customer Zip");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJShippingHeader."Ship-From Customer Country"));
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJShippingHeader."Ship-From Customer Phone");
+        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Ship-From Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'billTo', AddJObject);
 
 
@@ -179,19 +180,17 @@ codeunit 37072304 "AJ Shipping Mgmt."
         if AJShippingHeader."Shipping Package Type" = '' then
             AJShippingHeader."Shipping Package Type" := CopyStr(AJWebServiceWarehouse."Def. Shipping Package Type", 1, MaxStrLen(AJShippingHeader."Shipping Package Type"));
         if AJShippingHeader."Shipping Delivery Confirm" = '' then
-            AJShippingHeader."Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen(AJShippingHeader."Shipping Delivery Confirm"));
-        if AJShippingHeader."Shipping Insutance Provider" = '' then
-            AJShippingHeader."Shipping Insutance Provider" := CopyStr(AJWebServiceWarehouse."Def. Shipping Insutance Provd", 1, MaxStrLen(AJShippingHeader."Shipping Insutance Provider"));
+            AJShippingHeader."Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen(AJShippingHeader."Shipping Delivery Confirm"));        
         if (AJShippingHeader."Ship Date" = 0D) or (AJShippingHeader."Ship Date" < WorkDate()) then
             AJShippingHeader."Ship Date" := WorkDate();
         if AJShippingHeader."Ship-To Customer Country" = '' then
             AJShippingHeader."Ship-To Customer Country" := 'US';
 
-        if AJShippingHeader."Bill-To Customer Country" = 'USA'
+        if AJShippingHeader."Ship-From Customer Country" = 'USA'
           then
-            AJShippingHeader."Bill-To Customer Country" := 'US';
-        if AJShippingHeader."Bill-To Customer Country" = '' then
-            AJShippingHeader."Bill-To Customer Country" := 'US';
+            AJShippingHeader."Ship-From Customer Country" := 'US';
+        if AJShippingHeader."Ship-From Customer Country" = '' then
+            AJShippingHeader."Ship-From Customer Country" := 'US';
 
         AJShippingHeader."International Shipment" := AJShippingHeader."Ship-To Customer Country" <> 'US';
 
@@ -325,20 +324,20 @@ codeunit 37072304 "AJ Shipping Mgmt."
         //<< LABEL INFO
 
         Clear(AddJObject);
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJShippingHeader."Bill-To Customer Name");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJShippingHeader."Bill-To Company");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJShippingHeader."Bill-To Customer Address 1");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJShippingHeader."Bill-To Customer Address 2");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJShippingHeader."Bill-To Customer Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJShippingHeader."Ship-From Customer Name");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJShippingHeader."Ship-From Company");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJShippingHeader."Ship-From Customer Address 1");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJShippingHeader."Ship-From Customer Address 2");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJShippingHeader."Ship-From Customer Address 3");
 
         AJWebCarrier.Get(AJWebService.Code, AJShippingHeader."Shipping Carrier Code");
 
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJShippingHeader."Bill-To Customer City");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJShippingHeader."Bill-To Customer State");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJShippingHeader."Bill-To Customer Zip");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJShippingHeader."Bill-To Customer Country"));
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJShippingHeader."Bill-To Customer Phone");
-        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Bill-To Residential");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJShippingHeader."Ship-From Customer City");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJShippingHeader."Ship-From Customer State");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJShippingHeader."Ship-From Customer Zip");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(AJShippingHeader."Ship-From Customer Country"));
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJShippingHeader."Ship-From Customer Phone");
+        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Ship-From Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'billTo', AddJObject);
 
         Clear(AddJObject);
@@ -375,25 +374,25 @@ codeunit 37072304 "AJ Shipping Mgmt."
         else
             AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField3', AJShippingHeader."Custom Field 3");
 
-        // take Bill-to default from WEB SERVICE, NOT SHIPPING WEB SERVICE
+        // take Ship-From default from WEB SERVICE, NOT SHIPPING WEB SERVICE
         AJWebCarrier.Get(AJShippingHeader."Web Service Code", AJShippingHeader."Shipping Carrier Code");
-        if AJShippingHeader."Bill-to Type" <> 0 then begin
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJShippingHeader."Bill-to Type"));
-            if AJShippingHeader."Bill-to Type" = AJShippingHeader."Bill-to Type"::my_other_account then
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJShippingHeader."Bill-To Account")
+        if AJShippingHeader."Ship-From Type" <> 0 then begin
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJShippingHeader."Ship-From Type"));
+            if AJShippingHeader."Ship-From Type" = AJShippingHeader."Ship-From Type"::my_other_account then
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJShippingHeader."Ship-From Account")
             else
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJShippingHeader."Bill-To Account");
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJShippingHeader."Bill-To Postal Code");
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJShippingHeader."Bill-To Country Code");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJShippingHeader."Ship-From Account");
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJShippingHeader."Ship-From Postal Code");
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJShippingHeader."Ship-From Country Code");
         end else
-            if AJWebCarrier."Bill-to Type" <> 0 then begin
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJWebCarrier."Bill-to Type"));
-                if AJWebCarrier."Bill-to Type" = AJWebCarrier."Bill-to Type"::my_other_account then
-                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJWebCarrier."Bill-to Account No.")
+            if AJWebCarrier."Ship-From Type" <> 0 then begin
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJWebCarrier."Ship-From Type"));
+                if AJWebCarrier."Ship-From Type" = AJWebCarrier."Ship-From Type"::my_other_account then
+                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJWebCarrier."Ship-From Account No.")
                 else
-                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJWebCarrier."Bill-to Account No.");
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebCarrier."Bill-to Account Post Code");
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Bill-to Account Country Code");
+                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJWebCarrier."Ship-From Account No.");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebCarrier."Ship-From Account Post Code");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Ship-From Account Country Code");
             end;
         AJWebJsonHelper.JSONAddObject(JObject, 'advancedOptions', AddJObject);
 
@@ -617,29 +616,29 @@ codeunit 37072304 "AJ Shipping Mgmt."
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'customField3', AJShippingHeader."Custom Field 3");
 
         //for third party billing
-        if AJShippingHeader."Bill-to Type" <> 0 then begin
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJShippingHeader."Bill-to Type"));
-            if AJShippingHeader."Bill-to Type" = AJShippingHeader."Bill-to Type"::my_other_account then
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJShippingHeader."Bill-To Account")
+        if AJShippingHeader."Ship-From Type" <> 0 then begin
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJShippingHeader."Ship-From Type"));
+            if AJShippingHeader."Ship-From Type" = AJShippingHeader."Ship-From Type"::my_other_account then
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJShippingHeader."Ship-From Account")
             else
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJShippingHeader."Bill-To Account");
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJShippingHeader."Bill-To Postal Code");
-            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJShippingHeader."Bill-To Country Code");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJShippingHeader."Ship-From Account");
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJShippingHeader."Ship-From Postal Code");
+            AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJShippingHeader."Ship-From Country Code");
         end else begin
-            // take Bill-to default from WEB SERVICE, NOT SHIPPING WEB SERVICE
+            // take Ship-From default from WEB SERVICE, NOT SHIPPING WEB SERVICE
             AJWebCarrier.Get(AJShippingHeader."Web Service Code", AJShippingHeader."Shipping Carrier Code");
-            if AJWebCarrier."Bill-to Type" <> 0 then begin
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJWebCarrier."Bill-to Type"));
-                if AJWebCarrier."Bill-to Type" = AJWebCarrier."Bill-to Type"::my_other_account then
-                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJWebCarrier."Bill-to Account No.")
+            if AJWebCarrier."Ship-From Type" <> 0 then begin
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToParty', GetBillToTypeName(AJWebCarrier."Ship-From Type"));
+                if AJWebCarrier."Ship-From Type" = AJWebCarrier."Ship-From Type"::my_other_account then
+                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToMyOtherAccount', AJWebCarrier."Ship-From Account No.")
                 else
-                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJWebCarrier."Bill-to Account No.");
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebCarrier."Bill-to Account Post Code");
-                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Bill-to Account Country Code");
-                AJShippingHeader."Bill-to Type" := AJWebCarrier."Bill-to Type";
-                AJShippingHeader."Bill-To Account" := AJWebCarrier."Bill-to Account No.";
-                AJShippingHeader."Bill-To Postal Code" := CopyStr(AJWebCarrier."Bill-to Account Post Code", 1, MaxStrLen(AJShippingHeader."Bill-To Postal Code"));
-                AJShippingHeader."Bill-To Country Code" := AJWebCarrier."Bill-to Account Country Code";
+                    AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToAccount', AJWebCarrier."Ship-From Account No.");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToPostalCode', AJWebCarrier."Ship-From Account Post Code");
+                AJWebJsonHelper.JSONAddTxt(AddJObject, 'billToCountryCode', AJWebCarrier."Ship-From Account Country Code");
+                AJShippingHeader."Ship-From Type" := AJWebCarrier."Ship-From Type";
+                AJShippingHeader."Ship-From Account" := AJWebCarrier."Ship-From Account No.";
+                AJShippingHeader."Ship-From Postal Code" := CopyStr(AJWebCarrier."Ship-From Account Post Code", 1, MaxStrLen(AJShippingHeader."Ship-From Postal Code"));
+                AJShippingHeader."Ship-From Country Code" := AJWebCarrier."Ship-From Account Country Code";
             end;
         end;
         AJWebJsonHelper.JSONAddObject(JObject, 'advancedOptions', AddJObject);
@@ -676,11 +675,11 @@ codeunit 37072304 "AJ Shipping Mgmt."
         AJShippingHeader."Labels Printed" := false;
         AJShippingHeader.Modify();
     end;
-
+    */
     procedure GetLabel(var AJShippingHeader: Record "AJ Shipping Header")
     var
         AJWebService: Record "AJ Web Service";
-        AJShippingLine: Record "AJ Shipping Line";
+        //AJShippingLine: Record "AJ Shipping Line";
         AJWebCarrierPackageType: Record "AJ Web Carrier Package Type";
         AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
         AJWebJsonHelper: Codeunit "AJ Web Json Helper";
@@ -710,8 +709,6 @@ codeunit 37072304 "AJ Shipping Mgmt."
             AJShippingHeader."Shipping Package Type" := CopyStr(AJWebServiceWarehouse."Def. Shipping Package Type", 1, MaxStrLen(AJShippingHeader."Shipping Package Type"));
         if AJShippingHeader."Shipping Delivery Confirm" = '' then
             AJShippingHeader."Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen(AJShippingHeader."Shipping Delivery Confirm"));
-        if AJShippingHeader."Shipping Insutance Provider" = '' then
-            AJShippingHeader."Shipping Insutance Provider" := CopyStr(AJWebServiceWarehouse."Def. Shipping Insutance Provd", 1, MaxStrLen(AJShippingHeader."Shipping Insutance Provider"));
         IF (AJShippingHeader."Ship Date" = 0D) OR (AJShippingHeader."Ship Date" < WorkDate()) THEN
             AJShippingHeader."Ship Date" := WorkDate();
         IF AJShippingHeader."Ship-To Customer Country" = '' THEN
@@ -734,6 +731,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
         AJWebJsonHelper.JSONAddTxt(JObject, 'shipDate', FORMAT(AJShippingHeader."Ship Date", 0, '<Standard Format,9>'));
 
         Clear(AddJObject);
+        /*
         IF AJShippingHeader."Shp. Product Weight" = 0 THEN BEGIN
             AJShippingLine.SETRANGE("Shipping No.", AJShippingHeader."Shipping No.");
             IF AJShippingLine.FINDFIRST() THEN
@@ -752,8 +750,9 @@ codeunit 37072304 "AJ Shipping Mgmt."
                                 AJShippingHeader."Shp. Product Weight" += AJShippingLine.Weight
                             ELSE
                                 AJShippingHeader.TESTFIELD("Shp. Product Weight");
-                UNTIL AJShippingLine.NEXT() = 0;
+                UNTIL AJShippingLine.NEXT() = 0;            
         END;
+        */
         AJShippingHeader.TESTFIELD("Shp. Product Weight");
         AJWebJsonHelper.JSONAddDec(AddJObject, 'value', AJShippingHeader."Shp. Product Weight");
         AJWebJsonHelper.JSONAddTxt(AddJObject, 'units', AJShippingHeader."Shp. Product Weight Unit");
@@ -805,10 +804,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
         AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Ship-To Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'shipTo', AddJObject);
 
-        IF AJShippingHeader."Insure Shipment" THEN
-            ERROR('Insurance Not Supported.')
-        else
-            AJWebJsonHelper.JSONAddNULL(JObject, 'insuranceOptions');
+        AJWebJsonHelper.JSONAddNULL(JObject, 'insuranceOptions');
 
         IF AJShippingHeader."International Shipment" THEN
             ERROR('International Not Supported.')
@@ -851,7 +847,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
 
         AJShippingHeader.MODIFY();
     end;
-
+    /*
     procedure CreateWebOrderFromSalesOrder(var SalesHeader: Record "Sales Header"; var AJShippingHeader: Record "AJ Shipping Header")
     var
         SalesLine: Record "Sales Line";
@@ -1030,7 +1026,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
                 Error('Unsupported bill-to type %1', BillToType);
         end;
     end;
-
+    */
     procedure IsCOD(AJShippingHeader: Record "AJ Shipping Header"): Text
     var
         PaymentTerms: Record "Payment Terms";

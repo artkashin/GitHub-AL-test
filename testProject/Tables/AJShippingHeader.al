@@ -31,12 +31,6 @@ table 37072313 "AJ Shipping Header"
         {
             Caption = 'Nav Created DateTime';
         }
-        field(8; "Modify DateTime"; DateTime)
-        {
-        }
-        field(9; "Payment DateTime"; DateTime)
-        {
-        }
         field(10; "Web Service Shipment ID"; Text[30])
         {
         }
@@ -141,8 +135,6 @@ table 37072313 "AJ Shipping Header"
                     Validate("Shp. Product Width", AJWebCarrierPackageType."Def. Width");
                     Validate("Shp. Product Length", AJWebCarrierPackageType."Def. Length");
                     Validate("Shp. Product Height", AJWebCarrierPackageType."Def. Height");
-                    Validate("Insure Shipment", AJWebCarrierPackageType."Def. Insure Shipment");
-                    Validate("Insured Value", AJWebCarrierPackageType."Def. Insured Value");
                     Validate("Additional Insurance Value", AJWebCarrierPackageType."Def.Additional Insurance Value");
                 end;
             end;
@@ -168,43 +160,63 @@ table 37072313 "AJ Shipping Header"
                 end;
             end;
         }
-        field(40; "Bill-To Customer Name"; Text[100])
+        field(39; "Ship-from Location Code"; Code[10])
+        {
+            TableRelation = Location;
+
+            trigger OnValidate()
+            var
+                Location: Record Location;
+            begin
+                Location.Get("Ship-from Location Code");
+                "Ship-from Customer Name" := Location.Name;
+                "Ship-from Company" := CopyStr(Location.Name, 1, MaxStrLen("Ship-from Company"));
+                "Ship-from Customer Address 1" := Location.Address;
+                "Ship-from Customer Address 2" := Location."Address 2";
+                "Ship-from Customer City" := Location.City;
+                "Ship-from Customer State" := CopyStr(Location.County, 1, MaxStrLen("Ship-from Customer State"));
+                "Ship-from Customer Zip" := CopyStr(Location."Post Code", 1, MaxStrLen("Ship-from Customer Zip"));
+                "Ship-from Customer Country" := Location."Country/Region Code";
+                "Ship-from Customer Phone" := Location."Phone No.";
+            end;
+        }
+        field(40; "Ship-from Customer Name"; Text[100])
         {
         }
-        field(41; "Bill-To Customer Zip"; Text[10])
+        field(41; "Ship-from Customer Zip"; Text[10])
         {
         }
-        field(42; "Bill-To Customer Country"; Text[10])
+        field(42; "Ship-from Customer Country"; Text[10])
         {
         }
-        field(43; "Bill-To Customer State"; Text[20])
+        field(43; "Ship-from Customer State"; Text[20])
         {
         }
-        field(44; "Bill-To Customer City"; Text[50])
+        field(44; "Ship-from Customer City"; Text[50])
         {
         }
-        field(45; "Bill-To Customer Address 1"; Text[100])
+        field(45; "Ship-from Customer Address 1"; Text[100])
         {
         }
-        field(46; "Bill-To Customer Address 2"; Text[80])
+        field(46; "Ship-from Customer Address 2"; Text[80])
         {
         }
-        field(47; "Bill-To Customer Phone"; Text[30])
+        field(47; "Ship-from Customer Phone"; Text[30])
         {
         }
-        field(48; "Bill-To Company"; Text[80])
+        field(48; "Ship-from Company"; Text[80])
         {
         }
-        field(49; "Bill-To Residential"; Boolean)
+        field(49; "Ship-from Residential"; Boolean)
         {
         }
-        field(50; "Bill-To Verified"; Text[30])
+        field(50; "Ship-from Verified"; Text[30])
         {
         }
-        field(51; "Bill-To Customer Address 3"; Text[100])
+        field(51; "Ship-from Customer Address 3"; Text[100])
         {
         }
-        field(52; "Bill-To E-mail"; Text[35])
+        field(52; "Ship-from E-mail"; Text[35])
         {
         }
         field(60; "Ship-To Customer Name"; Text[100])
@@ -254,53 +266,6 @@ table 37072313 "AJ Shipping Header"
         }
         field(80; "Ship-From Warehouse ID"; Code[40])
         {
-            TableRelation = IF ("Shipping Web Service Code" = CONST('')) "AJ Web Service Warehouse"."Warehouse ID" WHERE("Web Service Code" = FIELD("Web Service Code"))
-            ELSE
-            IF ("Shipping Web Service Code" = FILTER(<> '')) "AJ Web Service Warehouse"."Warehouse ID" WHERE("Web Service Code" = FIELD("Shipping Web Service Code"));
-
-            trigger OnValidate()
-            var
-                AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-            begin
-                TestField("Shipping Web Service Code");
-
-                if "Ship-From Warehouse ID" <> xRec."Ship-From Warehouse ID" then
-                    TestLabelCreated();
-
-                if AJWebServiceWarehouse.Get("Shipping Web Service Code", "Ship-From Warehouse ID") then begin
-                    "Shipping Carrier Code" := AJWebServiceWarehouse."Def. Shipping Carrier Code";
-                    if AJWebServiceWarehouse."Def. Shipping Carrier Service" <> '' then
-                        Validate("Shipping Carrier Service", AJWebServiceWarehouse."Def. Shipping Carrier Service");
-                    if AJWebServiceWarehouse."Def. Shipping Package Type" <> '' then
-                        Validate("Shipping Package Type", AJWebServiceWarehouse."Def. Shipping Package Type");
-                    if AJWebServiceWarehouse."Def. Shipping Delivery Confirm" <> '' then
-                        "Shipping Delivery Confirm" := CopyStr(AJWebServiceWarehouse."Def. Shipping Delivery Confirm", 1, MaxStrLen("Shipping Delivery Confirm"));
-                    "Insure Shipment" := AJWebServiceWarehouse."Def. Insure Shipment";
-                    if AJWebServiceWarehouse."Def. Insurance Value" <> 0 then
-                        "Insured Value" := AJWebServiceWarehouse."Def. Insurance Value";
-                    if AJWebServiceWarehouse."Def. Product Weight Unit" <> '' then
-                        "Shp. Product Weight Unit" := AJWebServiceWarehouse."Def. Product Weight Unit";
-                    if AJWebServiceWarehouse."Free Shipping" then
-                        "Free Shipping" := true;
-                end;
-            end;
-        }
-        field(81; "Ship-From Warehouse ID ext."; Code[40])
-        {
-            TableRelation = IF ("Shipping Web Service Code" = CONST('')) "AJ Web Service Warehouse"."Warehouse ID" WHERE("Web Service Code" = FIELD("Web Service Code"))
-            ELSE
-            IF ("Shipping Web Service Code" = FILTER(<> '')) "AJ Web Service Warehouse"."Warehouse ID" WHERE("Web Service Code" = FIELD("Shipping Web Service Code"));
-
-            trigger OnValidate()
-            var
-                AJWebServiceWarehouse: Record "AJ Web Service Warehouse";
-            begin
-                if AJWebServiceWarehouse.Get("Shipping Web Service Code", "Ship-From Warehouse ID") then begin
-                    Validate("Shipping Carrier Code", AJWebServiceWarehouse."Def. Shipping Carrier Code");
-                    Validate("Shipping Carrier Service", AJWebServiceWarehouse."Def. Shipping Carrier Service");
-                    Validate("Shipping Package Type", AJWebServiceWarehouse."Def. Shipping Package Type");
-                end;
-            end;
         }
         field(100; "Web Service Order Status"; Text[30])
         {
@@ -329,28 +294,10 @@ table 37072313 "AJ Shipping Header"
         field(114; "Web Service Customer ID2"; Text[30])
         {
         }
-        field(200; "Total Amount"; Decimal)
-        {
-        }
-        field(201; "Paid Amount"; Decimal)
-        {
-        }
-        field(202; "Tax Amount"; Decimal)
-        {
-        }
-        field(203; "Shipping Amount"; Decimal)
-        {
-        }
         field(204; Gift; Boolean)
         {
         }
         field(205; "Gift Message"; Text[100])
-        {
-        }
-        field(206; "Payment Method"; Text[10])
-        {
-        }
-        field(207; "Handling Amount"; Decimal)
         {
         }
         field(210; "Shipping Options"; Text[30])
@@ -385,21 +332,6 @@ table 37072313 "AJ Shipping Header"
         {
         }
         field(215; "Return Label"; Boolean)
-        {
-        }
-        field(217; "Insure Shipment"; Boolean)
-        {
-        }
-        field(218; "Shipping Insutance Provider"; Text[30])
-        {
-        }
-        field(219; "Insured Value"; Decimal)
-        {
-        }
-        field(220; "International Content"; Text[1])
-        {
-        }
-        field(221; "Customs Items"; Text[20])
         {
         }
         field(222; "Non Delivery"; Text[20])
@@ -446,18 +378,18 @@ table 37072313 "AJ Shipping Header"
         field(403; Source; Text[30])
         {
         }
-        field(404; "Bill-to Type"; Option)
+        field(404; "Ship-from Type"; Option)
         {
             OptionCaption = 'My Account,Recipient,Third Party,My Other Account';
             OptionMembers = my_account,recipient,third_party,my_other_account;
         }
-        field(405; "Bill-To Account"; Text[30])
+        field(405; "Ship-from Account"; Text[30])
         {
         }
-        field(406; "Bill-To Postal Code"; Text[10])
+        field(406; "Ship-from Postal Code"; Text[10])
         {
         }
-        field(407; "Bill-To Country Code"; Text[30])
+        field(407; "Ship-from Country Code"; Text[30])
         {
         }
         field(408; "Customer Notes"; Text[100])
@@ -537,18 +469,6 @@ table 37072313 "AJ Shipping Header"
         field(1001; "NAV Order Status"; Option)
         {
             OptionMembers = "New Order",Errors,Created,Shipped,"Shipment Confirmed",,,,,,,,Cancelled,"Partially Shipped",Pending;
-
-            trigger OnValidate()
-            var
-                AJShippingLine: Record "AJ Shipping Line";
-            begin
-                AJShippingLine.SetRange("Shipping No.", "Shipping No.");
-                if AJShippingLine.FindFirst() then
-                    repeat
-                        AJShippingLine."NAV Order Status" := "NAV Order Status";
-                        AJShippingLine.Modify();
-                    until AJShippingLine.Next() = 0;
-            end;
         }
         field(1002; "Created Order Text"; BLOB)
         {
@@ -593,22 +513,6 @@ table 37072313 "AJ Shipping Header"
         field(1054; "Shipping & Handling Amount"; Decimal)
         {
         }
-        field(1060; "Payment Gateway"; Text[20])
-        {
-        }
-        field(1063; "Financial Status"; Text[20])
-        {
-        }
-        field(1065; "Card Type"; Text[20])
-        {
-        }
-        field(1066; "Payment Id"; Text[50])
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(1070; "Order Level Discount"; Decimal)
-        {
-        }
         field(1200; Packages; Boolean)
         {
             CalcFormula = Exist ("AJ Web Package" WHERE("Source Type" = CONST(37074833),
@@ -634,27 +538,13 @@ table 37072313 "AJ Shipping Header"
         {
             DataClassification = ToBeClassified;
         }
-        field(1301; "Order Instructions"; Text[1024])
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(1302; "Authorized Amount"; Decimal)
-        {
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
-        field(1303; "Captured Amount"; Decimal)
-        {
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
         field(1304; "Customer is Guest"; Boolean)
         {
             DataClassification = ToBeClassified;
         }
         field(2000; "Document Type"; Option)
         {
-            OptionMembers = "Order",Return;
+            OptionMembers = Order,Return;
         }
         field(2001; "Apply-To Web Order No."; Code[20])
         {
@@ -716,15 +606,7 @@ table 37072313 "AJ Shipping Header"
         field(5010; "Send Ship Confirmation"; Boolean)
         {
         }
-        field(6000; "Special Customer Account"; Text[30])
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(6001; "Set Customer No. To"; Code[20])
-        {
-            DataClassification = ToBeClassified;
-            TableRelation = Customer;
-        }
+
         field(6002; "Fraud Filter Triggered"; Boolean)
         {
             DataClassification = ToBeClassified;
@@ -805,8 +687,6 @@ table 37072313 "AJ Shipping Header"
         AJShippingHeader.Init();
         AJShippingHeader."Shipping No." := '';
         AJShippingHeader."Created From Sales Order" := true;
-        AJShippingHeader."Created DateTime" := CurrentDateTime();
-        AJShippingHeader."Order DateTime" := CurrentDateTime();
         AJShippingHeader.Insert(true);
 
         AJWebService2.Reset();
