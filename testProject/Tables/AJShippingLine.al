@@ -28,7 +28,7 @@ table 37072314 "AJ Shipping Line"
         }
         field(6; "Source Table"; Option)
         {
-            OptionCaption = ' ,Sales Header,Sales Invoice Header,Sales Shipment Header,Purchase Header,Transfer Header,Transfer Shipment Header';
+            OptionCaption = ' ,Sales Header,Sales Shipment Header,Sales Invoice Header,Purchase Header,Transfer Header,Transfer Shipment Header';
             OptionMembers = " ","36","110","112","38","5740","5744";
         }
         field(7; Description; Text[250])
