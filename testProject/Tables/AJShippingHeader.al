@@ -169,51 +169,51 @@ table 37072313 "AJ Shipping Header"
                 Location: Record Location;
             begin
                 Location.Get("Ship-from Location Code");
-                "Ship-from Customer Name" := Location.Name;
+                "Ship-from Name" := Location.Name;
                 "Ship-from Company" := CopyStr(Location.Name, 1, MaxStrLen("Ship-from Company"));
-                "Ship-from Customer Address 1" := Location.Address;
-                "Ship-from Customer Address 2" := Location."Address 2";
-                "Ship-from Customer City" := Location.City;
-                "Ship-from Customer State" := CopyStr(Location.County, 1, MaxStrLen("Ship-from Customer State"));
-                "Ship-from Customer Zip" := CopyStr(Location."Post Code", 1, MaxStrLen("Ship-from Customer Zip"));
-                "Ship-from Customer Country" := Location."Country/Region Code";
-                "Ship-from Customer Phone" := Location."Phone No.";
+                "Ship-from Address 1" := Location.Address;
+                "Ship-from Address 2" := Location."Address 2";
+                "Ship-from City" := Location.City;
+                "Ship-from State" := CopyStr(Location.County, 1, MaxStrLen("Ship-from State"));
+                "Ship-from Zip" := CopyStr(Location."Post Code", 1, MaxStrLen("Ship-from Zip"));
+                "Ship-from Country Code" := Location."Country/Region Code";
+                "Ship-from Phone" := Location."Phone No.";
             end;
         }
-        field(40; "Ship-from Customer Name"; Text[100])
+        field(40; "Ship-from Name"; Text[100])
         {
         }
-        field(41; "Ship-from Customer Zip"; Text[10])
+        field(41; "Ship-from Zip"; Text[10])
         {
         }
-        field(42; "Ship-from Customer Country"; Text[10])
+        field(42; "Ship-from Country Code"; Text[10])
         {
         }
-        field(43; "Ship-from Customer State"; Text[20])
+        field(43; "Ship-from State"; Text[20])
         {
         }
-        field(44; "Ship-from Customer City"; Text[50])
+        field(44; "Ship-from City"; Text[50])
         {
         }
-        field(45; "Ship-from Customer Address 1"; Text[100])
+        field(45; "Ship-from Address 1"; Text[100])
         {
         }
-        field(46; "Ship-from Customer Address 2"; Text[80])
+        field(46; "Ship-from Address 2"; Text[80])
         {
         }
-        field(47; "Ship-from Customer Phone"; Text[30])
+        field(47; "Ship-from Address 3"; Text[100])
         {
         }
-        field(48; "Ship-from Company"; Text[80])
+        field(48; "Ship-from Phone"; Text[30])
         {
         }
-        field(49; "Ship-from Residential"; Boolean)
+        field(49; "Ship-from Company"; Text[80])
         {
         }
-        field(50; "Ship-from Verified"; Text[30])
+        field(50; "Ship-from Residential"; Boolean)
         {
         }
-        field(51; "Ship-from Customer Address 3"; Text[100])
+        field(51; "Ship-from Verified"; Text[30])
         {
         }
         field(52; "Ship-from E-mail"; Text[35])
@@ -384,12 +384,6 @@ table 37072313 "AJ Shipping Header"
             OptionMembers = my_account,recipient,third_party,my_other_account;
         }
         field(405; "Ship-from Account"; Text[30])
-        {
-        }
-        field(406; "Ship-from Postal Code"; Text[10])
-        {
-        }
-        field(407; "Ship-from Country Code"; Text[30])
         {
         }
         field(408; "Customer Notes"; Text[100])

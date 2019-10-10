@@ -698,7 +698,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
         AJWebService.TESTFIELD("API Endpoint Domain");
         AJWebService.TESTFIELD("API Encoded String");
 
-        AJWebServiceWarehouse.GET(AJShippingHeader."Shipping Web Service Code", AJShippingHeader."Ship-From Warehouse ID");
+        //AJWebServiceWarehouse.GET(AJShippingHeader."Shipping Web Service Code", AJShippingHeader."Ship-From Warehouse ID");
         IF AJWebServiceWarehouse."Ship-From Country" = '' THEN
             AJWebServiceWarehouse."Ship-From Country" := 'US';
         IF AJShippingHeader."Shipping Carrier Code" = '' THEN
@@ -714,8 +714,8 @@ codeunit 37072304 "AJ Shipping Mgmt."
         IF AJShippingHeader."Ship-To Customer Country" = '' THEN
             AJShippingHeader."Ship-To Customer Country" := 'US';
 
-        AJShippingHeader.TESTFIELD("Web Service Order ID");
-        AJShippingHeader.TESTFIELD("Ship-From Warehouse ID");
+        //AJShippingHeader.TESTFIELD("Web Service Order ID");
+        //AJShippingHeader.TESTFIELD("Ship-From Warehouse ID");
         AJShippingHeader.TESTFIELD("Shipping Carrier Code");
         AJShippingHeader.TESTFIELD("Shipping Carrier Service");
         AJShippingHeader.TESTFIELD("Shipping Package Type");
@@ -777,17 +777,17 @@ codeunit 37072304 "AJ Shipping Mgmt."
             AJWebJsonHelper.JSONAddNULL(JObject, 'dimensions');
 
         Clear(AddJObject);
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJWebServiceWarehouse."Ship-From Name");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJWebServiceWarehouse."Ship-From Company");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJWebServiceWarehouse."Ship-From Address 1");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJWebServiceWarehouse."Ship-From Address 2");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJWebServiceWarehouse."Ship-From Address 3");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJWebServiceWarehouse."Ship-From City");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJWebServiceWarehouse."Ship-From State");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJWebServiceWarehouse."Ship-From Zip");
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(CopyStr(AJWebServiceWarehouse."Ship-From Country", 1, 10)));
-        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJWebServiceWarehouse."Ship-From Phone");
-        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJWebServiceWarehouse."Ship-From Residential");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'name', AJShippingHeader."Ship-From Name");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'company', AJShippingHeader."Ship-From Company");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street1', AJShippingHeader."Ship-From Address 1");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street2', AJShippingHeader."Ship-From Address 2");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'street3', AJShippingHeader."Ship-From Address 3");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'city', AJShippingHeader."Ship-From City");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'state', AJShippingHeader."Ship-From State");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'postalCode', AJShippingHeader."Ship-From Zip");
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'country', GetCountryCode(CopyStr(AJShippingHeader."Ship-from Country Code", 1, 10)));
+        AJWebJsonHelper.JSONAddTxt(AddJObject, 'phone', AJShippingHeader."Ship-From Phone");
+        AJWebJsonHelper.JSONAddBool(AddJObject, 'residential', AJShippingHeader."Ship-From Residential");
         AJWebJsonHelper.JSONAddObject(JObject, 'shipFrom', AddJObject);
 
         Clear(AddJObject);
@@ -989,7 +989,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
 
         CreateOrder(AJShippingHeader);
     end;
-
+    */
     procedure SaveLabel(AJShippingHeader: Record "AJ Shipping Header")
     var
         IS: InStream;
@@ -1003,7 +1003,7 @@ codeunit 37072304 "AJ Shipping Mgmt."
             DownloadFromStream(IS, 'Save label as', 'C:\', 'Adobe Acrobat file(*.pdf)|*.pdf', ToFile);
         end;
     end;
-
+    /*
     procedure GetOrderLabelParam(NewDoNotSendOrder: Boolean)
     begin
         DoNotSendOrder := NewDoNotSendOrder;

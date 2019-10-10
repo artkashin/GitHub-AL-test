@@ -13,15 +13,15 @@ codeunit 37072305 "AJ Fill Shipping Process"
         Location: record Location;
     begin
         if Location.Get(AJShippingHeader."Ship-from Location Code") then begin
-            AJShippingHeader."Ship-from Customer Name" := Location.Name;
+            AJShippingHeader."Ship-from Name" := Location.Name;
             AJShippingHeader."Ship-from Company" := CopyStr(Location.Name, 1, MaxStrLen(AJShippingHeader."Ship-from Company"));
-            AJShippingHeader."Ship-from Customer Address 1" := Location.Address;
-            AJShippingHeader."Ship-from Customer Address 2" := Location."Address 2";
-            AJShippingHeader."Ship-from Customer City" := Location.City;
-            AJShippingHeader."Ship-from Customer State" := CopyStr(Location.County, 1, MaxStrLen(AJShippingHeader."Ship-from Customer State"));
-            AJShippingHeader."Ship-from Customer Zip" := CopyStr(Location."Post Code", 1, MaxStrLen(AJShippingHeader."Ship-from Customer Zip"));
-            AJShippingHeader."Ship-from Customer Country" := Location."Country/Region Code";
-            AJShippingHeader."Ship-from Customer Phone" := Location."Phone No.";
+            AJShippingHeader."Ship-from Address 1" := Location.Address;
+            AJShippingHeader."Ship-from Address 2" := Location."Address 2";
+            AJShippingHeader."Ship-from City" := Location.City;
+            AJShippingHeader."Ship-from State" := CopyStr(Location.County, 1, MaxStrLen(AJShippingHeader."Ship-from State"));
+            AJShippingHeader."Ship-from Zip" := CopyStr(Location."Post Code", 1, MaxStrLen(AJShippingHeader."Ship-from Zip"));
+            AJShippingHeader."Ship-from Country Code" := Location."Country/Region Code";
+            AJShippingHeader."Ship-from Phone" := Location."Phone No.";
             AJShippingHeader.Modify();
         end;
     end;
@@ -44,15 +44,15 @@ codeunit 37072305 "AJ Fill Shipping Process"
 
         if Location.Get(SalesHeader."Location Code") then begin
             AJShippingHeader."Ship-from Location Code" := Location.Code;
-            AJShippingHeader."Ship-from Customer Name" := Location.Name;
+            AJShippingHeader."Ship-from Name" := Location.Name;
             AJShippingHeader."Ship-from Company" := CopyStr(Location.Name, 1, MaxStrLen(AJShippingHeader."Ship-from Company"));
-            AJShippingHeader."Ship-from Customer Address 1" := Location.Address;
-            AJShippingHeader."Ship-from Customer Address 2" := Location."Address 2";
-            AJShippingHeader."Ship-from Customer City" := Location.City;
-            AJShippingHeader."Ship-from Customer State" := CopyStr(Location.County, 1, MaxStrLen(AJShippingHeader."Ship-from Customer State"));
-            AJShippingHeader."Ship-from Customer Zip" := CopyStr(Location."Post Code", 1, MaxStrLen(AJShippingHeader."Ship-from Customer Zip"));
-            AJShippingHeader."Ship-from Customer Country" := Location."Country/Region Code";
-            AJShippingHeader."Ship-from Customer Phone" := Location."Phone No.";
+            AJShippingHeader."Ship-from Address 1" := Location.Address;
+            AJShippingHeader."Ship-from Address 2" := Location."Address 2";
+            AJShippingHeader."Ship-from City" := Location.City;
+            AJShippingHeader."Ship-from State" := CopyStr(Location.County, 1, MaxStrLen(AJShippingHeader."Ship-from State"));
+            AJShippingHeader."Ship-from Zip" := CopyStr(Location."Post Code", 1, MaxStrLen(AJShippingHeader."Ship-from Zip"));
+            AJShippingHeader."Ship-from Country Code" := Location."Country/Region Code";
+            AJShippingHeader."Ship-from Phone" := Location."Phone No.";
         end;
 
         AJShippingHeader."Ship-from Residential" := false;
@@ -69,7 +69,7 @@ codeunit 37072305 "AJ Fill Shipping Process"
         AJShippingHeader."Ship-To Customer State" := CopyStr(SalesHeader."Ship-to County", 1, MaxStrLen(AJShippingHeader."Ship-To Customer State"));
         AJShippingHeader."Ship-To Customer Zip" := CopyStr(SalesHeader."Ship-to Post Code", 1, MaxStrLen(AJShippingHeader."Ship-To Customer Zip"));
         AJShippingHeader."Ship-To Customer Country" := SalesHeader."Ship-to Country/Region Code";
-        //AJShippingHeader."Ship-To Customer Phone" := SalesHeader."Ship-to Phone No.";
+        //AJShippingHeader."Ship-To Phone" := SalesHeader."Ship-to Phone No.";
         AJShippingHeader."Ship-To Residential" := false;
         //AJShippingHeader."Ship-To E-mail" := SalesHeader."Ship-to E-Mail";
 

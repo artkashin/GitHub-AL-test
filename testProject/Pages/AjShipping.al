@@ -39,7 +39,7 @@ page 37072322 "AJ Shipping"
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Name"; "Ship-from Customer Name")
+                field("Ship-from Name"; "Ship-from Name")
                 {
                     ApplicationArea = All;
                 }
@@ -47,35 +47,35 @@ page 37072322 "AJ Shipping"
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Address 1"; "Ship-from Customer Address 1")
+                field("Ship-from Address 1"; "Ship-from Address 1")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Address 2"; "Ship-from Customer Address 2")
+                field("Ship-from Address 2"; "Ship-from Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Address 3"; "Ship-from Customer Address 3")
+                field("Ship-from Address 3"; "Ship-from Address 3")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer City"; "Ship-from Customer City")
+                field("Ship-from City"; "Ship-from City")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Zip"; "Ship-from Customer Zip")
+                field("Ship-from Zip"; "Ship-from Zip")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer State"; "Ship-from Customer State")
+                field("Ship-from State"; "Ship-from State")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Country"; "Ship-from Customer Country")
+                field("Ship-from Country"; "Ship-from Country Code")
                 {
                     ApplicationArea = All;
                 }
-                field("Ship-from Customer Phone"; "Ship-from Customer Phone")
+                field("Ship-from Phone"; "Ship-from Phone")
                 {
                     ApplicationArea = All;
                 }
@@ -456,14 +456,6 @@ page 37072322 "AJ Shipping"
                     {
                         ApplicationArea = All;
                     }
-                    field("Ship-from Postal Code"; "Ship-from Postal Code")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field("Ship-from Country Code"; "Ship-from Country Code")
-                    {
-                        ApplicationArea = All;
-                    }
                     field("Shipping Web Service Order No."; "Shipping Web Service Order No.")
                     {
                         ApplicationArea = All;
@@ -495,8 +487,6 @@ page 37072322 "AJ Shipping"
                     Caption = 'Get Lines From Sales Hader';
                     trigger OnAction()
                     var
-                        //AjShippingHeader: Record "AJ Shipping Header";
-                        //SalesHaeder: Record "Sales Header";
                         AJShippingLine: Record "AJ Shipping Line";
                         SalesList: Page "Sales List";
                     begin
@@ -511,22 +501,6 @@ page 37072322 "AJ Shipping"
             group("Shipping Label")
             {
                 Caption = 'Shipping Label';
-                action("Get Shipping Label For Order")
-                {
-                    ApplicationArea = All;
-                    Promoted = false;
-                    Caption = 'Get Shipping Label For Order';
-                    trigger OnAction()
-                    var
-                        AjShippingHeader: Record "AJ Shipping Header";
-                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
-                    begin
-                        CurrPage.SetSelectionFilter(AjShippingHeader);
-                        //AjShippingHeader.FindFirst();
-                        //AJShippingMgmt.GetOrderLabel(AjShippingHeader);
-                        Message('Done');
-                    end;
-                }
                 action("Get Shipping Label")
                 {
                     ApplicationArea = All;
@@ -535,11 +509,11 @@ page 37072322 "AJ Shipping"
                     trigger OnAction()
                     var
                         AjShippingHeader: Record "AJ Shipping Header";
-                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
+                        AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
                     begin
                         CurrPage.SetSelectionFilter(AjShippingHeader);
-                        //AjShippingHeader.FindFirst();
-                        //AJShippingMgmt.GetLabel(AjShippingHeader);
+                        AjShippingHeader.FindFirst();
+                        AJShippingMgmt.GetLabel(AjShippingHeader);
                         Message('Done');
                     end;
                 }
@@ -549,11 +523,11 @@ page 37072322 "AJ Shipping"
                     trigger OnAction()
                     var
                         AjShippingHeader: Record "AJ Shipping Header";
-                    //AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
+                        AJShippingMgmt: Codeunit "AJ Shipping Mgmt.";
                     begin
                         CurrPage.SETSELECTIONFILTER(AjShippingHeader);
-                        //AjShippingHeader.FindFirst();
-                        //AJShippingMgmt.SaveLabel(AjShippingHeader);
+                        AjShippingHeader.FindFirst();
+                        AJShippingMgmt.SaveLabel(AjShippingHeader);
                     end;
                 }
             }
