@@ -20,8 +20,11 @@ table 37072314 "AJ Shipping Line"
         field(5; "Source ID"; Text[32])
         {
             TableRelation = if ("Source Table" = const("36")) "Sales Header" where("Document Type" = field("Source Document Type")) else
-            if ("Source Table" = const("110")) "Sales Invoice Header" else
-            if ("Source Table" = const("112")) "Sales Shipment Header";
+            if ("Source Table" = const("110")) "Sales Shipment Header" else
+            if ("Source Table" = const("112")) "Sales Invoice Header" else
+            if ("Source Table" = const("38")) "Purchase Header" else
+            if ("Source Table" = const("5740")) "Transfer Header" else
+            if ("Source Table" = const("5744")) "Transfer Shipment Header";
         }
         field(6; "Source Table"; Option)
         {

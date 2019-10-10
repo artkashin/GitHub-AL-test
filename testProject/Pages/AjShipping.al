@@ -497,6 +497,57 @@ page 37072322 "AJ Shipping"
                         Message('Done');
                     end;
                 }
+                action("Get Purchase Header")
+                {
+                    ApplicationArea = All;
+                    Promoted = false;
+                    Caption = 'Get Lines From Purchase Hader';
+                    trigger OnAction()
+                    var
+                        AJShippingLine: Record "AJ Shipping Line";
+                        PurchList: Page "Purchase List";
+                    begin
+                        AJShippingLine."Shipping No." := Rec."Shipping No.";
+                        PurchList.SetLookupForAJShipping(AJShippingLine);
+                        PurchList.LookupMode(true);
+                        PurchList.RunModal();
+                        Message('Done');
+                    end;
+                }
+                action("Get Sales Ship Header")
+                {
+                    ApplicationArea = All;
+                    Promoted = false;
+                    Caption = 'Get Lines From Sales Shipment Hader';
+                    trigger OnAction()
+                    var
+                        AJShippingLine: Record "AJ Shipping Line";
+                        SalesShipmet: Page "Posted Sales Shipment";
+                    begin
+                        AJShippingLine."Shipping No." := Rec."Shipping No.";
+                        SalesShipmet.SetLookupForAJShipping(AJShippingLine);
+                        SalesShipmet.LookupMode(true);
+                        SalesShipmet.RunModal();
+                        Message('Done');
+                    end;
+                }
+                action("Get Sales Inv Header")
+                {
+                    ApplicationArea = All;
+                    Promoted = false;
+                    Caption = 'Get Lines From Purchase Hader';
+                    trigger OnAction()
+                    var
+                        AJShippingLine: Record "AJ Shipping Line";
+                        SalesInvoice: Page "Posted Sales Invoice";
+                    begin
+                        AJShippingLine."Shipping No." := Rec."Shipping No.";
+                        SalesInvoice.SetLookupForAJShipping(AJShippingLine);
+                        SalesInvoice.LookupMode(true);
+                        SalesInvoice.RunModal();
+                        Message('Done');
+                    end;
+                }
             }
             group("Shipping Label")
             {

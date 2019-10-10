@@ -1,4 +1,4 @@
-pageextension 37072301 PageExtansion45 extends "Sales List"
+pageextension 37072302 PageExtansion54 extends "Purchase List"
 {
     var
         AJShippingLine: Record "AJ Shipping Line";
@@ -12,19 +12,19 @@ pageextension 37072301 PageExtansion45 extends "Sales List"
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     var
-        FromSalesHeader: Record "Sales Header";
+        FromPurchaseHeader: Record "Purchase Header";
         AJShippingHeader: Record "AJ Shipping Header";
         AJFillShippingLine: Codeunit "AJ Fill Shipping Process";
     begin
         if LookupforAJShipping and (CloseAction = Action::LookupOK) then begin
             AJShippingHeader.Get(AJShippingLine."Shipping No.");
-            FromSalesHeader.Copy(Rec);
-            CurrPage.SetSelectionFilter(FromSalesHeader);
-            if FromSalesHeader.FindSet() then
+            FromPurchaseHeader.Copy(Rec);
+            CurrPage.SetSelectionFilter(FromPurchaseHeader);
+            if FromPurchaseHeader.FindSet() then
                 repeat
                     Clear(AJFillShippingLine);
-                    AJFillShippingLine.CreateLineFromSalesHeader(FromSalesHeader, AJShippingHeader, AJShippingLine);
-                until FromSalesHeader.Next() = 0;
+                    AJFillShippingLine.CreateLineFromPurchaseHeader(FromPurchaseHeader, AJShippingHeader, AJShippingLine);
+                until FromPurchaseHeader.Next() = 0;
         end;
     end;
 }

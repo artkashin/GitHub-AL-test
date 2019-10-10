@@ -18,6 +18,10 @@ page 37072323 "AJ Shipping Subform"
                 {
                     ApplicationArea = All;
                 }
+                field("Source Table"; "Source Table")
+                {
+                    ApplicationArea = All;
+                }
                 field("Source ID"; "Source ID")
                 {
                     ApplicationArea = All;
