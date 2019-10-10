@@ -273,9 +273,9 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
         if AJWebCarrier.FindFirst() then
             repeat
                 Clear(AJWebServiceBase);
+                Clear(Txt);
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listpackages?carrierCode=' + AJWebCarrier.Code;
                 AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', Txt);
-                message(GetLastErrorText);
                 if not JArray.ReadFrom(Txt) then
                     Error('Bad response');
 
@@ -305,6 +305,7 @@ codeunit 37072302 "AJ Web Shipstation Mgmt."
                 Uri := AJWebService."API Endpoint Domain" + 'carriers/listservices?carrierCode=' + AJWebCarrier.Code;
 
                 Clear(AJWebServiceBase);
+                Clear(Txt);
                 AJWebServiceBase.CallWebService(AJWebService, Uri, 'GET', '', Txt);
 
                 if not JArray.ReadFrom(Txt) then

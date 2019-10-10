@@ -40,7 +40,7 @@ codeunit 37072301 "AJ Web Service Base"
             end;
             RequestMessage.Content(Content);
         end;
-        Clear(ResponseMessage);
+
         Client.Send(RequestMessage, ResponseMessage);
         ResponseMessage.Content().ReadAs(Body);
 
