@@ -25,6 +25,11 @@ table 37072314 "AJ Shipping Line"
             if ("Source Table" = const("38")) "Purchase Header" else
             if ("Source Table" = const("5740")) "Transfer Header" else
             if ("Source Table" = const("5744")) "Transfer Shipment Header";
+
+            trigger OnValidate()
+            begin
+
+            end;
         }
         field(6; "Source Table"; Option)
         {
